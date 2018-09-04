@@ -253,6 +253,12 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 Headers can occur multiple times, e.g. a single header-key can map to multiple values where all of them have one `value` and `parameters`. How this is represented depends on the encoding.
 
+Splitting headers up into `value` and `parameters` was done for the following reasons:
+
+1. Having a single `value` facilitates comparison of header values: A node can determine whether or not they understand a particular header just by looking at the `value`. If they don't understand the `value`, they also cannot understand its `parameters`.
+2. It is more consistent: By having `value` and `parameters`, the general structure of a header is always the same, independent of the actual data. This allows for easier implementation in statically-typed languages.
+3. Without a dedicated `parameters` field, there could be a clash with a parameter named `value`, if they would just be next to the original `value` field.
+
 ### JSON Encoding
 
 This section defines a text-based encoding of the above concepts. Later RFCs might define a binary encoding in order to increase efficiency.
