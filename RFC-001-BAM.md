@@ -36,6 +36,7 @@
             - [Default values](#default-values)
             - [Multiple values](#multiple-values)
             - [Compact representation](#compact-representation)
+            - [Data types](#data-types)
 - [References](#references)
 
 ## Description
@@ -417,6 +418,16 @@ In cases like these, where there are no parameters, implementations can choose t
 ```
 
 Implementations MUST be able to process compact representations. They MUST treat them identical to the version with only a `value` field.
+
+##### Data types
+
+In the JSON encoding, `value` can take any scalar JSON data type (except `null`), meaning:
+
+- numbers
+- booleans
+- strings
+
+The same thing applies to the values of parameters.
 
 ## References
 
