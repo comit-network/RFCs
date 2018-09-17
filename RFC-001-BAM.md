@@ -37,6 +37,7 @@
             - [Multiple values](#multiple-values)
             - [Compact representation](#compact-representation)
             - [Data types](#data-types)
+        - [Naming conventions](#naming-conventions)
 - [References](#references)
 
 ## Description
@@ -220,7 +221,7 @@ Looking at these responses, it might at first be confusing why they are listed i
 
 2. SE01 - Unsupported mandatory header
 
-    Whenever a node receives a header that it does not understand, it should return a response with the SE01 status code. Responses with the SE01 status code MUST include the header `Unsupported-Headers` with its value set to a list of mandatory headers it didn't understand. If a node does not understand multiple headers, it SHOULD list all of them.
+    Whenever a node receives a header that it does not understand, it should return a response with the SE01 status code. Responses with the SE01 status code MUST include the header `unsupported_headers` with its value set to a list of mandatory headers it didn't understand. If a node does not understand multiple headers, it SHOULD list all of them.
 
 3. SE02 - Unknown request type
 
@@ -358,7 +359,7 @@ This section defines how headers are encoded in the JSON-based text encoding.
 Let's start off with an example:
 
 ```json
-"_Source-Ledger" : {
+"_source_ledger" : {
     "value": "Bitcoin",
     "parameters": {
         "network": "mainnet"
@@ -378,10 +379,10 @@ Implementations MUST NOT fail if they receive a header without a `parameters` fi
 
 ##### Multiple values
 
-If the header supports multiple values it MUST be represented as list (and if it is only a single value it MUST be a single object). For example, consider a header "Supported-Ledgers" which lists the ledgers a node supports:
+If the header supports multiple values it MUST be represented as list (and if it is only a single value it MUST be a single object). For example, consider a header "supported_ledgers" which lists the ledgers a node supports:
 
 ```json
-"Supported-Ledgers" : [
+"supported_ledgers" : [
     {
         "value": "Bitcoin",
         "parameters": {
@@ -404,7 +405,7 @@ Note how the inner structure of the header is list of the same ledger structure 
 Sometimes, headers only carry one particular value. For example:
 
 ```json
-"Swap-Protocol": {
+"swap_protocol": {
     "value": "COMIT-RFC-003"
 }
 ```
@@ -412,7 +413,7 @@ Sometimes, headers only carry one particular value. For example:
 In cases like these, where there are no parameters, implementations can choose to use the compact representation which looks like this:
 
 ```json
-"Swap-Protocol": "COMIT-RFC-003"
+"swap_protocol": "COMIT-RFC-003"
 ```
 
 Implementations MUST be able to process compact representations. They MUST treat them identical to the version with only a `value` field.
@@ -426,6 +427,12 @@ In the JSON encoding, `value` can take any scalar JSON data type (except `null`)
 - strings
 
 The same thing applies to the values of parameters.
+
+#### Naming conventions
+
+- Frame types should use all caps convention. For example, `REQUEST`.
+- Headers should use snake case convention. For example, `source_ledger`.
+- `REQUEST` types should use all caps convention as well. For example: `SWAP`.
 
 ## References
 
