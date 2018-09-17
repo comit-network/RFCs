@@ -145,15 +145,15 @@ A frame of type `REQUEST` carries the following payload:
 
 - Type
 - Application data
-- Protocol headers
-- Protocol payload
+- Headers
+- Body
 
 whereas a frame of type `RESPONSE` looks like this:
 
 - Status
 - Application data
-- Protocol headers
-- Protocol payload
+- Headers
+- Body
 
 ##### Optional fields
 
@@ -173,7 +173,7 @@ This transport protocol defines generic functionality for our application protoc
 
 ##### Headers
 
-`Protocol headers` and `Payload` are supposed to be used by the application protocol (for the beginning, just GANP). Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the protocol headers in order to describe the encoding of the payload.
+`Headers` and `Body` are supposed to be used by the application protocol (for the beginning, just GANP). Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the protocol headers in order to describe the encoding of the payload.
 
 In addition, protocol headers also encode compatibility information. Each header is available in two variants:
 
@@ -266,9 +266,7 @@ This section defines a text-based encoding of the above concepts. Later RFCs mig
 
 Nodes MUST use UTF-8 for the actual character encoding. (JSON technically requires that but just to be sure, it is stated here again.)
 
-A protocol needs to somehow encode, where messages start and where they end. In the JSON encoding of BAM, this is solved through newlines. Thus, each message MUST be on a single line. As each message is a single JSON-object, the JSON-object MUST NOT contain any unescaped newlines.
-
-> TODO: Does this actually work? Does our current decoder handle newlines within JSON values if they happen to be the last byte that is received, even if the JSON object is not yet finished?
+A protocol needs to somehow encode, where messages start and where they end. In the JSON encoding of BAM, this is solved through newlines. Thus, each message MUST be on a single line.
 
 In the following sections
 
@@ -333,8 +331,8 @@ For the `REQUEST` frame, the `payload` looks like this:
 {
     "type": "...",
     "application_data": {},
-    "protocol_headers": {},
-    "protocol_body": {},
+    "headers": {},
+    "body": {},
 }
 ```
 
@@ -346,8 +344,8 @@ The `payload` of a `RESPONSE` frame shares the same encoding as the `REQUEST` fr
 {
     "status": "...",
     "application_data": {},
-    "protocol_headers": {},
-    "protocol_body": {},
+    "headers": {},
+    "body": {},
 }
 ```
 
