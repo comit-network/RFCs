@@ -250,7 +250,7 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 3. Parameters
 
-    Parameters are to be used to further specify a header's value. Parameters are a key-value structure with **unique** keys. Similar to the actual header value, both keys and values must be single tokens. For example, in implementations, these parameters MUST be representable as `Map<String, String>`. Parameters are optional and may therefore be empty or left out if the encoding allows this.
+    Parameters are to be used to further specify a header's value. Parameters are a key-value structure with **unique** keys. Similar to the actual header value, both keys and values must be single tokens. Parameters are optional and may therefore be empty or left out if the encoding allows this.
 
 Headers can occur multiple times, e.g. a single header-key can map to multiple values where all of them have one `value` and `parameters`. How this is represented depends on the encoding.
 
