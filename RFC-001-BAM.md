@@ -1,4 +1,4 @@
-# BAM! - Bi-directional Application Messaging
+# BAM! - Bidirectional Application Messaging
 
 - [Description](#description)
 - [Status](#status)
@@ -77,13 +77,13 @@ We decided against this approach because we feared it might falsely suggest comp
 
 ### WebSockets
 
-WebSockets are the Web's solution for bi-directional communication. Although it would support the peer-to-peer requirement, WebSockets have a very low abstraction level, as they don't specify anything about the actual message that is sent over. Instead, the websocket spec mostly deals with things that are related to the Web (what a surprise!) like protection of shared infrastructure through masking of the actual payload or upgrades of HTTP connection to a web socket connection.
+WebSockets are the Web's solution for bidirectional communication. Although it would support the peer-to-peer requirement, WebSockets have a very low abstraction level, as they don't specify anything about the actual message that is sent over. Instead, the websocket spec mostly deals with things that are related to the Web (what a surprise!) like protection of shared infrastructure through masking of the actual payload or upgrades of HTTP connection to a web socket connection.
 
 While WebSockets could have been a solution, they actually don't provide any benefit over plain sockets for us. In order to keep the complexity low, we decided against it.
 
 ### A profile for BEEP
 
-BEEP is a fully bi-directional application protocol and looks very much like what we needed at first sight. It covers a wide range of requirements and has many features. Unfortunately, it never seemed to get traction and thus, library support is very limited. For Rust, we would have had to write our own implementation.
+BEEP is a fully bidirectional application protocol and looks very much like what we needed at first sight. It covers a wide range of requirements and has many features. Unfortunately, it never seemed to get traction and thus, library support is very limited. For Rust, we would have had to write our own implementation.
 
 Although BEEP would fulfill all the requirements, there is no implementation for it. We could create and implementation but that would be quite a lot of work because BEEP covers much more than we need.
 
