@@ -1,6 +1,28 @@
 # SWAP Type messages
 
-<!--TODO: Content table--> 
+<!-- toc -->
+
+- [Description](#description)
+- [Status](#status)
+- [Assumptions](#assumptions)
+- [Terminology](#terminology)
+  - [Alice & Bob](#alice--bob)
+  - [Ledger](#ledger)
+  - [Asset](#asset)
+  - [Alpha Ledger (recip. Asset)](#alpha-ledger-recip-asset)
+  - [Beta Ledger (recip. Asset)](#beta-ledger-recip-asset)
+  - [Identity](#identity)
+  - [Swap Protocol](#swap-protocol)
+- [SWAP REQUEST](#swap-request)
+  - [Purpose](#purpose)
+  - [Definition](#definition)
+    - [Format](#format)
+    - [`AlphaLedger/BetaLedger`](#alphaledgerbetaledger)
+    - [`AlphaAsset/BetaAsset`](#alphaassetbetaasset)
+    - [`SwapProtocol`](#swapprotocol)
+    - [`Body`](#body)
+
+<!-- tocstop -->
 
 ## Description
 
@@ -73,7 +95,7 @@ A **RESPONSE**, to reject/decline or accept the swap request, is expected from B
 BAM! type: REQUEST
 Response expected: yes
 ```
-### Format
+#### Format
 ```
 {
   "type": "SWAP",
