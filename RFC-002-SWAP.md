@@ -24,8 +24,8 @@
 - [SWAP RESPONSE](#swap-response)
   * [Purpose](#purpose-1)
   * [Definition](#definition-1)
-    + [Response Format](#response-format)
-    + [Decline Response with Reason Format](#decline-response-with-reason-format)
+    + [Format](#format-2)
+    + [Decline with Reason Format](#decline-with-reason-format)
     + [`Status`](#status)
     + [`Reason`](#reason)
 
@@ -34,7 +34,8 @@
 ## Description
 
 This RFC describes the SWAP type messages.
-This set of messages facilitates the execution of trustless[¹] atomic swaps of assets cross-ledger as described in [RFC-003](wip).
+This set of messages facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
+
 This RFC is part of COMIT, an open protocol facilitating trustless cross-blockchain applications.
 
 
@@ -53,19 +54,19 @@ The messages are assumed to be transported using the BAM! protocol as defined in
 
 ### Alice & Bob
 
-Participants of the atomic swap. Alice and Bob intends to exchange two different assets via an atomic swap. Alice and Bob may refer to both the users and the COMIT nodes proceeding with the swap. 
+Participants of the atomic swap. Alice and Bob intend to exchange two different assets via an atomic swap. Alice and Bob may refer to both the users and the COMIT nodes proceeding with the swap.
 
 ### Ledger
 
-A device on which asset transactions are held. Typically, the Bitcoin or Ethereum network.
+A device on which asset transactions are held. Typically, the Bitcoin or Ethereum networks.
 
-This RFC assumes that the ledger has basic properties described as part of [this section](#terminology).
+This RFC assumes that a ledger has basic properties described as part of [this section](#terminology).
 
 ### Asset
 
 A currency or valuable item that can be owned and transferred.
 
-Typically, Bitcoin, Ether, ERC-20 token.
+Typically, Bitcoin, Ether or an ERC-20 token.
 
 ### Alpha Ledger (recip. Asset)
 
@@ -73,34 +74,33 @@ The ledger on which (recip. the asset that) Alice sells and Bob buys[²].
 
 ### Beta Ledger (recip. Asset)
 
-The ledger on which (recip. the asset that) Alice buys and Bob sells[²].  
+The ledger on which (recip. the asset that) Alice buys and Bob sells.
 
 ### Identity
 
 An identifier to which the ownership of a given asset can be transferred. 
 
-Typically, a Bitcoin address or public key, an Ethereum account.
+Typically, a Bitcoin public key or an Ethereum account.
 
 ### Swap Protocol
 
 A protocol that defines the steps, transactions and communications needed to proceed with an atomic swap.
 
 
-Typically, [RFC-003](wip). However, this RFC is not limited to [RFC-003](wip) and is expected to be the building block for other swap protocols.
+Typically, [RFC-003](wip). However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for other swap protocols.
 
 ## SWAP REQUEST
 
 ### Purpose
 
 For Alice to request Bob to proceed with an atomic swap.
-This message contains all the information that Alice needs to provide for both party to proceed with the swap.
+This message contains all the information that Alice needs to provide for both parties to proceed with the swap.
 
-A **SWAP RESPONSE**, to reject/decline or accept the swap request, is expected from Bob.
+A **SWAP RESPONSE**, to accept or decline the **SWAP REQUEST**, SHOULD be sent by Bob.
 
 ### Definition
 ```
 BAM! type: REQUEST
-Response expected: yes
 ```
 #### Format
 ```
@@ -118,7 +118,7 @@ Response expected: yes
 ```
 
 #### `AlphaLedger/BetaLedger`
-The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](#alpha-ledger).
+The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](#terminology) section.
 
 ##### Format
 ```
@@ -127,15 +127,15 @@ The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](
   "parameters": { "network": Network }
 }
 ```
-`LedgerName`: the capitalized name of the ledger in ASCII. <!-- TODO: Do we want to restrict to capitalized format?> -->
+`LedgerName`: the capitalized name of the ledger in ASCII. <!-- TODO: define that everything should be case insensitive -->
 Examples: `Bitcoin`, `Ethereum`, `Lightning`
 
-`Network`: the target network
+`Network`: the target network.
 Examples:
 * for Bitcoin: `mainnet`<!-- TODO: Issue needed as not supported. rust-bitcoin uses "bitcoin" -->, `testnet`, `regtest`
 * for Ethereum: <!-- TODO: Issue needed as not supported -->`mainnet`, `kovan`, `ropsten`, `regtest`
 
-##### Example
+##### Sample
 ```json
 {
   "value": "Bitcoin",
@@ -146,9 +146,9 @@ Examples:
 #### `AlphaAsset/BetaAsset`
 The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
 
-The `parameters` value will depend on the kind of asset. Native assets will usually only have a `quantity` parameter in the smallest allowed unit.
+The `parameters` value depends on the kind of asset described. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 
-Esoteric assets such as tokens, sub-coins or collectibles may need further parameters to be identified.
+Esoteric assets such as tokens, sub-coins or collectibles MAY need further parameters to be described.
 
 ##### Native Asset Format
 ```
@@ -163,7 +163,7 @@ Examples: `Bitcoin`, `Ether`
 `Amount`: the amount in smallest unit of the asset; Wei for Ether, Satoshi for Bitcoin.
 Example: `"4200000000000000000"` for 4.2 Ether.
 
-###### Example
+###### Sample
 1 BTC.
 ```json
 {
@@ -183,21 +183,21 @@ Example: `"4200000000000000000"` for 4.2 Ether.
 }
 ```
 `AssetName`: the capitalized name of the asset in ASCII.
-Examples: `ERC20`
+Example: `ERC20`
 
-`ContractAddress`: in the case of ERC20/721/1462 the address of the token contract.
+`ContractAddress`: where relevant, the address of the token contract.
 
-`Amount`: the amount in smallest unit of the asset; in case of ERC20 tokens, the decimal point is ignored.
+`Amount`: the integer amount in the smallest unit of the asset; in case of ERC20 tokens, the decimal point is ignored.
 Example: `"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY token contract has 18 decimals. 
 
-###### Example
+###### Sample
 9000 PAY tokens.
 ```json
 {
   "value": "ERC20",
   "parameters": {
     "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
-     "quantity": "9000000000000000000000"
+    "quantity": "9000000000000000000000"
   }
 }
 ```
@@ -208,7 +208,7 @@ The protocol used to proceed with the swap. Defined in subsequent RFCs.
 ##### Currently defined protocols
 - [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol -->: `COMIT-RFC-003`
 
-##### Example
+##### Sample
 RFC-003 HTLC based protocol.
 ```json
 {
@@ -226,22 +226,22 @@ The body is defined in the RFC of the given `SwapProtocol`.
 ### Purpose
 
 For Bob to accept or decline a **SWAP REQUEST** previously made by Alice.
-If Bob accepts the request, this message contains all the information that Bob needs to provide for both party to proceed with the swap.
+If Bob accepts the request, this message contains all the information that Bob needs to provide for both parties to proceed with the swap.
 
 ### Definition
 ```
 BAM! type: RESPONSE
 ```
-#### Response Format
+#### Format
 ```
 {
   "status": Status
   "body": Body,
 }
 ```
-Valid for both accept and decline responses
+Valid for both accept and decline responses.
 
-#### Decline Response with Reason Format
+#### Decline with Reason Format
 ```
 {
   "status": "SE20",
@@ -254,25 +254,29 @@ Valid for both accept and decline responses
 
 #### `Status`
 
-See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details.
+See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
-Available statuses:
+RFC-002 reserves statuses 20 to 39 across all families.
+Each swap protocol MAY define their own statuses for 40 and above.
+
 * `OK20`: Swap request is accepted
-* `RE00`: Receiver (Bob) Internal Error <!-- TODO: open an issue because we incorrectly use SE00 in the code -->
+* `RE00`: Receiver (Bob) Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: open an issue because we incorrectly use SE00 in the code -->
 * `SE20`: Swap declined
+* `SE21`: Swap rejected due to unsupported ledger combination
+* `SE22`: Swap rejected due to unsupported swap protocol
 
 #### `Reason`
-The Reason for which a swap was declined.
-This is an optional field that can tip Alice on why Bob declined the swap request
+The reason for which a swap was declined.
+Bob MAY use this field to tip Alice on why the swap was declined.
 
-Available reasons:
-* `BadRate`: proposed rate for the swap is too low
+* `bad-rate`: proposed rate for the swap is too low <!-- TODO: fix the reasons in code -->
+* `liquidity-shortage`: not enough liquidity to proceed with swap
 
-
+More reasons MAY be defined by a given swap protocol specification.
 
 ---
 
 ###### ¹ trustless: as in no one (counterpart or third party) has to be trusted.
 [¹]:#-trustless-as-in-no-one-counterpart-or-third-party-has-to-be-trusted
-###### ² In case of [RFC-003](wip), this the first ledger on which an action is needed, hence the name.
+###### ² In case of [RFC-003](wip), alpha ledger is the first ledger on which an action is needed, hence the name.
 [²]:#-in-case-of-rfc-003-this-the-first-ledger-on-which-an-action-is-needed-hence-the-name
