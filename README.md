@@ -1,5 +1,5 @@
 # COMIT RFCs
 
 1. [BAM!-Protocol (Bidirectional Application Messaging)](./RFC-001-BAM.md)
-2. SWAP Type Message
+2. [SWAP Type Messages](./RFC-002-SWAP.md)
 3. Swap-Protocol

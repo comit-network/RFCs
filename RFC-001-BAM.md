@@ -99,7 +99,7 @@ Given the above evaluation, we are left with defining our own protocol that impl
 
 - BEEP
 - HTTP2
-- Lightning network
+- Lightning Network
 
 The main concept in this protocol is called a `FRAME`.
 
