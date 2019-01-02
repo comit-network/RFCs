@@ -1,4 +1,4 @@
-# SWAP Type messages
+# SWAP Message Types
 
 <!-- toc -->
 
@@ -34,7 +34,7 @@
 ## Description
 
 This RFC describes the SWAP type messages.
-This set of messages facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
+This set of message types facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
 
 This RFC is part of COMIT, an open protocol facilitating trustless cross-blockchain applications.
 
@@ -54,17 +54,17 @@ The messages are assumed to be transported using the BAM! protocol as defined in
 
 ### Alice & Bob
 
-Participants of the atomic swap. Alice and Bob intend to exchange two different assets via an atomic swap. Alice and Bob may refer to both the users and the COMIT nodes proceeding with the swap.
+Participants of the atomic swap. Alice and Bob intend to exchange two assets via an atomic swap. Alice and Bob may refer to both the users and the COMIT nodes proceeding with the swap.
 
 ### Ledger
 
-A device on which asset transactions are held. Typically, the Bitcoin or Ethereum networks.
+A distributed record (e.g. a blockchain) which tracks asset ownerships and transactions. For example, the Bitcoin or Ethereum networks
 
 This RFC assumes that a ledger has basic properties described as part of [this section](#terminology).
 
 ### Asset
 
-A currency or valuable item that can be owned and transferred.
+A digital asset. Its ownership can be tracked on a [ledger](#ledger).
 
 Typically, Bitcoin, Ether or an ERC-20 token.
 
@@ -127,7 +127,7 @@ The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](
   "parameters": { "network": Network }
 }
 ```
-`LedgerName`: the capitalized name of the ledger in ASCII. <!-- TODO: define that everything should be case insensitive -->
+`LedgerName`: the name of the ledger in ASCII (case insensitive). <!-- TODO: Issue needed as currently case sensitive -->
 Examples: `Bitcoin`, `Ethereum`, `Lightning`
 
 `Network`: the target network.
@@ -146,7 +146,7 @@ Examples:
 #### `AlphaAsset/BetaAsset`
 The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
 
-The `parameters` value depends on the kind of asset described. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
+The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 
 Esoteric assets such as tokens, sub-coins or collectibles MAY need further parameters to be described.
 
@@ -206,7 +206,7 @@ Example: `"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY to
 The protocol used to proceed with the swap. Defined in subsequent RFCs.
 
 ##### Currently defined protocols
-- [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol -->: `COMIT-RFC-003`
+- [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol. To be done with #7 -->: `COMIT-RFC-003`
 
 ##### Sample
 RFC-003 HTLC based protocol.
