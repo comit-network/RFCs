@@ -17,14 +17,14 @@
   * [Purpose](#purpose)
   * [Definition](#definition)
     + [Format](#format)
-    + [`AlphaLedger/BetaLedger`](#alphaledgerbetaledger)
-    + [`AlphaAsset/BetaAsset`](#alphaassetbetaasset)
-    + [`SwapProtocol`](#swapprotocol)
-    + [`Body`](#body)
+    + [`alpha_ledger/beta_ledger`](#alpha_ledgerbeta_ledger)
+    + [`alpha_asset/beta_asset`](#alpha_assetbeta_asset)
+    + [`swap_protocol`](#swap_protocol)
+    + [`body`](#body)
 - [SWAP RESPONSE](#swap-response)
   * [Purpose](#purpose-1)
   * [Definition](#definition-1)
-    + [Format](#format-2)
+    + [Format](#format-3)
     + [Decline with Reason Format](#decline-with-reason-format)
     + [`Status`](#status)
     + [`Reason`](#reason)
@@ -33,7 +33,7 @@
 
 ## Description
 
-This RFC describes the SWAP type messages.
+This RFC defines the `SWAP` message types for `BAM` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
 This set of message types facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
 
 This RFC is part of COMIT, an open protocol facilitating trustless cross-blockchain applications.
@@ -66,8 +66,6 @@ This RFC assumes that a ledger has basic properties described as part of [this s
 
 A digital asset. Its ownership can be tracked on a [ledger](#ledger).
 
-Typically, Bitcoin, Ether or an ERC-20 token.
-
 ### Alpha Ledger (recip. Asset)
 
 The ledger on which (recip. the asset that) Alice sells and Bob buys[²].
@@ -80,14 +78,11 @@ The ledger on which (recip. the asset that) Alice buys and Bob sells.
 
 An identifier to which the ownership of a given asset can be transferred. 
 
-Typically, a Bitcoin public key or an Ethereum account.
-
 ### Swap Protocol
 
 A protocol that defines the steps, transactions and communications needed to proceed with an atomic swap.
 
-
-Typically, [RFC-003](wip). However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for other swap protocols.
+[RFC-003](wip) is an available swap protocol. However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for other swap protocols.
 
 ## SWAP REQUEST
 
@@ -95,8 +90,6 @@ Typically, [RFC-003](wip). However, it is not limited to [RFC-003](wip) and this
 
 For Alice to request Bob to proceed with an atomic swap.
 This message contains all the information that Alice needs to provide for both parties to proceed with the swap.
-
-A **SWAP RESPONSE**, to accept or decline the **SWAP REQUEST**, SHOULD be sent by Bob.
 
 ### Definition
 ```
@@ -117,7 +110,7 @@ BAM! type: REQUEST
 }
 ```
 
-#### `AlphaLedger/BetaLedger`
+#### `alpha_ledger/beta_ledger`
 The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](#terminology) section.
 
 ##### Format
@@ -127,8 +120,12 @@ The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](
   "parameters": { "network": Network }
 }
 ```
+##### `value`
 `LedgerName`: the name of the ledger in ASCII (case insensitive). <!-- TODO: Issue needed as currently case sensitive -->
 Examples: `Bitcoin`, `Ethereum`, `Lightning`
+
+##### `parameters`
+###### `network`
 
 `Network`: the target network.
 Examples:
@@ -143,27 +140,48 @@ Examples:
 }
 ```
 
-#### `AlphaAsset/BetaAsset`
+#### `alpha_asset/beta_asset`
 The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 
 Esoteric assets such as tokens, sub-coins or collectibles MAY need further parameters to be described.
 
-##### Native Asset Format
+##### Format
+###### Native Asset
 ```
 {
   "value": AssetName,
-  "parameters": { "quantity": Amount },
+  "parameters": { "quantity": Quantity },
 }
 ```
+
+###### Contract-based Token
+```
+{
+  "value": AssetName,
+  "parameters": {
+    "address": ContractAddress,
+    "quantity": Amount
+  },
+}
+```
+
+##### `value`
 `AssetName`: the capitalized name of the asset in ASCII.
-Examples: `Bitcoin`, `Ether`
+Examples: `Bitcoin`, `Ether`, `ERC20`.
 
-`Amount`: the amount in smallest unit of the asset; Wei for Ether, Satoshi for Bitcoin.
+##### `parameters`
+###### `quantity`
+
+`Quantity`: the integer amount in smallest unit of the asset; Wei for Ether, Satoshi for Bitcoin.
 Example: `"4200000000000000000"` for 4.2 Ether.
+`"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY token contract has 18 decimals.
 
-###### Sample
+###### `address`
+`ContractAddress`: where relevant, the address of the token contract.
+
+###### Samples
 1 BTC.
 ```json
 {
@@ -171,26 +189,6 @@ Example: `"4200000000000000000"` for 4.2 Ether.
   "parameters": { "quantity": "100000000" }
 }
 ```
-
-##### Contract-based Token Format
-```
-{
-  "value": AssetName,
-  "parameters": {
-    "address": ContractAddress,
-    "quantity": Amount
-},
-}
-```
-`AssetName`: the capitalized name of the asset in ASCII.
-Example: `ERC20`
-
-`ContractAddress`: where relevant, the address of the token contract.
-
-`Amount`: the integer amount in the smallest unit of the asset; in case of ERC20 tokens, the decimal point is ignored.
-Example: `"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY token contract has 18 decimals. 
-
-###### Sample
 9000 PAY tokens.
 ```json
 {
@@ -202,10 +200,11 @@ Example: `"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY to
 }
 ```
 
-#### `SwapProtocol`
+#### `swap_protocol`
 The protocol used to proceed with the swap. Defined in subsequent RFCs.
 
-##### Currently defined protocols
+##### `value`
+Currently defined protocols
 - [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol. To be done with #7 -->: `COMIT-RFC-003`
 
 ##### Sample
@@ -217,7 +216,7 @@ RFC-003 HTLC based protocol.
 }
 ```
 
-#### `Body`
+#### `body`
 
 The body is defined in the RFC of the given `SwapProtocol`.
 
