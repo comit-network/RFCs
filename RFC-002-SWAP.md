@@ -4,7 +4,6 @@
 
 - [Description](#description)
 - [Status](#status)
-- [Assumptions](#assumptions)
 - [Terminology](#terminology)
   * [Alice & Bob](#alice--bob)
   * [Ledger](#ledger)
@@ -44,10 +43,6 @@ This RFC is part of COMIT, an open protocol facilitating trustless cross-blockch
 RFC-Number: 002
 Status: Draft
 ```
-
-## Assumptions
-
-The messages are assumed to be transported using the BAM! protocol as defined in [RFC-001](./RFC-001-BAM.md).
 
 ## Terminology
 
@@ -203,7 +198,7 @@ Example: `"4200000000000000000"` for 4.2 Ether.
 The protocol used to proceed with the swap. Defined in subsequent RFCs.
 
 ##### `value`
-Currently defined protocols
+Currently defined protocols:
 - [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol. To be done with #7 -->: `COMIT-RFC-003`
 
 ##### Sample
