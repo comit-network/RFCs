@@ -25,9 +25,8 @@
   * [Purpose](#purpose-1)
   * [Definition](#definition-1)
     + [Format](#format-3)
-    + [Decline with Reason Format](#decline-with-reason-format)
-    + [`Status`](#status)
-    + [`Reason`](#reason)
+    + [`status`](#status)
+    + [`body`](#body-1)
 
 <!-- tocstop -->
 
@@ -240,18 +239,7 @@ BAM! type: RESPONSE
 ```
 Valid for both accept and decline responses.
 
-#### Decline with Reason Format
-```
-{
-  "status": "SE20",
-  "headers": {
-    "reason": Reason
-  }
-}
-```
-<!-- TODO: Open issue to make `reason` lower case -->
-
-#### `Status`
+#### `status`
 
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
@@ -259,19 +247,18 @@ RFC-002 reserves statuses 20 to 39 across all families.
 Each swap protocol MAY define their own statuses for 40 and above.
 
 * `OK20`: Swap request is accepted
-* `RE00`: Receiver (Bob) Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: open an issue because we incorrectly use SE00 in the code -->
-* `SE20`: Swap declined
-* `SE21`: Swap rejected due to unsupported ledger combination
-* `SE22`: Swap rejected due to unsupported swap protocol
+* `RE00`: Receiver (Bob) Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
+* `RE20`: Swap declined (no reason provided)
+* `RE21`: Swap declined due to proposed rate.
+* `RE22`: Swap declined due to lack of liquidity
+* `RE31`: Swap rejected due to unsupported ledger combination
+* `RE32`: Swap rejected due to unsupported swap protocol
 
-#### `Reason`
-The reason for which a swap was declined.
-Bob MAY use this field to tip Alice on why the swap was declined.
+<!-- TODO: Open issue to remove reason and fix statuses -->
 
-* `bad-rate`: proposed rate for the swap is too low <!-- TODO: fix the reasons in code -->
-* `liquidity-shortage`: not enough liquidity to proceed with swap
+#### `body`
 
-More reasons MAY be defined by a given swap protocol specification.
+The body is defined in the RFC of the given `SwapProtocol`.
 
 ---
 
