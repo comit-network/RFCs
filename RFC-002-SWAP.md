@@ -31,11 +31,18 @@
 
 ## Description
 
-This RFC defines the `SWAP` message types for `BAM` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
+This RFC defines the `SWAP` message types for `BAM!` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
 This set of message types facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
 
 This RFC is part of COMIT, an open protocol facilitating trustless cross-blockchain applications.
 
+This RFC contains the definition of the following `BAM!` headers:
+- [`alpha_asset`](#alpha_assetbeta_asset)
+- [`alpha_ledger`](#alpha_ledgerbeta_ledger)
+- [`beta_asset`](#alpha_assetbeta_asset)
+- [`beta_ledger`](#alpha_ledgerbeta_ledger)
+- [`status`](#status)
+- [`swap_protocol`](swap_protocol)
 
 ## Status
 
