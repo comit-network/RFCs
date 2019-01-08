@@ -123,7 +123,7 @@ The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](
 ```
 ##### `value`
 `LedgerName`: the name of the ledger in ASCII (case insensitive). <!-- TODO: Issue needed as currently case sensitive -->
-Examples: `Bitcoin`, `Ethereum`, `Lightning`
+Examples: `bitcoin`, `Ethereum`, `Lightning`
 
 ##### `parameters`
 ###### `network`
@@ -145,11 +145,9 @@ Examples:
 The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-
-Esoteric assets such as tokens, sub-coins or collectibles MAY need further parameters to be described.
+See the [registry](./registry-RFC-002.md) for more details.
 
 ##### Format
-###### Native Asset
 ```
 {
   "value": AssetName,
@@ -157,30 +155,12 @@ Esoteric assets such as tokens, sub-coins or collectibles MAY need further param
 }
 ```
 
-###### Contract-based Token
-```
-{
-  "value": AssetName,
-  "parameters": {
-    "address": ContractAddress,
-    "quantity": Amount
-  },
-}
-```
-
 ##### `value`
 `AssetName`: the capitalized name of the asset in ASCII.
-Examples: `Bitcoin`, `Ether`, `ERC20`.
+Example: `bitcoin`.
 
 ##### `parameters`
-###### `quantity`
-
-`Quantity`: the integer amount in smallest unit of the asset; Wei for Ether, Satoshi for Bitcoin.
-Example: `"4200000000000000000"` for 4.2 Ether.
-`"9000000000000000000000"` for 9000 PAY Token, assuming that the PAY token contract has 18 decimals.
-
-###### `address`
-`ContractAddress`: where relevant, the address of the token contract.
+See the [registry](./registry-RFC-002.md) for the definition of all parameters.
 
 ###### Samples
 1 BTC.
@@ -190,23 +170,12 @@ Example: `"4200000000000000000"` for 4.2 Ether.
   "parameters": { "quantity": "100000000" }
 }
 ```
-9000 PAY tokens.
-```json
-{
-  "value": "ERC20",
-  "parameters": {
-    "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
-    "quantity": "9000000000000000000000"
-  }
-}
-```
 
 #### `swap_protocol`
 The protocol used to proceed with the swap. Defined in subsequent RFCs.
 
 ##### `value`
-Currently defined protocols:
-- [RFC-003](wip)<!-- TODO: Add descriptive name of the protocol. To be done with #7 -->: `COMIT-RFC-003`
+Refer to the RFC of the given `SwapProtocol`.
 
 ##### Sample
 RFC-003 HTLC based protocol.
@@ -219,7 +188,7 @@ RFC-003 HTLC based protocol.
 
 #### `body`
 
-The body is defined in the RFC of the given `SwapProtocol`.
+Refer to the RFC of the given `SwapProtocol`.
 
 ## SWAP RESPONSE
 
