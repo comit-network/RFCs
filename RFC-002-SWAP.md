@@ -42,7 +42,7 @@ This RFC contains the definition of the following `BAM!` headers:
 - [`beta_asset`](#alpha_assetbeta_asset)
 - [`beta_ledger`](#alpha_ledgerbeta_ledger)
 - [`status`](#status)
-- [`swap_protocol`](swap_protocol)
+- [`swap_protocol`](#swap_protocol)
 
 ## Status
 
@@ -89,7 +89,7 @@ A protocol that defines the steps, transactions and communications needed to pro
 
 ### Purpose
 
-For Alice to request Bob to proceed with an atomic swap.
+A message for requesting an atomic swap between two assets.
 This message contains all the information that Alice needs to provide for both parties to proceed with the swap.
 
 ### Definition
@@ -122,21 +122,19 @@ The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](
 }
 ```
 ##### `value`
-`LedgerName`: the name of the ledger in ASCII (case insensitive). <!-- TODO: Issue needed as currently case sensitive -->
-Examples: `bitcoin`, `Ethereum`, `Lightning`
+`LedgerName`: the name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
+Example: `bitcoin`.
 
 ##### `parameters`
 ###### `network`
 
 `Network`: the target network.
-Examples:
-* for Bitcoin: `mainnet`<!-- TODO: Issue needed as not supported. rust-bitcoin uses "bitcoin" -->, `testnet`, `regtest`
-* for Ethereum: <!-- TODO: Issue needed as not supported -->`mainnet`, `kovan`, `ropsten`, `regtest`
+Example: `mainnet`.
 
 ##### Sample
 ```json
 {
-  "value": "Bitcoin",
+  "value": "bitcoin",
   "parameters": { "network": "regtest" }
 }
 ```
@@ -156,17 +154,19 @@ See the [registry](./registry-RFC-002.md) for more details.
 ```
 
 ##### `value`
-`AssetName`: the capitalized name of the asset in ASCII.
+`AssetName`: the name of the asset in ASCII (lower case).
 Example: `bitcoin`.
 
 ##### `parameters`
-See the [registry](./registry-RFC-002.md) for the definition of all parameters.
+See the [registry](./registry-RFC-002.md) for a full definition of all parameters.
+
+`Quantity`: the amount in the smallest unit of the asset.
 
 ###### Samples
 1 BTC.
 ```json
 {
-  "value": "Bitcoin",
+  "value": "bitcoin",
   "parameters": { "quantity": "100000000" }
 }
 ```
@@ -181,10 +181,11 @@ Refer to the RFC of the given `SwapProtocol`.
 RFC-003 HTLC based protocol.
 ```json
 {
-  "value": "COMIT-RFC-003",
+  "value": "comit-rfc-003",
   "parameters": {},  
 }
 ```
+<!-- TODO: Open issue to lowercase it -->
 
 #### `body`
 
