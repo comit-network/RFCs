@@ -1,5 +1,21 @@
 # Registry for RFC002 SWAP Message Types
 
+<!-- toc -->
+
+- [Description](#description)
+- [`alpha_ledger/beta_ledger`](#alpha_ledgerbeta_ledger)
+  * [Bitcoin](#bitcoin)
+  * [Ethereum](#ethereum)
+- [`alpha_asset/beta_asset`](#alpha_assetbeta_asset)
+  * [Bitcoin](#bitcoin-1)
+  * [Ethereum](#ethereum-1)
+    + [Ether](#ether)
+    + [ERC20 token](#erc20-token)
+
+<!-- tocstop -->
+
+## Description
+
 This registry defines the possible values used to encode SWAP message types as defined in [RFC-002](./RFC-002-SWAP.md).
 This registry purpose may be expanded when extending [RFC-002](./RFC-002-SWAP.md) to new ledgers and assets.
 

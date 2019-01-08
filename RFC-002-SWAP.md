@@ -83,7 +83,7 @@ An identifier to which the ownership of a given asset can be transferred.
 
 A protocol that defines the steps, transactions and communications needed to proceed with an atomic swap.
 
-[RFC-003](wip) is an available swap protocol. However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for other swap protocols.
+[RFC-003](wip) is an available swap protocol. However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for several swap protocols.
 
 ## SWAP REQUEST
 
@@ -131,6 +131,8 @@ Example: `bitcoin`.
 `Network`: the target network.
 Example: `mainnet`.
 
+Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger) for the definition of all possible network values.
+
 ##### Sample
 ```json
 {
@@ -143,7 +145,7 @@ Example: `mainnet`.
 The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-See the [registry](./registry-RFC-002.md) for more details.
+See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
 
 ##### Format
 ```
@@ -158,7 +160,7 @@ See the [registry](./registry-RFC-002.md) for more details.
 Example: `bitcoin`.
 
 ##### `parameters`
-See the [registry](./registry-RFC-002.md) for a full definition of all parameters.
+See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for a full definition of all parameters.
 
 `Quantity`: the amount in the smallest unit of the asset.
 
