@@ -17,11 +17,11 @@
 ## Description
 
 This registry defines the possible values used to encode SWAP message types as defined in [RFC-002](./RFC-002-SWAP.md).
-This registry purpose may be expanded when extending [RFC-002](./RFC-002-SWAP.md) to new ledgers and assets.
+This registry may be expanded when extending [RFC-002](./RFC-002-SWAP.md) to new ledgers and assets.
 
 Refer to [RFC-002](./RFC-002-SWAP.md) for the full definition of the headers.
 
-This RFC contains the definition of the following `BAM!` headers:
+This RFC contains the definition of possible values for the following `BAM!` headers:
 - [`alpha_asset`](#alpha_assetbeta_asset)
 - [`alpha_ledger`](#alpha_ledgerbeta_ledger)
 - [`beta_asset`](#alpha_assetbeta_asset)
