@@ -2,13 +2,12 @@
 
 <!-- toc -->
 
-  * [Description](#description)
+  * [Introduction](#introduction)
   * [Status](#status)
   * [Terminology](#terminology)
     + [Ledger](#ledger)
     + [Asset](#asset)
   * [SWAP REQUEST](#swap-request)
-    + [Purpose](#purpose)
     + [Definition](#definition)
     + [`headers`](#headers)
       - [`alpha_ledger`](#alpha_ledger)
@@ -18,7 +17,6 @@
       - [`protocol`](#protocol)
     + [`body`](#body)
   * [SWAP RESPONSE](#swap-response)
-    + [Purpose](#purpose-1)
     + [Definition](#definition-1)
     + [`status`](#status)
     + [`headers`](#headers-1)
@@ -35,10 +33,14 @@
 
 <!-- tocstop -->
 
-## Description
+## Introduction
 
 This RFC defines the `SWAP` message types for `BAM!` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
-This set of message types facilitates the execution cross-ledger atomic swaps of assets.
+This set of message types allows the negotiation of an assets exchange and the protocol parameters to execute it.
+
+The SWAP REQUEST contains an asset exchange proposal and the Sender information to realise the exchange.
+
+The SWAP RESPONSE allows the rejection or accept of the exchange and may contains the Receiver information to realise the exchange. 
 
 This RFC is part of COMIT, an open protocol facilitating trustless[¹] cross-blockchain applications.
 
@@ -68,10 +70,6 @@ A record which tracks asset ownerships. For example, the Bitcoin or Ethereum net
 Its ownership can be tracked on a [ledger](#ledger).
 
 ## SWAP REQUEST
-
-### Purpose
-
-A message for requesting the exchange of two assets.
 
 ### Definition
 ```
@@ -145,10 +143,6 @@ Refer to the RFC of the given `protocol`.
 The body is defined by the RFC of the given `protocol`.
 
 ## SWAP RESPONSE
-
-### Purpose
-
-For the Receiver to accept or decline a **SWAP REQUEST**.
 
 ### Definition
 ```
