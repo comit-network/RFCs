@@ -5,7 +5,6 @@
 - [Description](#description)
 - [Status](#status)
 - [Terminology](#terminology)
-  * [Alice & Bob](#alice--bob)
   * [Ledger](#ledger)
   * [Asset](#asset)
   * [Alpha Ledger (recip. Asset)](#alpha-ledger-recip-asset)
@@ -33,9 +32,9 @@
 ## Description
 
 This RFC defines the `SWAP` message types for `BAM!` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
-This set of message types facilitates the execution of trustless[¹], cross-ledger atomic swaps of assets as described in [RFC-003](wip).
+This set of message types facilitates the execution cross-ledger atomic swaps of assets.
 
-This RFC is part of COMIT, an open protocol facilitating trustless cross-blockchain applications.
+This RFC is part of COMIT, an open protocol facilitating trustless[¹] cross-blockchain applications.
 
 This RFC contains the definition of the following `BAM!` headers:
 - [`alpha_asset`](#alpha_assetbeta_asset)
@@ -54,10 +53,6 @@ Status: Draft
 
 ## Terminology
 
-### Alice & Bob
-
-Participants of the atomic swap. Alice and Bob intend to exchange two assets via an atomic swap. Alice and Bob may refer to both the users and the COMIT nodes proceeding with the swap.
-
 ### Ledger
 
 A distributed record (e.g. a blockchain) which tracks asset ownerships and transactions. For example, the Bitcoin or Ethereum networks
@@ -70,11 +65,11 @@ A digital asset. Its ownership can be tracked on a [ledger](#ledger).
 
 ### Alpha Ledger (recip. Asset)
 
-The ledger on which (recip. the asset that) Alice sells and Bob buys[²].
+The ledger on which (recip. the asset that) the Sender sells and the Seller buys[¹].
 
 ### Beta Ledger (recip. Asset)
 
-The ledger on which (recip. the asset that) Alice buys and Bob sells.
+The ledger on which (recip. the asset that) the Sender buys and the Receiver sells.
 
 ### Identity
 
@@ -82,7 +77,7 @@ An identifier to which the ownership of a given asset can be transferred.
 
 ### Swap Protocol
 
-A protocol that defines the steps, transactions and communications needed to proceed with an atomic swap.
+A protocol that defines the steps, transactions and communications needed to proceed with a swap.
 
 [RFC-003](wip) is an available swap protocol. However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for several swap protocols.
 
@@ -90,8 +85,7 @@ A protocol that defines the steps, transactions and communications needed to pro
 
 ### Purpose
 
-A message for requesting an atomic swap between two assets.
-This message contains all the information that Alice needs to provide for both parties to proceed with the swap.
+A message for requesting a swap between two assets.
 
 ### Definition
 ```
@@ -198,8 +192,7 @@ Refer to the RFC of the given `SwapProtocol`.
 
 ### Purpose
 
-For Bob to accept or decline a **SWAP REQUEST** previously made by Alice.
-If Bob accepts the request, this message contains all the information that Bob needs to provide for both parties to proceed with the swap.
+For the Receiver to accept or decline a **SWAP REQUEST**.
 
 ### Definition
 ```
@@ -223,7 +216,7 @@ RFC-002 reserves statuses 20 to 39 across all families.
 Each swap protocol MAY define their own statuses for 40 and above.
 
 * `OK20`: Swap request is accepted
-* `RE00`: Receiver (Bob) Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
+* `RE00`: Receiver Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
 * `RE20`: Swap declined
 
 #### `reason`
