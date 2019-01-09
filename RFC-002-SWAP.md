@@ -2,26 +2,36 @@
 
 <!-- toc -->
 
-- [Description](#description)
-- [Status](#status)
-- [Terminology](#terminology)
-  * [Ledger](#ledger)
-  * [Asset](#asset)
-- [SWAP REQUEST](#swap-request)
-  * [Purpose](#purpose)
-  * [Definition](#definition)
-    + [Format](#format)
-    + [`alpha_ledger/beta_ledger`](#alpha_ledgerbeta_ledger)
-    + [`alpha_asset/beta_asset`](#alpha_assetbeta_asset)
-    + [`protocol`](#protocol)
+  * [Description](#description)
+  * [Status](#status)
+  * [Terminology](#terminology)
+    + [Ledger](#ledger)
+    + [Asset](#asset)
+  * [SWAP REQUEST](#swap-request)
+    + [Purpose](#purpose)
+    + [Definition](#definition)
+    + [`headers`](#headers)
+      - [`alpha_ledger`](#alpha_ledger)
+      - [`beta_ledger`](#beta_ledger)
+      - [`alpha_asset`](#alpha_asset)
+      - [`beta_asset`](#beta_asset)
+      - [`protocol`](#protocol)
     + [`body`](#body)
-- [SWAP RESPONSE](#swap-response)
-  * [Purpose](#purpose-1)
-  * [Definition](#definition-1)
-    + [Format](#format-3)
+  * [SWAP RESPONSE](#swap-response)
+    + [Purpose](#purpose-1)
+    + [Definition](#definition-1)
     + [`status`](#status)
-    + [`reason`](#reason)
+    + [`headers`](#headers-1)
+      - [`reason`](#reason)
     + [`body`](#body-1)
+- [Examples](#examples)
+  * [SWAP REQUEST](#swap-request-1)
+    + [1 Bitcoin for 21 Ether on testnet using RFC-003](#1-bitcoin-for-21-ether-on-testnet-using-rfc-003)
+    + [42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003](#42-erc20-pay-tokens-for-10000-satoshis-on-mainnnet-using-rfc-003)
+  * [SWAP RESPONSE](#swap-response-1)
+    + [Request accepted](#request-accepted)
+    + [Request declined due to non-beneficial rate with hints](#request-declined-due-to-non-beneficial-rate-with-hints)
+    + [Request rejected without a reason](#request-rejected-without-a-reason)
 
 <!-- tocstop -->
 
@@ -67,88 +77,56 @@ A message for requesting the exchange of two assets.
 ```
 BAM! type: REQUEST
 ```
-#### Format
-```
-{
-  "type": "SWAP",
-  "headers": {
-    "alpha_ledger": AlphaLedger,
-    "beta_ledger": BetaLedger,
-    "alpha_asset": AlphaAsset,
-    "beta_asset": BetaAsset,
-    "protocol": Protocol.
-    },
-  "body": Body, 
-}
-```
 
-#### `alpha_ledger/beta_ledger`
+### `headers`
+
+#### `alpha_ledger`
 
 The `AlphaLedger` is the ledger on which the Sender sells and the Receiver buys[¹].
 
-The `BetaLedger` is the ledger on which the Sender buys and the Receiver sells.
-
-##### Format
-```
-{
-  "value": LedgerName,
-  "parameters": { "network": Network }
-}
-```
 ##### `value`
 `LedgerName`: the name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
-Example: `bitcoin`.
 
 ##### `parameters`
-###### `network`
 
-`Network`: the target network.
-Example: `mainnet`.
+Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
-Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger) for the definition of all possible network values.
+#### `beta_ledger`
 
-##### Sample
-```json
-{
-  "value": "bitcoin",
-  "parameters": { "network": "regtest" }
-}
-```
+The `BetaLedger` is the ledger on which the Sender buys and the Receiver sells.
 
-#### `alpha_asset/beta_asset`
+##### `value`
+`LedgerName`: the name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
+
+##### `parameters`
+
+Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+
+#### `alpha_asset`
 
 The `AlphaAsset` is the asset that the Sender sells and the Receiver buys[¹].
+
+The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
+See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
+
+##### `value`
+`AssetName`: the name of the asset in ASCII (lower case).
+
+##### `parameters`
+Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+
+#### `beta_asset`
 
 The `BetaAsset` is the asset that the Sender buys and the Receiver sells.
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
 
-##### Format
-```
-{
-  "value": AssetName,
-  "parameters": { "quantity": Quantity },
-}
-```
-
 ##### `value`
 `AssetName`: the name of the asset in ASCII (lower case).
-Example: `bitcoin`.
 
 ##### `parameters`
-See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for a full definition of all parameters.
-
-`Quantity`: the amount in the smallest unit of the asset.
-
-###### Samples
-1 BTC.
-```json
-{
-  "value": "bitcoin",
-  "parameters": { "quantity": "100000000" }
-}
-```
+Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 #### `protocol`
 <!-- TODO: Open issue to rename `swap_protocol` to `protocol` -->
@@ -158,21 +136,13 @@ A protocol that defines the steps, transactions and communications needed to pro
 The protocol itself is defined in subsequent RFCs.
 
 ##### `value`
-Refers to the RFC of the given `Protocol`.
+Refer to the RFC of the given `Protocol`.
 
-##### Sample
-RFC-003 HTLC based protocol.
-```json
-{
-  "value": "comit-rfc-003",
-  "parameters": {},  
-}
-```
 <!-- TODO: Open issue to lowercase it -->
 
-#### `body`
+### `body`
 
-The `Body` is defined by the RFC of the given `Protocol`.
+The body is defined by the RFC of the given `Protocol`.
 
 ## SWAP RESPONSE
 
@@ -184,17 +154,8 @@ For the Receiver to accept or decline a **SWAP REQUEST**.
 ```
 BAM! type: RESPONSE
 ```
-#### Format
-```
-{
-  "status": Status,
-  "reason": Reason,
-  "body": Body,
-}
-```
-Valid for both accept and decline responses.
 
-#### `status`
+### `status`
 
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
@@ -206,22 +167,13 @@ Each protocol MAY define their own statuses for 40 and above.
 * `RE20`: Declined - the swap request was not beneficial for the receiver
 * `RE21`: Rejected - the receiver is not able to proceed with the swap request
 
+### `headers`
 #### `reason`
 
 Optional reason why the request was declined.
 
-##### Format
-```
-{
-  "value": ReasonText,
-  "parameters": {
-    RequestHeaderHints
-  }
-}
-```
 ##### `value`
 A human readable reason. In Lowercase ascii, hyphen separated.
-Example: `rate-declined`
 
 See the [registry](./registry-RFC-002.md) for possible values.
 A protocol may define further available reasons.
@@ -235,15 +187,120 @@ The following hints are supported:
 - `beta_asset`
 - `protocol`
 
-Their format is as defined in the [SWAP REQUEST](#swap-request) section.
+Their format is as defined in the [SWAP REQUEST - `headers`](#headers) section.
 
 A protocol may define further available hints.
-
 <!-- TODO: Open issue to remove reason and fix statuses -->
 
-#### `body`
+### `body`
 
 The body is defined in the RFC of the given `Protocol`.
+
+# Examples
+
+## SWAP REQUEST
+
+### 1 Bitcoin for 21 Ether on testnet using RFC-003
+
+```json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+                      "value": "bitcoin",
+                      "parameters": { "network": "regtest" }
+                    },
+    "beta_ledger": {
+                     "value": "ethereum",
+                     "parameters": { "network": "ropsten" }
+                   },
+    "alpha_asset": {
+                     "value": "bitcoin",
+                     "parameters: { "quantity": "100000000" }
+                   },
+    "beta_asset": {
+                    "value": "ether",
+                    "parameters": { "quantity": "21000000000000000000" }
+                  },
+    "protocol": "comit-rfc-003",
+  },
+  "body": {},
+}
+```
+
+### 42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003
+
+```json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "ethereum",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "alpha_asset": {
+      "value": "erc20",
+      "parameters: { "quantity": "42000000000000000000" }
+    },
+    "beta_asset": {
+      "value": "bitcoin",
+      "parameters": { "quantity": "10000" }
+    },
+    "protocol": "comit-rfc-003",
+  },
+  "body": {},
+}
+```
+
+## SWAP RESPONSE
+
+### Request accepted
+
+```json
+{
+  "status": "OK20"
+  "headers": {},
+  "body": {},
+}
+```
+
+### Request declined due to non-beneficial rate with hints
+
+```json
+{
+  "status": "RE20"
+  "headers": {
+    "reason": {
+      "value": "rate-declined",
+      "parameters": {
+        "alpha_asset": {
+          "value": "erc20",
+          "parameters: { "quantity": "42000000000000000000" }
+        },
+        "beta_asset": {
+          "value": "bitcoin",
+          "parameters": { "quantity": "10000" }
+        },
+      },
+    },
+  },
+  "body": {},
+}
+```
+
+### Request rejected without a reason
+
+```json
+{
+  "status": "RE21"
+  "headers": {},
+  "body": {},
+}
+```
 
 ---
 
