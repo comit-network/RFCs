@@ -25,6 +25,7 @@
   * [Definition](#definition-1)
     + [Format](#format-3)
     + [`status`](#status)
+    + [`reason`](#reason)
     + [`body`](#body-1)
 
 <!-- tocstop -->
@@ -207,7 +208,8 @@ BAM! type: RESPONSE
 #### Format
 ```
 {
-  "status": Status
+  "status": Status,
+  "reason": Reason,
   "body": Body,
 }
 ```
@@ -222,11 +224,40 @@ Each swap protocol MAY define their own statuses for 40 and above.
 
 * `OK20`: Swap request is accepted
 * `RE00`: Receiver (Bob) Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
-* `RE20`: Swap declined (no reason provided)
-* `RE21`: Swap declined due to proposed rate.
-* `RE22`: Swap declined due to lack of liquidity
-* `RE31`: Swap rejected due to unsupported ledger combination
-* `RE32`: Swap rejected due to unsupported swap protocol
+* `RE20`: Swap declined
+
+#### `reason`
+
+Optional reason why the request was declined.
+
+##### Format
+```
+{
+  "value": ReasonText,
+  "parameters": {
+    RequestHeaderHints
+  }
+}
+```
+##### `value`
+A human readable reason. In Lowercase ascii, hyphen separated.
+Example: `rate-declined`
+
+See the [registry](./registry-RFC-002.md) for possible values.
+A swap protocol may define further available reasons.
+
+##### `parameters`
+Parameters are optionals hints on what inputs, if changed, may lead the request to be accepted.
+
+The aim is for the request receiver to hint the sender on the values that it would accept for the swap.
+The following hints are supported:
+- `alpha_asset`
+- `beta_asset`
+- `swap_protocol`
+
+Their format is as defined in the [SWAP REQUEST](#swap-request) section.
+
+A swap protocol may define further available hints.
 
 <!-- TODO: Open issue to remove reason and fix statuses -->
 

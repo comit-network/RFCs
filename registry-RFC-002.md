@@ -11,6 +11,15 @@
   * [Ethereum](#ethereum-1)
     + [Ether](#ether)
     + [ERC20 token](#erc20-token)
+- [`reason`](#reason)
+  * [Rate is unsatisfying](#rate-is-unsatisfying)
+    + [`parameters`](#parameters)
+  * [Exceeding quantity](#exceeding-quantity)
+    + [`parameters`](#parameters-1)
+  * [Unsupported swap protocol](#unsupported-swap-protocol)
+    + [`parameters`](#parameters-2)
+  * [Unsupported ledger combination](#unsupported-ledger-combination)
+    + [`parameters`](#parameters-3)
 
 <!-- tocstop -->
 
@@ -70,3 +79,32 @@ This RFC contains the definition of possible values for the following `BAM!` hea
 `parameters.address`: the hex address of the smart contract defining the given ERC20 token including `0x` prefix, e.g. `0xB97048628DB6B661D4C2aA833e95Dbe1A905B280`.
 
 `parameters.quantity`: the amount without a decimal; integer in a string format; e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY token contract defines 18 decimals.
+
+## `reason`
+### Rate is unsatisfying
+The receiver rejects the exchange rate and may accept a swap request with a different rate.
+`value`: `rate-declined`
+#### `parameters`
+Hints are optional.
+If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
+
+### Exceeding quantity
+The receiver cannot (liquidity) or does not want (risk) to proceed with such asset quantity and may accept the request if a lower asset quantity was requested.
+`value`: `exceeding-quantity`
+#### `parameters`
+*Please note that hinting on this scenario may lead to privacy concerns (exposure of available liquidity)*.
+Hints are optional.
+If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
+
+### Unsupported swap protocol
+The receiver does not support the requested swap protocol
+`value`: `swap-protocol-unsupported`
+#### `parameters`
+Hints are optional.
+If present, expected hint is `swap_protocol`. if the receiver may accept the swap condition under a different swap protocol.
+
+### Unsupported ledger combination
+The receiver does not support the requested ledger combination.
+`value`: `unsupported-ledger`
+#### `parameters`
+No hint is supported.
