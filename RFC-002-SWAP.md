@@ -43,10 +43,10 @@ This set of message types facilitates the execution cross-ledger atomic swaps of
 This RFC is part of COMIT, an open protocol facilitating trustless[¹] cross-blockchain applications.
 
 This RFC contains the definition of the following `BAM!` headers:
-- [`alpha_asset`](#alpha_assetbeta_asset)
-- [`alpha_ledger`](#alpha_ledgerbeta_ledger)
-- [`beta_asset`](#alpha_assetbeta_asset)
-- [`beta_ledger`](#alpha_ledgerbeta_ledger)
+- [`alpha_asset`](#alpha_asset)
+- [`alpha_ledger`](#alpha_ledger)
+- [`beta_asset`](#beta_asset)
+- [`beta_ledger`](#beta_ledger)
 - [`status`](#status)
 - [`protocol`](#protocol)
 
@@ -82,7 +82,7 @@ BAM! type: REQUEST
 
 #### `alpha_ledger`
 
-The ledger on which the Sender sells and the Receiver buys[¹].
+The ledger on which the Sender sells and the Receiver buys[²].
 
 ##### `value`
 The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
@@ -104,10 +104,10 @@ Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 #### `alpha_asset`
 
-The asset that the Sender sells and the Receiver buys[¹].
+The asset that the Sender sells and the Receiver buys.
 
-The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
+The `parameters`' value depends on the kind of the described asset. Native assets should only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
+See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for exact description.
 
 ##### `value`
 The name of the asset in ASCII (lower case).
@@ -119,8 +119,8 @@ Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 The asset that the Sender buys and the Receiver sells.
 
-The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
+The `parameters`' value depends on the kind of the described asset. Native assets should only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
+See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for exact description.
 
 ##### `value`
 The name of the asset in ASCII (lower case).
@@ -160,10 +160,9 @@ BAM! type: RESPONSE
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
 RFC-002 reserves statuses 20 to 39 across all families.
-Each protocol MAY define their own statuses for 40 and above.
+Each protocol may define their own statuses for 40 and above.
 
 * `OK20`: Accepted
-* `RE00`: Receiver Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
 * `RE20`: Declined - the swap request was not beneficial for the receiver
 * `RE21`: Rejected - the receiver is not able to proceed with the swap request
 
@@ -173,15 +172,16 @@ Each protocol MAY define their own statuses for 40 and above.
 Optional reason why the request was declined.
 
 ##### `value`
-A human readable reason. In Lowercase ascii, hyphen separated.
+A human readable reason. In lower case hyphen separated ASCII.
 
-See the [registry](./registry-RFC-002.md) for possible values.
+See the [registry](./registry-RFC-002.md#reason) for possible values.
 A protocol may define further available reasons.
 
 ##### `parameters`
-Parameters are optionals hints on what inputs, if changed, may lead the request to be accepted.
+Parameters are optionals hints on which request headers, if changed, may lead a request to be accepted.
 
-The aim is for the request receiver to hint the sender on the values that it would accept for the swap.
+This allows the Receiver to hint the Sender on an exchange it may accept.
+
 The following hints are supported:
 - `alpha_asset`
 - `beta_asset`
@@ -190,7 +190,7 @@ The following hints are supported:
 Their format is as defined in the [SWAP REQUEST - `headers`](#headers) section.
 
 A protocol may define further available hints.
-<!-- TODO: Open issue to remove reason and fix statuses -->
+<!-- TODO: Open issue to fix reason and statuses -->
 
 ### `body`
 
