@@ -96,12 +96,12 @@ The receiver cannot (liquidity) or does not want (risk) to proceed with such ass
 Hints are optional.
 If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
 
-### Unsupported swap protocol
-The receiver does not support the requested swap protocol
-`value`: `swap-protocol-unsupported`
+### Unsupported protocol
+The receiver does not support the requested protocol
+`value`: `protocol-unsupported`
 #### `parameters`
 Hints are optional.
-If present, expected hint is `swap_protocol`. if the receiver may accept the swap condition under a different swap protocol.
+If present, expected hint is `protocol`. if the receiver may accept the asset exchange under a different protocol.
 
 ### Unsupported ledger combination
 The receiver does not support the requested ledger combination.

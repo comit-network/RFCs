@@ -42,7 +42,7 @@ This RFC contains the definition of the following `BAM!` headers:
 - [`beta_asset`](#alpha_assetbeta_asset)
 - [`beta_ledger`](#alpha_ledgerbeta_ledger)
 - [`status`](#status)
-- [`swap_protocol`](#swap_protocol)
+- [`protocol`](#protocol)
 
 ## Status
 
@@ -55,37 +55,17 @@ Status: Draft
 
 ### Ledger
 
-A distributed record (e.g. a blockchain) which tracks asset ownerships and transactions. For example, the Bitcoin or Ethereum networks
-
-This RFC assumes that a ledger has basic properties described as part of [this section](#terminology).
+A record which tracks asset ownerships. For example, the Bitcoin or Ethereum networks.
 
 ### Asset
 
 A digital asset. Its ownership can be tracked on a [ledger](#ledger).
 
-### Alpha Ledger (recip. Asset)
-
-The ledger on which (recip. the asset that) the Sender sells and the Seller buys[¹].
-
-### Beta Ledger (recip. Asset)
-
-The ledger on which (recip. the asset that) the Sender buys and the Receiver sells.
-
-### Identity
-
-An identifier to which the ownership of a given asset can be transferred. 
-
-### Swap Protocol
-
-A protocol that defines the steps, transactions and communications needed to proceed with a swap.
-
-[RFC-003](wip) is an available swap protocol. However, it is not limited to [RFC-003](wip) and this RFC is expected to be the building block for several swap protocols.
-
 ## SWAP REQUEST
 
 ### Purpose
 
-A message for requesting a swap between two assets.
+A message for requesting the exchange of two assets.
 
 ### Definition
 ```
@@ -100,14 +80,17 @@ BAM! type: REQUEST
     "beta_ledger": BetaLedger,
     "alpha_asset": AlphaAsset,
     "beta_asset": BetaAsset,
-    "swap_protocol": SwapProtocol.
+    "protocol": Protocol.
     },
   "body": Body, 
 }
 ```
 
 #### `alpha_ledger/beta_ledger`
-The *Alpha Ledger*/*Beta Ledger* for this swap. As defined in the [terminology](#terminology) section.
+
+The `AlphaLedger` is the ledger on which the Sender sells and the Receiver buys[¹].
+
+The `BetaLedger` is the ledger on which the Sender buys and the Receiver sells.
 
 ##### Format
 ```
@@ -137,7 +120,10 @@ Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger) for the d
 ```
 
 #### `alpha_asset/beta_asset`
-The *Alpha Asset*/*Beta Asset* for this swap. As defined in the [terminology](#asset).
+
+The `AlphaAsset` is the asset that the Sender sells and the Receiver buys[¹].
+
+The `BetaAsset` is the asset that the Sender buys and the Receiver sells.
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
@@ -168,11 +154,15 @@ See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for a full defin
 }
 ```
 
-#### `swap_protocol`
-The protocol used to proceed with the swap. Defined in subsequent RFCs.
+#### `protocol`
+<!-- TODO: Open issue to rename `swap_protocol` to `protocol` -->
+
+A protocol that defines the steps, transactions and communications needed to proceed with an asset exchange.
+
+The protocol itself is defined in subsequent RFCs.
 
 ##### `value`
-Refer to the RFC of the given `SwapProtocol`.
+Refers to the RFC of the given `Protocol`.
 
 ##### Sample
 RFC-003 HTLC based protocol.
@@ -186,7 +176,7 @@ RFC-003 HTLC based protocol.
 
 #### `body`
 
-Refer to the RFC of the given `SwapProtocol`.
+The `Body` is defined by the RFC of the given `Protocol`.
 
 ## SWAP RESPONSE
 
@@ -213,7 +203,7 @@ Valid for both accept and decline responses.
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
 RFC-002 reserves statuses 20 to 39 across all families.
-Each swap protocol MAY define their own statuses for 40 and above.
+Each protocol MAY define their own statuses for 40 and above.
 
 * `OK20`: Swap request is accepted
 * `RE00`: Receiver Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
@@ -237,7 +227,7 @@ A human readable reason. In Lowercase ascii, hyphen separated.
 Example: `rate-declined`
 
 See the [registry](./registry-RFC-002.md) for possible values.
-A swap protocol may define further available reasons.
+A protocol may define further available reasons.
 
 ##### `parameters`
 Parameters are optionals hints on what inputs, if changed, may lead the request to be accepted.
@@ -246,17 +236,17 @@ The aim is for the request receiver to hint the sender on the values that it wou
 The following hints are supported:
 - `alpha_asset`
 - `beta_asset`
-- `swap_protocol`
+- `protocol`
 
 Their format is as defined in the [SWAP REQUEST](#swap-request) section.
 
-A swap protocol may define further available hints.
+A protocol may define further available hints.
 
 <!-- TODO: Open issue to remove reason and fix statuses -->
 
 #### `body`
 
-The body is defined in the RFC of the given `SwapProtocol`.
+The body is defined in the RFC of the given `Protocol`.
 
 ---
 
