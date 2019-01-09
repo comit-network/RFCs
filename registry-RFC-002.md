@@ -12,14 +12,13 @@
     + [Ether](#ether)
     + [ERC20 token](#erc20-token)
 - [`reason`](#reason)
-  * [Rate is unsatisfying](#rate-is-unsatisfying)
-    + [`parameters`](#parameters)
-  * [Exceeding quantity](#exceeding-quantity)
-    + [`parameters`](#parameters-1)
-  * [Unsupported swap protocol](#unsupported-swap-protocol)
-    + [`parameters`](#parameters-2)
-  * [Unsupported ledger combination](#unsupported-ledger-combination)
-    + [`parameters`](#parameters-3)
+  * [Decline reasons](#decline-reasons)
+    + [Rate is unsatisfying](#rate-is-unsatisfying)
+    + [Quantity too high](#quantity-too-high)
+  * [Reject reasons](#reject-reasons)
+    + [Unsupported protocol](#unsupported-protocol)
+    + [Unsupported ledger combination](#unsupported-ledger-combination)
+    + [Unavailable asset](#unavailable-asset)
 
 <!-- tocstop -->
 
@@ -81,30 +80,44 @@ This RFC contains the definition of possible values for the following `BAM!` hea
 `parameters.quantity`: the amount without a decimal; integer in a string format; e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY token contract defines 18 decimals.
 
 ## `reason`
-### Rate is unsatisfying
+
+### Decline reasons
+The following reasons must be accompanied with a `RE20` status.
+
+#### Rate is unsatisfying
 The receiver rejects the exchange rate and may accept a swap request with a different rate.
 `value`: `rate-declined`
-#### `parameters`
+##### `parameters`
 Hints are optional.
 If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
 
-### Exceeding quantity
-The receiver cannot (liquidity) or does not want (risk) to proceed with such asset quantity and may accept the request if a lower asset quantity was requested.
-`value`: `exceeding-quantity`
-#### `parameters`
-*Please note that hinting on this scenario may lead to privacy concerns (exposure of available liquidity)*.
+#### Quantity too high
+The receiver does not want to proceed with such asset quantity and may accept the request if a lower asset quantity was requested.
+`value`: `quantity-too-high`
+##### `parameters`
 Hints are optional.
 If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
 
-### Unsupported protocol
+### Reject reasons
+The following reasons must be accompanied with a `RE21` status.
+
+#### Unsupported protocol
 The receiver does not support the requested protocol
 `value`: `protocol-unsupported`
-#### `parameters`
+##### `parameters`
 Hints are optional.
 If present, expected hint is `protocol`. if the receiver may accept the asset exchange under a different protocol.
 
-### Unsupported ledger combination
+#### Unsupported ledger combination
 The receiver does not support the requested ledger combination.
 `value`: `unsupported-ledger`
-#### `parameters`
+##### `parameters`
 No hint is supported.
+
+#### Unavailable asset
+The receiver does not have the given asset or enough of the given asset quantity.
+`value`: `unavailable asset`
+##### `parameters`
+*Please note that hinting on this rejection may lead to privacy concerns (exposure of available liquidity)*.
+Hints are optional.
+If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.

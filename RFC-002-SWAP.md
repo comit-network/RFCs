@@ -7,17 +7,13 @@
 - [Terminology](#terminology)
   * [Ledger](#ledger)
   * [Asset](#asset)
-  * [Alpha Ledger (recip. Asset)](#alpha-ledger-recip-asset)
-  * [Beta Ledger (recip. Asset)](#beta-ledger-recip-asset)
-  * [Identity](#identity)
-  * [Swap Protocol](#swap-protocol)
 - [SWAP REQUEST](#swap-request)
   * [Purpose](#purpose)
   * [Definition](#definition)
     + [Format](#format)
     + [`alpha_ledger/beta_ledger`](#alpha_ledgerbeta_ledger)
     + [`alpha_asset/beta_asset`](#alpha_assetbeta_asset)
-    + [`swap_protocol`](#swap_protocol)
+    + [`protocol`](#protocol)
     + [`body`](#body)
 - [SWAP RESPONSE](#swap-response)
   * [Purpose](#purpose-1)
@@ -59,7 +55,7 @@ A record which tracks asset ownerships. For example, the Bitcoin or Ethereum net
 
 ### Asset
 
-A digital asset. Its ownership can be tracked on a [ledger](#ledger).
+Its ownership can be tracked on a [ledger](#ledger).
 
 ## SWAP REQUEST
 
@@ -205,9 +201,10 @@ See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including
 RFC-002 reserves statuses 20 to 39 across all families.
 Each protocol MAY define their own statuses for 40 and above.
 
-* `OK20`: Swap request is accepted
+* `OK20`: Accepted
 * `RE00`: Receiver Internal Error (as per [RFC-001](./RFC-001-BAM.md#status-code-families))<!-- TODO: Open issue because we incorrectly use SE00 in the code -->
-* `RE20`: Swap declined
+* `RE20`: Declined - the swap request was not beneficial for the receiver
+* `RE21`: Rejected - the receiver is not able to proceed with the swap request
 
 #### `reason`
 
