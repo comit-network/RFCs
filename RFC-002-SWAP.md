@@ -82,10 +82,10 @@ BAM! type: REQUEST
 
 #### `alpha_ledger`
 
-The `AlphaLedger` is the ledger on which the Sender sells and the Receiver buys[¹].
+The ledger on which the Sender sells and the Receiver buys[¹].
 
 ##### `value`
-`LedgerName`: the name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
+The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
 
 ##### `parameters`
 
@@ -93,10 +93,10 @@ Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 #### `beta_ledger`
 
-The `BetaLedger` is the ledger on which the Sender buys and the Receiver sells.
+The ledger on which the Sender buys and the Receiver sells.
 
 ##### `value`
-`LedgerName`: the name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
+The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
 
 ##### `parameters`
 
@@ -104,26 +104,26 @@ Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 #### `alpha_asset`
 
-The `AlphaAsset` is the asset that the Sender sells and the Receiver buys[¹].
+The asset that the Sender sells and the Receiver buys[¹].
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
 
 ##### `value`
-`AssetName`: the name of the asset in ASCII (lower case).
+The name of the asset in ASCII (lower case).
 
 ##### `parameters`
 Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
 
 #### `beta_asset`
 
-The `BetaAsset` is the asset that the Sender buys and the Receiver sells.
+The asset that the Sender buys and the Receiver sells.
 
 The `parameters`' value depends on the kind of the described asset. Native assets SHOULD only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
 See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for more details.
 
 ##### `value`
-`AssetName`: the name of the asset in ASCII (lower case).
+The name of the asset in ASCII (lower case).
 
 ##### `parameters`
 Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
@@ -136,13 +136,13 @@ A protocol that defines the steps, transactions and communications needed to pro
 The protocol itself is defined in subsequent RFCs.
 
 ##### `value`
-Refer to the RFC of the given `Protocol`.
+Refer to the RFC of the given `protocol`.
 
 <!-- TODO: Open issue to lowercase it -->
 
 ### `body`
 
-The body is defined by the RFC of the given `Protocol`.
+The body is defined by the RFC of the given `protocol`.
 
 ## SWAP RESPONSE
 
@@ -194,7 +194,7 @@ A protocol may define further available hints.
 
 ### `body`
 
-The body is defined in the RFC of the given `Protocol`.
+The body is defined in the RFC of the given `protocol`.
 
 # Examples
 
