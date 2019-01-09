@@ -202,7 +202,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ### 1 Bitcoin for 21 Ether on testnet using RFC-003
 
-```json
+```json5
 {
   "type": "SWAP",
   "headers": {
@@ -230,7 +230,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ### 42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003
 
-```json
+```json5
 {
   "type": "SWAP",
   "headers": {
@@ -260,7 +260,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ### Request accepted
 
-```json
+```json5
 {
   "status": "OK20",
   "headers": {},
@@ -270,7 +270,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ### Request declined due to non-beneficial rate with hints
 
-```json
+```json5
 {
   "status": "RE20",
   "headers": {
@@ -279,7 +279,7 @@ The body is defined in the RFC of the given `protocol`.
       "parameters": {
         "alpha_asset": {
           "value": "erc20",
-          "parameters: { "quantity": "42000000000000000000" }
+          "parameters": { "quantity": "42000000000000000000" }
         },
         "beta_asset": {
           "value": "bitcoin",
@@ -294,7 +294,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ### Request rejected without a reason
 
-```json
+```json5
 {
   "status": "RE21",
   "headers": {},
