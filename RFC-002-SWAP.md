@@ -216,7 +216,7 @@ The body is defined in the RFC of the given `protocol`.
                    },
     "alpha_asset": {
                      "value": "bitcoin",
-                     "parameters: { "quantity": "100000000" }
+                     "parameters": { "quantity": "100000000" }
                    },
     "beta_asset": {
                     "value": "ether",
@@ -244,7 +244,7 @@ The body is defined in the RFC of the given `protocol`.
     },
     "alpha_asset": {
       "value": "erc20",
-      "parameters: { "quantity": "42000000000000000000" }
+      "parameters": { "quantity": "42000000000000000000" }
     },
     "beta_asset": {
       "value": "bitcoin",
@@ -262,7 +262,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ```json
 {
-  "status": "OK20"
+  "status": "OK20",
   "headers": {},
   "body": {},
 }
@@ -272,7 +272,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ```json
 {
-  "status": "RE20"
+  "status": "RE20",
   "headers": {
     "reason": {
       "value": "rate-declined",
@@ -296,7 +296,7 @@ The body is defined in the RFC of the given `protocol`.
 
 ```json
 {
-  "status": "RE21"
+  "status": "RE21",
   "headers": {},
   "body": {},
 }
