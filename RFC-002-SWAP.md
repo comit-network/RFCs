@@ -20,7 +20,7 @@
     + [Definition](#definition-1)
     + [`status`](#status)
     + [`headers`](#headers-1)
-      - [`reason`](#reason)
+      - [`reason` (optional)](#reason-optional)
     + [`body`](#body-1)
 - [Examples](#examples)
   * [SWAP REQUEST](#swap-request-1)
@@ -36,11 +36,11 @@
 ## Introduction
 
 This RFC defines the `SWAP` message types for `BAM!` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
-This set of message types allows the negotiation of an assets exchange and the protocol parameters to execute it.
+This set of message types facilitates the negotiation of an exchange of assets and the protocol parameters to execute it.
 
 The SWAP REQUEST contains an asset exchange proposal and the Sender information to realise the exchange.
 
-The SWAP RESPONSE allows the rejection or accept of the exchange and may contains the Receiver information to realise the exchange. 
+The SWAP RESPONSE allows the rejection or acceptance of the exchange and may contains the Receiver information to realise the exchange. 
 
 This RFC is part of COMIT, an open protocol facilitating trustless[¹] cross-blockchain applications.
 
@@ -67,7 +67,7 @@ A record which tracks asset ownerships. For example, the Bitcoin or Ethereum net
 
 ### Asset
 
-Its ownership can be tracked on a [ledger](#ledger).
+An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
 ## SWAP REQUEST
 
@@ -87,7 +87,7 @@ The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as current
 
 ##### `parameters`
 
-Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+Refer to the [registry](./registry-RFC-002.md#ledger).
 
 #### `beta_ledger`
 
@@ -98,33 +98,29 @@ The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as current
 
 ##### `parameters`
 
-Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+Refer to the [registry](./registry-RFC-002.md#ledger).
 
 #### `alpha_asset`
 
 The asset that the Sender sells and the Receiver buys.
 
-The `parameters`' value depends on the kind of the described asset. Native assets should only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for exact description.
-
 ##### `value`
 The name of the asset in ASCII (lower case).
 
 ##### `parameters`
-Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+The `parameters` depend on the asset. Native assets should only have a `quantity` integer parameter, expressed in the smallest unit, supported by its corresponding *Ledger*.
+See the [registry](./registry-RFC-002.md#asset) for exact description.
 
 #### `beta_asset`
 
 The asset that the Sender buys and the Receiver sells.
 
-The `parameters`' value depends on the kind of the described asset. Native assets should only have a `quantity` integer parameter in the smallest unit, supported by the *Ledger*.
-See the [registry](./registry-RFC-002.md#alpha_assetbeta_asset) for exact description.
-
 ##### `value`
 The name of the asset in ASCII (lower case).
 
 ##### `parameters`
-Refer to the [registry](./registry-RFC-002.md#alpha_ledgerbeta_ledger).
+The `parameters` depend on the asset. Native assets should only have a `quantity` integer parameter, expressed in the smallest unit, supported by its corresponding *Ledger*.
+See the [registry](./registry-RFC-002.md#asset) for exact description.
 
 #### `protocol`
 <!-- TODO: Open issue to rename `swap_protocol` to `protocol` -->
@@ -161,18 +157,17 @@ Each protocol may define their own statuses for 40 and above.
 * `RE21`: Rejected - the receiver is not able to proceed with the swap request
 
 ### `headers`
-#### `reason`
-
-Optional reason why the request was declined.
+#### `reason` (optional)
+The reason why the receiver Declined or Rejected the swap request.
 
 ##### `value`
 A human readable reason. In lower case hyphen separated ASCII.
 
 See the [registry](./registry-RFC-002.md#reason) for possible values.
-A protocol may define further available reasons.
+A given swap protocol may define further available reasons.
 
-##### `parameters`
-Parameters are optionals hints on which request headers, if changed, may lead a request to be accepted.
+##### `parameters` (optional)
+Parameters are hints on which request headers, if changed, may lead a request to be accepted.
 
 This allows the Receiver to hint the Sender on an exchange it may accept.
 
@@ -201,21 +196,21 @@ The body is defined in the RFC of the given `protocol`.
   "type": "SWAP",
   "headers": {
     "alpha_ledger": {
-                      "value": "bitcoin",
-                      "parameters": { "network": "regtest" }
-                    },
+      "value": "bitcoin",
+      "parameters": { "network": "regtest" }
+    },
     "beta_ledger": {
-                     "value": "ethereum",
-                     "parameters": { "network": "ropsten" }
-                   },
+      "value": "ethereum",
+      "parameters": { "network": "ropsten" }
+    },
     "alpha_asset": {
-                     "value": "bitcoin",
-                     "parameters": { "quantity": "100000000" }
-                   },
+      "value": "bitcoin",
+      "parameters": { "quantity": "100000000" }
+    },
     "beta_asset": {
-                    "value": "ether",
-                    "parameters": { "quantity": "21000000000000000000" }
-                  },
+      "value": "ether",
+      "parameters": { "quantity": "21000000000000000000" }
+    },
     "protocol": "comit-rfc-003",
   },
   "body": {},

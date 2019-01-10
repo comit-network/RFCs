@@ -3,15 +3,15 @@
 <!-- toc -->
 
 - [Description](#description)
-- [`alpha_ledger/beta_ledger`](#alpha_ledgerbeta_ledger)
+- [Ledger](#ledger)
   * [Bitcoin](#bitcoin)
   * [Ethereum](#ethereum)
-- [`alpha_asset/beta_asset`](#alpha_assetbeta_asset)
+- [Asset](#asset)
   * [Bitcoin](#bitcoin-1)
   * [Ethereum](#ethereum-1)
     + [Ether](#ether)
     + [ERC20 token](#erc20-token)
-- [`reason`](#reason)
+- [Reason](#reason)
   * [Decline reasons](#decline-reasons)
     + [Rate is unsatisfying](#rate-is-unsatisfying)
     + [Quantity too high](#quantity-too-high)
@@ -35,7 +35,7 @@ This RFC contains the definition of possible values for the following `BAM!` hea
 - [`beta_asset`](#alpha_assetbeta_asset)
 - [`beta_ledger`](#alpha_ledgerbeta_ledger)
 
-## `alpha_ledger/beta_ledger`
+## Ledger
 
 ### Bitcoin
 
@@ -55,7 +55,7 @@ This RFC contains the definition of possible values for the following `BAM!` hea
 - `ropsten`: Ropsten testnet (network id 3)
 - `mainnet`: Ethereum mainnet (network id 1)
 
-## `alpha_asset/beta_asset`
+## Asset
 
 ### Bitcoin
 
@@ -79,7 +79,7 @@ This RFC contains the definition of possible values for the following `BAM!` hea
 
 `parameters.quantity`: the amount without a decimal; integer in a string format; e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY token contract defines 18 decimals.
 
-## `reason`
+## Reason
 
 ### Decline reasons
 The following reasons must be accompanied with a `RE20` status.
@@ -92,7 +92,7 @@ Hints are optional.
 If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of them must be included.
 
 #### Quantity too high
-The receiver does not want to proceed with such asset quantity and may accept the request if a lower asset quantity was requested.
+The receiver declines the offered asset quantity and may accept the request if a different asset quantity is requested.
 `value`: `quantity-too-high`
 ##### `parameters`
 Hints are optional.
@@ -102,11 +102,11 @@ If present, expected hints are `alpha_asset` and `beta_asset`. Both or none of t
 The following reasons must be accompanied with a `RE21` status.
 
 #### Unsupported protocol
-The receiver does not support the requested protocol
+The receiver does not support the requested protocol.
 `value`: `protocol-unsupported`
 ##### `parameters`
 Hints are optional.
-If present, expected hint is `protocol`. if the receiver may accept the asset exchange under a different protocol.
+If present, expected hint is `protocol`.
 
 #### Unsupported ledger combination
 The receiver does not support the requested ledger combination.
@@ -116,7 +116,7 @@ No hint is supported.
 
 #### Unavailable asset
 The receiver does not have the given asset or enough of the given asset quantity.
-`value`: `unavailable asset`
+`value`: `unavailable-asset`
 ##### `parameters`
 *Please note that hinting on this rejection may lead to privacy concerns (exposure of available liquidity)*.
 Hints are optional.
