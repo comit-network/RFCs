@@ -187,7 +187,7 @@ If a node receives a `RESPONSE` frame with a header that is marked as `MUST unde
 
 ##### Status code families
 
-Similar to HTTP, this protocol divides status codes into different families. By separating semantically different responses from each other, programs are able understand these semantics and act upon them. The simplest example is probably successful versus non-successful responses. Even within non-successful responses, one can distinguish between errors caused by the sender and errors caused by the receiver (400 vs 500 in HTTP).
+Similar to HTTP, this protocol divides status codes into different families. By separating semantically different responses from each other, programs are able understand these semantics and act upon them. The simplest example is probably successful versus non-successful responses. Even within non-successful responses, one can distinguish between errors caused by the sender and errors caused by the Receiver (400 vs 500 in HTTP).
 
 The purpose of status codes is to allow nodes to act in pre-defined ways for certain error/success scenarios. For example, a node could be configured auto-retry a request for certain errors if it knows how to resolve them.
 

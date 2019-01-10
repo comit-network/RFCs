@@ -127,7 +127,7 @@ See the [registry](./registry-RFC-002.md#asset) for exact description.
 
 A protocol that defines the steps, transactions and communications needed to proceed with an asset exchange.
 
-The protocol itself is defined in subsequent RFCs.
+Such protocols will be defined in subsequent RFCs.
 
 ##### `value`
 Refer to the RFC of the given `protocol`.
@@ -135,8 +135,7 @@ Refer to the RFC of the given `protocol`.
 <!-- TODO: Open issue to lowercase it -->
 
 ### `body`
-
-The body is defined by the RFC of the given `protocol`.
+Refer to the RFC of the given `protocol`.
 
 ## SWAP RESPONSE
 
@@ -150,15 +149,15 @@ BAM! type: RESPONSE
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
 RFC-002 reserves statuses 20 to 39 across all families.
-Each protocol may define their own statuses for 40 and above.
+Protocls may define the meaning of statuses 40 and above.
 
 * `OK20`: Accepted
-* `RE20`: Declined - the swap request was not beneficial for the receiver
-* `RE21`: Rejected - the receiver is not able to proceed with the swap request
+* `RE20`: Declined - the Receiver voluntarily turned down the swap request
+* `RE21`: Rejected - the Receiver is not able to proceed with the swap request
 
 ### `headers`
 #### `reason` (optional)
-The reason why the receiver Declined or Rejected the swap request.
+The reason why the Receiver Declined or Rejected the swap request.
 
 ##### `value`
 A human readable reason. In lower case hyphen separated ASCII.
@@ -167,23 +166,21 @@ See the [registry](./registry-RFC-002.md#reason) for possible values.
 A given swap protocol may define further available reasons.
 
 ##### `parameters` (optional)
-Parameters are hints on which request headers, if changed, may lead a request to be accepted.
+Parameters are hints on which request headers, if changed, may lead a subsequent request to be accepted.
 
-This allows the Receiver to hint the Sender on an exchange it may accept.
-
-The following hints are supported:
+The following parameters are supported:
 - `alpha_asset`
 - `beta_asset`
 - `protocol`
 
 Their format is as defined in the [SWAP REQUEST - `headers`](#headers) section.
 
-A protocol may define further available hints.
+Protocols may define new parameters.
 <!-- TODO: Open issue to fix reason and statuses -->
 
 ### `body`
 
-The body is defined in the RFC of the given `protocol`.
+Refer to the RFC of the given `protocol`.
 
 # Examples
 
