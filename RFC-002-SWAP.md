@@ -49,7 +49,6 @@ This RFC contains the definition of the following `BAM!` headers:
 - [`alpha_ledger`](#alpha_ledger)
 - [`beta_asset`](#beta_asset)
 - [`beta_ledger`](#beta_ledger)
-- [`status`](#status)
 - [`protocol`](#protocol)
 
 ## Status
@@ -65,77 +64,56 @@ Status: Draft
 
 A record which tracks asset ownerships. For example, the Bitcoin or Ethereum networks.
 
+Refer to the [common registry](./registry-common.md#ledger) for the definition of supported ledgers.
+
 ### Asset
 
 An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
+Refer to the [common registry](./registry-common.md#asset) for the definition of supported assets.
+
 ## SWAP REQUEST
 
 ### Definition
-```
-BAM! type: REQUEST
-```
+The SWAP REQUEST message is a `FRAME` of type `REQUEST`.
+[As per definition](./RFC-001-BAM.md#type-1) in `BAM!`, a `REQUEST` `FRAME` has a `type` that defines its semantics.
+For the SWAP REQUEST message, this type is `SWAP`.
 
 ### `headers`
 
 #### `alpha_ledger`
+```
+Type: Ledger 
+```
 
 The ledger on which the Sender sells and the Receiver buys[²].
 
-##### `value`
-The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
-
-##### `parameters`
-
-Refer to the [registry](./registry-RFC-002.md#ledger).
-
 #### `beta_ledger`
-
+```
+Type: Ledger
+```
 The ledger on which the Sender buys and the Receiver sells.
 
-##### `value`
-The name of the ledger in ASCII (lower case). <!-- TODO: Issue needed as currently case sensitive -->
-
-##### `parameters`
-
-Refer to the [registry](./registry-RFC-002.md#ledger).
-
 #### `alpha_asset`
+```
+Type: Asset
+```
 
 The asset that the Sender sells and the Receiver buys.
-
-##### `value`
-The name of the asset in ASCII (lower case).
-
-##### `parameters`
-The `parameters` depend on the asset. Native assets should only have a `quantity` integer parameter, expressed in the smallest unit, supported by its corresponding *Ledger*.
-See the [registry](./registry-RFC-002.md#asset) for exact description.
 
 #### `beta_asset`
 
 The asset that the Sender buys and the Receiver sells.
-
-##### `value`
-The name of the asset in ASCII (lower case).
-
-##### `parameters`
-The `parameters` depend on the asset. Native assets should only have a `quantity` integer parameter, expressed in the smallest unit, supported by its corresponding *Ledger*.
-See the [registry](./registry-RFC-002.md#asset) for exact description.
 
 #### `protocol`
 <!-- TODO: Open issue to rename `swap_protocol` to `protocol` -->
 
 A protocol that defines the steps, transactions and communications needed to proceed with an asset exchange.
 
-Such protocols will be defined in subsequent RFCs.
-
-##### `value`
-Refer to the RFC of the given `protocol`.
-
-<!-- TODO: Open issue to lowercase it -->
+The exact value of this header will be defined in subsequent swap protocol RFCs.
 
 ### `body`
-Refer to the RFC of the given `protocol`.
+Refer to the RFC of the given swap protocol.
 
 ## SWAP RESPONSE
 
@@ -160,7 +138,9 @@ Protocls may define the meaning of statuses 40 and above.
 The reason why the Receiver Declined or Rejected the swap request.
 
 ##### `value`
-A human readable reason. In lower case hyphen separated ASCII.
+A reason is a short, human-readable sentence that clearly communicates the intent of why a SWAP REQUEST was declined or rejected.
+
+Reasons must only contain letters and hyphens.
 
 See the [registry](./registry-RFC-002.md#reason) for possible values.
 A given swap protocol may define further available reasons.
@@ -180,7 +160,7 @@ Protocols may define new parameters.
 
 ### `body`
 
-Refer to the RFC of the given `protocol`.
+Refer to the RFC of the given swap protocol.
 
 # Examples
 
