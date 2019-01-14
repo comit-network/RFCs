@@ -7,9 +7,6 @@ This registry may be expanded with new RFCs.
 
 ## Ledgers
 
-<!-- TODO: issue to be opened as `value` for Bitcoin mainnet is currently "Bitcoin" because of rust bitcoin -->
-<!-- TODO: Issue needed as currently ledger `value`s are currently parameterized -->
-<!-- TODO: Issue needed as Ethereum networks are supported -->
 <!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
 | Name     | Description            | Reference |  `value`   | `parameters` key | `parameters` value |`parameters` description         |
 |:---      |:---                    |:---       |:---        |:---              |:---                |:---                             |
