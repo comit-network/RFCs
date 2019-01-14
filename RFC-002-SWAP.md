@@ -119,8 +119,6 @@ Refer to the RFC of the given swap protocol.
 
 ### Definition
 The SWAP RESPONSE message is a `FRAME` of type `RESPONSE`.
-[As per definition](./RFC-001-BAM.md#type-1) in `BAM!`, a `RESPONSE` `FRAME` has a `type` that defines its semantics.
-For the SWAP RESPONSE message, this type is `SWAP`.
 
 ### `status`
 
@@ -136,6 +134,8 @@ Protocols may define the meaning of statuses 40 and above.
 ### `headers`
 #### `reason` (optional)
 The reason why the Receiver Declined or Rejected the swap request.
+
+Reason's `parameters` are hints on which request headers, if changed, may lead a subsequent request to be accepted.
 
 ##### `value`
 
@@ -244,7 +244,7 @@ Refer to the RFC of the given swap protocol.
       "parameters": {
         "alpha_asset": {
           "value": "erc20",
-          "parameters": { "quantity": "42000000000000000000" }
+          "parameters": { "quantity": "42500000000000000000" }
         },
         "beta_asset": {
           "value": "bitcoin",
