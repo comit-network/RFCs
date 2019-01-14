@@ -62,15 +62,15 @@ Status: Draft
 
 ### Ledger
 
-A record which tracks asset ownerships. For example, the Bitcoin or Ethereum networks.
+A ledger is anything that records ownership and allows transferal of that ownership.
 
-Refer to the [common registry](./registry-common.md#ledger) for the definition of supported ledgers.
+Refer to the [common registry](./COMIT-registry.md#ledgers) for the definition of supported ledgers.
 
 ### Asset
 
 An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
-Refer to the [common registry](./registry-common.md#asset) for the definition of supported assets.
+Refer to the [common registry](./COMIT-registry.md#assets) for the definition of supported assets.
 
 ## SWAP REQUEST
 
@@ -118,16 +118,16 @@ Refer to the RFC of the given swap protocol.
 ## SWAP RESPONSE
 
 ### Definition
-```
-BAM! type: RESPONSE
-```
+The SWAP RESPONSE message is a `FRAME` of type `RESPONSE`.
+[As per definition](./RFC-001-BAM.md#type-1) in `BAM!`, a `RESPONSE` `FRAME` has a `type` that defines its semantics.
+For the SWAP RESPONSE message, this type is `SWAP`.
 
 ### `status`
 
 See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
 
 RFC-002 reserves statuses 20 to 39 across all families.
-Protocls may define the meaning of statuses 40 and above.
+Protocols may define the meaning of statuses 40 and above.
 
 * `OK20`: Accepted
 * `RE20`: Declined - the Receiver voluntarily turned down the swap request
@@ -138,24 +138,23 @@ Protocls may define the meaning of statuses 40 and above.
 The reason why the Receiver Declined or Rejected the swap request.
 
 ##### `value`
-A reason is a short, human-readable sentence that clearly communicates the intent of why a SWAP REQUEST was declined or rejected.
 
-Reasons must only contain letters and hyphens.
+###### Decline reasons
+The following reasons must be accompanied with a `RE20` status.
 
-See the [registry](./registry-RFC-002.md#reason) for possible values.
-A given swap protocol may define further available reasons.
+| Value                     | Description     | Hints Conditions | Supported Parameters |
+|:----                      |:---             |:---              |:---                  |
+| `unsatisfactory-rate`     | The Receiver rejects the exchange rate and may accept a swap request with a different rate.                             | optional, both or none | `alpha_asset`, `beta_asset` |
+| `unsatisfactory-quantity` | The Receiver declines the offered asset quantity and may accept the request if a different asset quantity is requested. | optional, both or none | `alpha_asset`, `beta_asset` | 
 
-##### `parameters` (optional)
-Parameters are hints on which request headers, if changed, may lead a subsequent request to be accepted.
+###### Reject reasons
+The following reasons must be accompanied with a `RE21` status.
 
-The following parameters are supported:
-- `alpha_asset`
-- `beta_asset`
-- `protocol`
-
-Their format is as defined in the [SWAP REQUEST - `headers`](#headers) section.
-
-Protocols may define new parameters.
+| Value                  | Description | Hints Conditions | Supported Parameters |
+|:---                    |:---         |:----             |:---                  |
+| `protocol-unsupported` | The Receiver does not support the requested protocol.                             | optional, both or none | `protocol` |
+| `unsupported-ledger`   | The Receiver does not support the requested ledger combination.                   | none | |
+| `unavailable-asset`    | The Receiver does not have the given asset or enough of the given asset quantity. | optional, both or none | `alpha_asset`, `beta_asset` |
 <!-- TODO: Open issue to fix reason and statuses -->
 
 ### `body`
@@ -168,7 +167,7 @@ Refer to the RFC of the given swap protocol.
 
 ### 1 Bitcoin for 21 Ether on testnet using RFC-003
 
-```json5
+```json
 {
   "type": "SWAP",
   "headers": {
@@ -196,7 +195,7 @@ Refer to the RFC of the given swap protocol.
 
 ### 42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003
 
-```json5
+```json
 {
   "type": "SWAP",
   "headers": {
@@ -226,7 +225,7 @@ Refer to the RFC of the given swap protocol.
 
 ### Request accepted
 
-```json5
+```json
 {
   "status": "OK20",
   "headers": {},
@@ -236,7 +235,7 @@ Refer to the RFC of the given swap protocol.
 
 ### Request declined due to non-beneficial rate with hints
 
-```json5
+```json
 {
   "status": "RE20",
   "headers": {
@@ -260,7 +259,7 @@ Refer to the RFC of the given swap protocol.
 
 ### Request rejected without a reason
 
-```json5
+```json
 {
   "status": "RE21",
   "headers": {},
