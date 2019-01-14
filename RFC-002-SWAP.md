@@ -152,7 +152,7 @@ The following reasons must be accompanied with a `RE21` status.
 
 | Value                  | Description | Hints Conditions | Supported Parameters |
 |:---                    |:---         |:----             |:---                  |
-| `protocol-unsupported` | The Receiver does not support the requested protocol.                             | optional, both or none | `protocol` |
+| `protocol-unsupported` | The Receiver does not support the requested protocol.                             | optional | `protocol` |
 | `unsupported-ledger`   | The Receiver does not support the requested ledger combination.                   | none | |
 | `unavailable-asset`    | The Receiver does not have the given asset or enough of the given asset quantity. | optional, both or none | `alpha_asset`, `beta_asset` |
 <!-- TODO: Open issue to fix reason and statuses -->

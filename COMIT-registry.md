@@ -28,7 +28,7 @@ This registry may be expanded with new RFCs.
 |:---            |:----                          |:---       |:---       |:---              |:---                     |:---                      |
 | Bitcoin        | Native Bitcoin network asset  | TBD       | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
 | Ether          | Native Ethereum network asset | TBD       | `ether`   | `quantity`       | integer in Json string  | Amount in wei            |
-| ERC-20 Token   | As defined by [ERC-20] standard(https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) | TBD | `erc20` | `address` | hex string including `0x` prefix | The hex address of the smart contract defining the given token |
+| ERC-20 Token   | As defined by [ERC-20 standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) | TBD | `erc20` | `address` | hex string including `0x` prefix | The hex address of the smart contract defining the given token |
 |                 |                              |           |           |  `quantity`      |  integer in Json string  | The token amount without the decimal, e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY smart contract defines 18 decimals for its token |
 
 ## Protocols
@@ -44,4 +44,4 @@ TODO
 | `alpha_asset ` | [RFC-002](./RFC-002-SWAP.md#alpha_asset)  | See [Assets](#assets)
 | `beta_asset`   | [RFC-002](./RFC-002-SWAP.md#beta_asset)   | See [Assets](#assets)
 | `protocol`     | [RFC-002](./RFC-002-SWAP.md#protocol)     | See [Protocols](#protocols)
-| `reason`       | [RFC-002](./RFC-002-SWAP.md#reason-optional)       | [`unsatisfactory-rate`](./RFC-002-SWAP.md#reason), [`unsatisfactory-quantity`](./RFC-002-SWAP.md#reason), [`protocol-unsupported`](./RFC-002-SWAP.md#reason-optional), [`unsupported-ledger`](./RFC-002-SWAP.md#reason), [`unavailable-asset`](./RFC-002-SWAP.md#reason)
+| `reason`       | [RFC-002](./RFC-002-SWAP.md#reason-optional)       | [`unsatisfactory-rate`](./RFC-002-SWAP.md#reason-optional), [`unsatisfactory-quantity`](./RFC-002-SWAP.md#reason-optional), [`protocol-unsupported`](./RFC-002-SWAP.md#reason-optional), [`unsupported-ledger`](./RFC-002-SWAP.md#reason-optional), [`unavailable-asset`](./RFC-002-SWAP.md#reason-optional)
