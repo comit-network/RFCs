@@ -106,8 +106,6 @@ The asset that the Sender sells and the Receiver buys.
 The asset that the Sender buys and the Receiver sells.
 
 #### `protocol`
-<!-- TODO: Open issue to rename `swap_protocol` to `protocol` -->
-
 A protocol that defines the steps, transactions and communications needed to proceed with an asset exchange.
 
 The exact value of this header will be defined in subsequent swap protocol RFCs.
@@ -155,7 +153,6 @@ The following reasons must be accompanied with a `RE21` status.
 | `protocol-unsupported` | The Receiver does not support the requested protocol.                             | optional | `protocol` |
 | `unsupported-ledger`   | The Receiver does not support the requested ledger combination.                   | none | |
 | `unavailable-asset`    | The Receiver does not have the given asset or enough of the given asset quantity. | optional, both or none | `alpha_asset`, `beta_asset` |
-<!-- TODO: Open issue to fix reason and statuses -->
 
 ### `body`
 
