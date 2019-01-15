@@ -8,7 +8,7 @@ It is a simplified version of the protocol originally described by TierNolan¹.
 
 ### Identity
 
-This RFC introduces the notion of a "identity".
+This RFC introduces the notion of an "identity".
 An identity belongs to a user and represents the minimal information required to transfer an asset to that user on a particular ledger.
 On blockchain based ledgers a user's identity is usually some function of a public key where the private key is only known to the user.
 
