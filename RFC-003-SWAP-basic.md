@@ -125,7 +125,7 @@ After the Setup phase the sender of the request is designated the role Alice whi
 The execution phase of the protocol takes place exclusively by interacting with the Ledgers.
 The protocol is described below as if both parties had immediate access to the most recent state of the ledger and are able to effect persistent actions to it immediately.
 
-For Ledgers with a probabilistic notion of the latest state such as the Bitcoin and Etheruem networks, parties must wait until they have confidence that their counterparty's transactions will not be reverted before they take any action.
+For Ledgers with a probabilistic notion of the latest state such as the Bitcoin and Ethereum networks, parties must wait until they have confidence that their counterparty's transactions will not be reverted before they take any action.
 Parties must also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see [Security Considerations](#Security Considerations)).
 
 The HTLC definitions for particular ledgers will be included in subsequent RFCs
