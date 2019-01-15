@@ -114,7 +114,8 @@ The protocol is described below as if both parties have immediate access to the 
 For ledgers where recent transactions may be reverted, parties must wait until they have confidence that a transaction is permanent before they take any action depending on it.
 Parties must also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see [Security Considerations](#security-considerations)).
 
-The HTLC definitions for particular ledgers will be included in subsequent RFCs
+In general, to verify a HTLC deployment parties must check that the deployed HTLC is exactly what was negotiated during the setup phase.
+The HTLC definitions and how to verify them on particular ledgers will be included in subsequent RFCs.
 
 ### 1. Alice deploys α-HTLC
 
