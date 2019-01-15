@@ -20,7 +20,7 @@ This registry may be expanded with new RFCs.
 |          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
 
 
-With [RFC003]("./RFC-003.md") requires that each ledger has an associated identity:
+With [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
 | Name     | Identity Name   | Reference | Description                                                                       |
 | ----     | --------        | --------- | --------------------------------------------------------------------------------- |
