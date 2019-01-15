@@ -72,48 +72,24 @@ How to construct HTLCs based on SHA-256 and other hash functions for particular 
 ### SWAP Request Body
 When `COMIT-RFC-003` is used as the value for `protocol` for a `SWAP REQUEST` message the body must have the following fields:
 
-#### `alpha_expiry`
-Type: `u32`
+| Name                    | JSON Encoding       | Description                                                                                               |
+|-------------------------|---------------------|-----------------------------------------------------------------------------------------------------------|
+| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                     |
+| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock of the beta HTLC                                                      |
+| `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                   |
+| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret. |
+| `secret_hash`           | `hex-encoded-bytes` | The output by calling `hash_function` with the secret as input                                            |
 
-The UNIX timestamp of the time-lock on the alpha HTLC.
-
-
-#### `beta_expiry`
-Type: `u32`
-
-The UNIX timestamp of the time-lock of the beta HTLC.
-
-
-#### `alpha_refund_identity`
-Type: `α::Identity`
-
-The identity on α that **A** can be transferred to after `alpha_expiry`.
-
-
-#### `beta_redeem_identity`
-Type: `β::Identity`
-
-The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret.
-
-#### `secret_hash`
-Type: `hex-encoded-bytes`
-
-The value obtained by putting a the secret through the `hash_function`.
 
 ### Swap Response (Accept)
 
 If responding with `OK00`, the responder must include the following fields in the response body.
 
-#### `alpha_redeem_identity`
-Type: `α::Identity`
+| Name                    | JSON Encoding | Description                                                                                               |
+|-------------------------|---------------|-----------------------------------------------------------------------------------------------------------|
+| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret. |
+| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`.     |
 
-The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret.
-
-
-#### `beta_refund_identity`
-Type: `β::Identity`
-
-The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`.
 
 ### Swap Response (Decline)
 
@@ -124,9 +100,10 @@ This RFC extends the SWAP [reason header](./RFC-002-SWAP.md#reason) with the fol
 This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time.
 
 parameters:
-| Name          | JSON Type     |  Description                                                                       |
-| ------------- | ------------- |----------------------------------------------------------------------------------- |
-| min-time      | u32           | The minimum time difference between the HLTCs in seconds that the receiver requires|
+
+| Name          | JSON Encoding | Description                                                                         |
+| ------------- | ------------- | ----------------------------------------------------------------------------------- |
+| min-time      | `u32`         | The minimum time difference between the HLTCs in seconds that the receiver requires |
 
 ## Execution Phase
 
