@@ -27,7 +27,11 @@ In this RFC, the expiry activation returns the asset to the original owner while
 Therefore this document will refer to these paths as *refund* and *redeem* respectively.
 
 The HTLCs defined in this specification use *absolute time locks* where the expiry is set at a specific time in the future.
-Additionally, HTLCs must enforce the length of the secret to be equal to the hash function's output length.
+Absolute time locks are used because the protocol is only secure if the expiration of the time locks for HTLCs on different chains are fixed relative to each other.
+If HTLCs who's duration is relative to their inclusion in the ledger are used an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
+
+HTLCs must enforce the length of the secret to be equal to the hash function's output length.
+If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
 
 In this RFC HTLCs are constructed with the following parameters:
 
