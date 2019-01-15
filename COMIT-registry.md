@@ -22,10 +22,10 @@ This registry may be expanded with new RFCs.
 
 With [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
-| Name     | Identity Name   | Reference | Description                                                                       |
-| ----     | --------        | --------- | --------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`    | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
-| Ethereum | `address`       | TBD       | An ethereum address owned by the user                                             |
+| Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
+| ----     | --------      | -------------            | --------- | --------------------------------------------------------------------------------- |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
+| Ethereum | `address`     | Ethereum addrress        | TBD       | An ethereum address owned by the user                                             |
 
 
 ## Assets
