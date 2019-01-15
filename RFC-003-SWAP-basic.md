@@ -6,6 +6,13 @@ This RFC describes a basic atomic swap protocol and the related parameters requi
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
 It is a simplified version of the protocol originally described by TierNolan¹.
 
+## Status
+
+```
+RFC-Number: 003
+Status: Draft
+```
+
 ### Identity
 
 This RFC introduces the notion of an "identity".
