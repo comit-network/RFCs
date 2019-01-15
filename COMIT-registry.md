@@ -19,6 +19,15 @@ This registry may be expanded with new RFCs.
 |          |                        |           |            |                  | `ropsten`          | Ropsten testnet (network id 3)  |
 |          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
 
+
+With [RFC003]("./RFC-003.md") requires that each ledger has an associated identity:
+
+| Name     | Identity Name   | Reference | Description                                                                       |
+| ----     | --------        | --------- | --------------------------------------------------------------------------------- |
+| Bitcoin  | `pubkeyhash`    | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
+| Ethereum | `address`       | TBD       | An ethereum address owned by the user                                             |
+
+
 ## Assets
 <!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
 | Name           | Description                   | Reference | `value`   | `parameters` key | `parameters` value type | `parameters` description |
@@ -30,7 +39,21 @@ This registry may be expanded with new RFCs.
 
 ## Protocols
 
-TODO
+The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of an SWAP message.
+
+| Name                   | Reference                       |
+|----------------------- |-------------------------------- |
+| Basic HTLC Atomic Swap | [RFC-003](./RFC-003-SWAP-basic) |
+
+
+## Hash Functions
+
+The following is a list of cryptographic hash fucntions for use within COMIT protocols:
+
+
+| Name    | Reference  |
+| ------- |----------- |
+| `SHA-256`| [IETF RFC463](https://tools.ietf.org/html/rfc4634#section-4.1) |
 
 ## Headers
 
