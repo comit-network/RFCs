@@ -90,7 +90,7 @@ Type: `β::Identity`
 The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret.
 
 #### `secret_hash`
-Type: `HexString` <!-- Where to define this. I guess it should be RawBytes and in the JSON encoding it's Hex -->
+Type: `hex-encoded-bytes`
 
 The value obtained by putting a the secret through the `hash_function`.
 
