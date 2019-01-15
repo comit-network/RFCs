@@ -166,7 +166,7 @@ This protocol offers an application the following functionality:
 - **Exercise Option**: Alice may exercise her option until `beta_expiry` and receive **B** in exchange for **A**.
 
 It is important to note that Bob gives Alice an option not an *offer*.
-He cannot cancel this option.
+He cannot cancel this option; it simply exists until `beta_expiry`.
 If **A** declines in value relative to **B** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
