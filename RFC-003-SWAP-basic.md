@@ -55,7 +55,7 @@ Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β l
 The protocol begins with a SWAP request with the `protocol` header's value set to `COMIT-RFC-003` and the following header parameters:
 
 #### `hash_function`
-Type: [Hash Function](./COMIT-registry.md#Hash Functions)
+Type: [Hash Function](./COMIT-registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
 It must be available on the `alpha_ledger` and the `beta_ledger`.
