@@ -117,7 +117,7 @@ Parties must also take this into account when choosing or accepting the `alpha_e
 
 The HTLC definitions for particular ledgers will be included in subsequent RFCs
 
-### Alice deploys α-HTLC
+### 1. Alice deploys α-HTLC
 
 Alice starts the execution phase by deploying the α-HTLC to α with the following parameters determined in the setup phase:
 
@@ -127,7 +127,7 @@ Alice starts the execution phase by deploying the α-HTLC to α with the followi
   - expiry: `alpha_expiry`
   - secret_hash: `secret_hash`
 
-### Bob deploys β-HTLC
+### 2. Bob deploys β-HTLC
 
 When Bob sees that α-HTLC contract is deployed on α he must decide whether to deploy the β-HTLC and continue execution of the protocol.
 He must make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
@@ -142,7 +142,7 @@ If so he creates β-HTLC with the following parameters determined during the set
 
 If he decides to abort the protocol, Alice must wait until `alpha_expiry` and then activate the HTLC with refund to retrieve ownership of **A**.
 
-### Alice redeems
+### 3. Alice redeems
 
 With both HTLCs deployed, Alice must decide whether to activate the redeem path and continue execution of the protocol.
 She must make her decision early enough such that she is able to activate the redeem path of β-HTLC before `beta_expiry`.
@@ -150,7 +150,7 @@ To activate the redeem path she uses her secret and the procedure defined in the
 
 If she decides to abort the protocol, Bob must wait until `beta_expiry` and then activate the refund path of the β-HTLC and Alice must wait until `alpha_expiry` and then activate the refund path of α-HTLC.
 
-### Bob redeems
+### 4. Bob redeems
 
 When Bob learns the secret from Alice's redeem activation of β-HTLC he must activate the redeem path of α-HTLC and gain ownership of **A**.
 There is no decision for him to make.
