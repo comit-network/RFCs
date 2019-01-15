@@ -55,7 +55,7 @@ How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
 In the setup phase the two parties exchange [RFC002](./RFC-002-SWAP.md) SWAP messages to negotiate the parameters to the HTLCs.
 The values α, β, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
-Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β ledgers respectively.
+Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β ledgers.
 
 ### SWAP Request Header
 
