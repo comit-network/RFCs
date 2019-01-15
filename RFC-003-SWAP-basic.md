@@ -19,8 +19,8 @@ This RFC introduces the notion of an "identity".
 An identity belongs to a user and represents the minimal information required to transfer an asset to that user on a particular ledger.
 On blockchain based ledgers a user's identity is usually some function of a public key where the private key is only known to the user.
 
-This RFC extends the [COMIT-registry](./COMIT-registry.md) to include a section specifying the identity for each supported ledger and any subsequent RFCs adding support for a ledger must include an identity specification.
-The identity definition should be usable across many protocols.
+This RFC extends the registry to include a section specifying the identity for each supported ledger and any subsequent RFCs adding support for a ledger must include an identity specification.
+The identity definition should be usable across protocols.
 
 ### Hash Time Lock Contract (HTLC)
 
@@ -66,8 +66,7 @@ Type: [Hash Function](./COMIT-registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
 It must be available on the `alpha_ledger` and the `beta_ledger`.
-
-This RFC adds a Hash Functions section to the registry and adds SHA-256² to the list of available hash functions.
+This RFC defines `SHA-256`² as an initial value for this parameter.
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
@@ -199,6 +198,13 @@ Applications where this behaviour is undesirable should either not use this prot
 
 A security model of the protocol and its associated parameters will be included in a later revision of this RFC.
 
+## Registry Extensions
+
+This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways:
+
+- **identity**: The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
+- **`reason` header**: Adds an additional possible value to the `timeouts-too-tight` to the `reason` header.
+- **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
 
 --
 1. https://en.bitcoin.it/wiki/Atomic_swap
