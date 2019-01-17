@@ -168,7 +168,7 @@ To activate the redeem path he uses the secret and the procedure defined in the 
 This protocol offers an application the following functionality:
 
 - **Up for Sale**: Alice puts an asset **A** up for sale until `alpha_expiry`
-- **Give Option**: Bob can give Alice an *option* to exchange for **A** for his asset **B** until `beta_expiry`
+- **Give Option**: Bob can give Alice an *option* to exchange **A** for his asset **B** until `beta_expiry`
 - **Exercise Option**: Alice may exercise her option until `beta_expiry` and receive **B** in exchange for **A**.
 
 It is important to note that Bob gives Alice an option not an *offer*.
