@@ -44,8 +44,8 @@ If this is not enforced, a secret may be able to active the redeem path on one H
 In this RFC, HTLCs are constructed with the following parameters:
 
   - **asset**: The asset locked in the HTLC.
-  - **redeem_identity**: The identity to transfer ownership of the asset upon activation of the redeem path.
-  - **refund_identity**: The identity to transfer ownership of the asset upon activation of the refund path.
+  - **redeem_identity**: The identity the asset is transferred to upon activation of the redeem path.
+  - **refund_identity**: The identity the asset is transferred to upon activation of the refund path.
   - **expiry**: The absolute time after which the refund path may be activated.
   - **secret_hash**: The hash that the hash of the secret must match when activating with the redeem path.
   - **hash_function**: The cryptographic hash function that is used to produce the secret hash.
