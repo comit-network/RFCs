@@ -27,7 +27,7 @@ Any subsequent RFCs adding a ledger definition MUST specify its identity.
 
 The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol. An HTLC locks an asset until one of two possible paths are activated:
 
-- **Activation with secret**: The contract is activated with a *secret*. The hash of the secret must match the hash in the contract.
+- **Activation with secret**: The contract is activated with a *secret*. The hash of the secret MUST match the hash in the contract.
 - **Activation after expiry**: The contract is activated after a time fixed in the contract.
 
 Each activation path transfers the asset to a different party. The parties are decided at the time of contract creation.
@@ -38,7 +38,7 @@ The HTLCs defined in this specification use *absolute time locks* where the expi
 Absolute time locks are used because the protocol is only secure if the expiration of the time locks for HTLCs on different chains are fixed relative to each other.
 If HTLCs whose duration is relative to their inclusion in the ledger are used, an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
 
-HTLCs must enforce the length of the secret to be equal to the hash function's output length.
+HTLCs MUST enforce the length of the secret to be equal to the hash function's output length.
 If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
 
 In this RFC, HTLCs are constructed with the following parameters:
@@ -47,7 +47,7 @@ In this RFC, HTLCs are constructed with the following parameters:
   - **redeem_identity**: The identity the asset is transferred to upon activation of the redeem path.
   - **refund_identity**: The identity the asset is transferred to upon activation of the refund path.
   - **expiry**: The absolute time after which the refund path may be activated.
-  - **secret_hash**: The hash that the hash of the secret must match when activating with the redeem path.
+  - **secret_hash**: The hash whose pre-image is required to activate the redeem path.
   - **hash_function**: The cryptographic hash function that is used to produce the secret hash.
 
 How to construct an HTLC for each ledger will be defined in subsequent RFCs.
@@ -67,12 +67,12 @@ The header MUST have the following parameters:
 Type: [Hash Function](./COMIT-registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
-It must be available on the `alpha_ledger` and the `beta_ledger`.
+It MUST be available on the `alpha_ledger` and the `beta_ledger`.
 This RFC defines `SHA-256`² as an initial value for this parameter.
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
-When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body must have the following fields:
+When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
 | Name                    | JSON Encoding       | Description                                                                                               |
 |:-------------------------|:---------------------|:-----------------------------------------------------------------------------------------------------------|
@@ -85,7 +85,7 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 
 ### Swap Response (Accept)
 
-If responding with `OK00`, the responder must include the following fields in the response body.
+If responding with `OK00`, the responder MUST include the following fields in the response body.
 
 | Name                    | JSON Encoding | Description                                                                                               |
 |-------------------------|---------------|-----------------------------------------------------------------------------------------------------------|
@@ -113,10 +113,10 @@ After the Setup phase the sender of the request is designated the role Alice whi
 The execution phase of the protocol takes place exclusively by interacting with the Ledgers.
 
 The protocol is described below as if both parties have immediate access to the most recent state of the ledger and are able to effect persistent changes to it immediately.
-For ledgers where recent transactions may be reverted, parties must wait until they have confidence that a transaction is permanent before they take any action depending on it.
-Parties must also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see [Security Considerations](#security-considerations)).
+For ledgers where recent transactions may be reverted, parties MUST wait until they have confidence that a transaction is permanent before they take any action depending on it.
+Parties should also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see [Security Considerations](#security-considerations)).
 
-In general, to verify a HTLC deployment parties must check that the deployed HTLC is exactly what was negotiated during the setup phase.
+Parties MUST verify that the deployed HTLC is exactly what was negotiated during the setup phase.
 The HTLC definitions and how to verify them on particular ledgers will be included in subsequent RFCs.
 
 ### 1. Alice deploys α-HTLC
@@ -131,10 +131,11 @@ Alice starts the execution phase by deploying the α-HTLC to α with the followi
 
 ### 2. Bob deploys β-HTLC
 
-When Bob sees that α-HTLC contract is deployed on α he must decide whether to deploy the β-HTLC and continue execution of the protocol.
-He must make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
+When Bob sees that the α-HTLC is deployed on α he decides whether to deploy the β-HTLC or abort the swap.
+He MUST make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
+If Bob deploys β-HTLC too close to or after `beta_expiry` Alice MUST abort the protocol.
 
-If so, he creates β-HTLC with the following parameters determined during the setup phase:
+If he decides to continue the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
 
   - asset: `beta_asset`
   - redeem_identity: `beta_redeem_identity`
@@ -142,22 +143,25 @@ If so, he creates β-HTLC with the following parameters determined during the se
   - expiry: `beta_expiry`
   - secret_hash: `secret_hash`
 
-If he decides to abort the protocol, Alice must wait until `alpha_expiry` and then activate the HTLC with refund to retrieve ownership of **A**.
+If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of α-HTLC to retrieve **A**.
 
 ### 3. Alice redeems
 
-With both HTLCs deployed, Alice must decide whether to activate the redeem path and continue execution of the protocol.
-She must make her decision early enough such that she is able to activate the redeem path of β-HTLC before `beta_expiry`.
-To activate the redeem path she uses her secret and the procedure defined in the specification of the HTLC.
+With both HTLCs deployed, Alice decides whether to activate the redeem path of the β-HTLC or abort the swap.
+She MUST make her decision early enough such that she is able to activate the redeem path of β-HTLC before `beta_expiry`.
+To activate the redeem path she uses her secret and the procedure defined in the specification of β-HTLC.
 
-If she decides to abort the protocol, Bob must wait until `beta_expiry` and then activate the refund path of the β-HTLC and Alice must wait until `alpha_expiry` and then activate the refund path of α-HTLC.
+If Alice attempts redeeming too close to or after `beta_expiry` she risks having Bob cancel the redeem by activating the refund before her.
+If Bob does this successfully, he may learn the secret and therefore gain **A** while also having **B** returned to him.
+
+If she decides to abort the swap, Bob waits until `beta_expiry` and then MUST activate the refund path of the β-HTLC.
+Alice then waits until `alpha_expiry` and then MUST activate the refund path of α-HTLC.
 
 ### 4. Bob redeems
 
-When Bob learns the secret from Alice's redeem activation of β-HTLC he must activate the redeem path of α-HTLC and gain ownership of **A**.
-There is no decision for him to make.
-He must make sure he does this before `beta_expiry` or risks both losing **B** and not gaining **A**.
-To activate the redeem path he uses the secret and the procedure defined in the specification of the HTLC.
+When Bob learns the secret from Alice's redeem activation of β-HTLC he MUST activate the redeem path of α-HTLC and gain ownership of **A**.
+He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining **A**.
+To activate the redeem path he uses the secret and the procedure defined in the specification of the α-HTLC.
 
 ## Application Considerations
 
