@@ -185,6 +185,84 @@ This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways
 - **`reason` header**: Adds an additional possible value to the `timeouts-too-tight` to the `reason` header.
 - **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
 
+# Examples
+
+## Bitcoin to Ethereum
+
+### SWAP REQUEST
+``` json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": {
+        "network": "regtest"
+      }
+    },
+    "beta_ledger": {
+      "value": "ethereum",
+      "parameters": {
+        "network": "ropsten"
+      }
+    },
+    "alpha_asset": {
+      "value": "bitcoin",
+      "parameters": {
+        "quantity": "100000000"
+      }
+    },
+    "beta_asset": {
+      "value": "ether",
+      "parameters": {
+        "quantity": "21000000000000000000"
+      }
+    },
+    "protocol": {
+      "value": "comit-rfc-003",
+      "parameters": {
+          "hash_function": "SHA-256"
+      }
+    }
+  },
+  "body": {
+    "alpha_expiry": 1547697466,
+    "beta_expiry": 1547611066,
+    "alpha_refund_identity": "482d8bc0a2f6bb72f38a62bcafb85c2c04b8e9d4",
+    "beta_redeem_identity": "0xdaa74f7c9d4894f396860037ca727a2ba726819d",
+    "secret_hash": "07954accecf3a81b484b0bbb9cc63034fb6c1037f234288f5d297aa9f669a756"
+  }
+}
+```
+
+### SWAP RESPONSE (accept)
+
+``` json
+{
+  "status": "OK00",
+  "body": {
+    "alpha_redeem_identity": "3c045591864c6b52658db072e47a01f658d53e0f",
+    "beta_redeem_identity": "0xb39161874921fd329233a9134e537425bb4e72fb"
+  }
+}
+```
+
+### SWAP RESPONSE (reject: `timeouts-too-tight`)
+
+``` json
+{
+    "status": "RE20",
+    "headers" : {
+        "reason" : {
+            "value" : "timeouts-too-tight",
+            "parameters" : {
+                "min-time" : 172800,
+            }
+        }
+    }
+}
+```
+
 ---
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
