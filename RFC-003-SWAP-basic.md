@@ -17,10 +17,11 @@ Status: Draft
 
 This RFC introduces the notion of an "identity".
 An identity belongs to a user and represents the minimal information required to transfer an asset to that user on a particular ledger.
-On blockchain based ledgers a user's identity is usually some function of a public key where the private key is only known to the user.
+On the ledger, the identity is assigned the asset and a user owns the asset in so far as they own the identity.
+On blockchain based ledgers a user's identity is usually some function of a public key and the user owns the identity by having exclusive knowledge of the private key.
 
-This RFC extends the registry to include a section specifying the identity for each supported ledger and any subsequent RFCs adding support for a ledger must include an identity specification.
-The identity definition should be usable across protocols.
+This RFC extends the registry to include a section specifying the identity for each supported ledger.
+Any subsequent RFCs adding a ledger definition MUST specify its identity.
 
 ### Hash Time Lock Contract (HTLC)
 
