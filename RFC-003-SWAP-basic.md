@@ -59,7 +59,7 @@ Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β l
 
 ### SWAP Request Header
 
-The protocol begins with a SWAP request with the `protocol` header's value set to `COMIT-RFC-003` and the following header parameters:
+The protocol begins with a SWAP request with the `protocol` header's value set to `comit-rfc-003` and the following header parameters:
 
 #### `hash_function`
 Type: [Hash Function](./COMIT-registry.md#hash-function)
@@ -70,7 +70,7 @@ This RFC defines `SHA-256`² as an initial value for this parameter.
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
-When `COMIT-RFC-003` is used as the value for `protocol` for a `SWAP REQUEST` message the body must have the following fields:
+When `comit-rfc-003` is used as the value for `protocol` for a `SWAP REQUEST` message the body must have the following fields:
 
 | Name                    | JSON Encoding       | Description                                                                                               |
 |-------------------------|---------------------|-----------------------------------------------------------------------------------------------------------|
