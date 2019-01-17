@@ -75,7 +75,7 @@ How to construct HTLCs based on SHA-256 and other hash functions for particular 
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body must have the following fields:
 
 | Name                    | JSON Encoding       | Description                                                                                               |
-|-------------------------|---------------------|-----------------------------------------------------------------------------------------------------------|
+|:-------------------------|:---------------------|:-----------------------------------------------------------------------------------------------------------|
 | `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                     |
 | `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock of the beta HTLC                                                      |
 | `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                   |
@@ -134,7 +134,7 @@ Alice starts the execution phase by deploying the α-HTLC to α with the followi
 When Bob sees that α-HTLC contract is deployed on α he must decide whether to deploy the β-HTLC and continue execution of the protocol.
 He must make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
 
-If so he creates β-HTLC with the following parameters determined during the setup phase:
+If so, he creates β-HTLC with the following parameters determined during the setup phase:
 
   - asset: `beta_asset`
   - redeem_identity: `beta_redeem_identity`

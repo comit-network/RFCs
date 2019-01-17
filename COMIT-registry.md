@@ -23,7 +23,7 @@ This registry may be expanded with new RFCs.
 [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
 | Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
-| ----     | --------      | -------------            | --------- | --------------------------------------------------------------------------------- |
+|:----     |:-------      |:-------------            |:--------- | --------------------------------------------------------------------------------- |
 | Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
 | Ethereum | `address`     | Ethereum address        | TBD       | An Ethereum address                                        |
 
@@ -42,7 +42,7 @@ This registry may be expanded with new RFCs.
 The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
 
 | Name                   | Reference                       |
-|----------------------- |-------------------------------- |
+|:----------------------- |:-------------------------------- |
 | Basic HTLC Atomic Swap | [RFC-003](./RFC-003-SWAP-basic) |
 
 
@@ -52,7 +52,7 @@ The following is a list of cryptographic hash functions for use within COMIT pro
 
 
 | Name    | Reference  |
-| ------- |----------- |
+|:------- |:----------- |
 | `SHA-256`| [IETF RFC463](https://tools.ietf.org/html/rfc4634#section-4.1) |
 
 ## Headers
