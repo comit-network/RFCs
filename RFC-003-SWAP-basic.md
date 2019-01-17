@@ -35,12 +35,12 @@ Therefore this document will refer to these paths as *refund* and *redeem* respe
 
 The HTLCs defined in this specification use *absolute time locks* where the expiry is set at a specific time in the future.
 Absolute time locks are used because the protocol is only secure if the expiration of the time locks for HTLCs on different chains are fixed relative to each other.
-If HTLCs who's duration is relative to their inclusion in the ledger are used an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
+If HTLCs whose duration is relative to their inclusion in the ledger are used, an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
 
 HTLCs must enforce the length of the secret to be equal to the hash function's output length.
 If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
 
-In this RFC HTLCs are constructed with the following parameters:
+In this RFC, HTLCs are constructed with the following parameters:
 
   - **asset**: The asset locked in the HTLC.
   - **redeem_identity**: The identity to transfer ownership of the asset upon activation of the redeem path.
@@ -183,6 +183,6 @@ This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways
 - **`reason` header**: Adds an additional possible value to the `timeouts-too-tight` to the `reason` header.
 - **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
 
---
+---
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1

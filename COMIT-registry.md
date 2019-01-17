@@ -20,12 +20,12 @@ This registry may be expanded with new RFCs.
 |          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
 
 
-With [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
+[RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
 | Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
 | ----     | --------      | -------------            | --------- | --------------------------------------------------------------------------------- |
 | Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
-| Ethereum | `address`     | Ethereum addrress        | TBD       | An ethereum address owned by the user                                             |
+| Ethereum | `address`     | Ethereum address        | TBD       | An Ethereum address                                        |
 
 
 ## Assets
@@ -39,7 +39,7 @@ With [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an
 
 ## Protocols
 
-The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of an SWAP message.
+The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
 
 | Name                   | Reference                       |
 |----------------------- |-------------------------------- |
@@ -48,7 +48,7 @@ The following is a list of protocols defined in COMIT RFCs for use in the `proto
 
 ## Hash Functions
 
-The following is a list of cryptographic hash fucntions for use within COMIT protocols:
+The following is a list of cryptographic hash functions for use within COMIT protocols:
 
 
 | Name    | Reference  |
