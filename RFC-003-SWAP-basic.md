@@ -4,7 +4,7 @@
 
 This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
-It is a simplified version of the protocol originally described by TierNolan¹.
+It is a simplified version of the protocol originally described by TierNolan [\[1\]][1].
 
 ## Status
 
@@ -269,5 +269,5 @@ This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways
 ```
 
 ---
-1. https://en.bitcoin.it/wiki/Atomic_swap
+[1] https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
