@@ -4,7 +4,7 @@
 
 This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
-It is a simplified version of the protocol originally described by TierNolan [\[1\]][1].
+It is a simplified version of the protocol originally described by TierNolan¹.
 
 ## Status
 
@@ -70,7 +70,7 @@ Type: [Hash Function](./COMIT-registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
 It MUST be available on the `alpha_ledger` and the `beta_ledger`.
-This RFC defines `SHA-256`² as an initial value for this parameter.
+This RFC defines `SHA-256`[²](#references) as an initial value for this parameter.
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
@@ -190,6 +190,10 @@ This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways
 - **`reason` header**: Adds an additional possible value `timeouts-too-tight` to the `reason` header.
 - **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
 
+## References
+1. https://en.bitcoin.it/wiki/Atomic_swap
+2. https://tools.ietf.org/html/rfc4634#section-4.1
+
 # Examples
 
 ## Bitcoin to Ethereum
@@ -267,7 +271,3 @@ This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways
     }
 }
 ```
-
----
-[1] https://en.bitcoin.it/wiki/Atomic_swap
-2. https://tools.ietf.org/html/rfc4634#section-4.1
