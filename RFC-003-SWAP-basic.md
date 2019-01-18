@@ -13,6 +13,8 @@ RFC-Number: 003
 Status: Draft
 ```
 
+## Concepts
+
 ### Identity
 
 This RFC introduces the notion of an "identity".
