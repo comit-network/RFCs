@@ -37,7 +37,7 @@ Therefore this document will refer to these paths as *refund* and *redeem* respe
 
 The HTLCs defined in this specification use *absolute time locks* where the expiry is set to a specific time in the future.
 Absolute time locks are necessary because the protocol is only secure if the expiration of the time locks for HTLCs on different ledgers are fixed relative to each other.
-*relative time lock* HTLCs have an expiration time that is relative to their inclusion in the ledger.
+*Relative time lock* HTLCs have an expiration time that is relative to their inclusion in the ledger.
 In this protocol, they would allow an attacker to manipulate the relative expiration times of the HTLCs if they are able to delay the inclusion of a HTLC onto one of the ledgers.
 
 HTLCs MUST enforce the length of the secret to be equal to the hash function's output length.
