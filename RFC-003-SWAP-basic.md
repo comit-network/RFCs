@@ -79,7 +79,7 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 | Name                    | JSON Encoding       | Description                                                                                               |
 |:-------------------------|:---------------------|:-----------------------------------------------------------------------------------------------------------|
 | `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                     |
-| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock of the beta HTLC                                                      |
+| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                      |
 | `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                   |
 | `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret  |
 | `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                       |
