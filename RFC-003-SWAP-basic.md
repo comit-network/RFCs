@@ -135,7 +135,6 @@ Alice starts the execution phase by deploying the α-HTLC to α with the followi
 
 When Bob sees that the α-HTLC is deployed on α he decides whether to deploy the β-HTLC or abort the swap.
 He MUST make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
-If Bob deploys β-HTLC too close to or after `beta_expiry` Alice MUST abort the protocol.
 
 If he decides to continue with the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
 
