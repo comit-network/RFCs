@@ -25,18 +25,20 @@ Any subsequent RFCs adding a ledger definition MUST specify its identity.
 
 ### Hash Time Lock Contract (HTLC)
 
-The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol. An HTLC locks an asset until one of two possible paths is activated:
+The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol.
+A HTLC locks an asset until someone activates one of two possible paths:
 
-- **Activation with secret**: The contract is activated with a *secret*. The hash of the secret MUST match the hash in the contract.
-- **Activation after expiry**: The contract is activated after a time fixed in the contract.
+- **Activation with secret**: The contract is activated with a *secret* whose hash matches the hash in the contract.
+- **Activation after expiry**: The contract is activated after an expiry time specified in the contract.
 
 Each activation path transfers the asset to a different party. The parties are decided at the time of contract creation.
 In this RFC, the expiry activation returns the asset to the original owner while a secret activation transfers it to the other party.
 Therefore this document will refer to these paths as *refund* and *redeem* respectively.
 
 The HTLCs defined in this specification use *absolute time locks* where the expiry is set to a specific time in the future.
-Absolute time locks are used because the protocol is only secure if the expiration of the time locks for HTLCs on different chains are fixed relative to each other.
-If HTLCs whose duration is relative to their inclusion in the ledger are used, an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
+Absolute time locks are necessary because the protocol is only secure if the expiration of the time locks for HTLCs on different ledgers are fixed relative to each other.
+*relative time lock* HTLCs have an expiration time that is relative to their inclusion in the ledger.
+In this protocol, they would allow an attacker to manipulate the relative expiration times of the HTLCs if they are able to delay the inclusion of a HTLC onto one of the ledgers.
 
 HTLCs MUST enforce the length of the secret to be equal to the hash function's output length.
 If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
