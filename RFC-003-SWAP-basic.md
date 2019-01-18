@@ -25,7 +25,7 @@ Any subsequent RFCs adding a ledger definition MUST specify its identity.
 
 ### Hash Time Lock Contract (HTLC)
 
-The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol. An HTLC locks an asset until one of two possible paths are activated:
+The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol. An HTLC locks an asset until one of two possible paths is activated:
 
 - **Activation with secret**: The contract is activated with a *secret*. The hash of the secret MUST match the hash in the contract.
 - **Activation after expiry**: The contract is activated after a time fixed in the contract.
@@ -34,7 +34,7 @@ Each activation path transfers the asset to a different party. The parties are d
 In this RFC, the expiry activation returns the asset to the original owner while a secret activation transfers it to the other party.
 Therefore this document will refer to these paths as *refund* and *redeem* respectively.
 
-The HTLCs defined in this specification use *absolute time locks* where the expiry is set at a specific time in the future.
+The HTLCs defined in this specification use *absolute time locks* where the expiry is set to a specific time in the future.
 Absolute time locks are used because the protocol is only secure if the expiration of the time locks for HTLCs on different chains are fixed relative to each other.
 If HTLCs whose duration is relative to their inclusion in the ledger are used, an attacker may be able to delay the inclusion of a HTLC onto the ledger and therefore manipulate the relative length of the HTLC time locks.
 
@@ -54,7 +54,7 @@ How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
 ## Setup Phase
 
-In the setup phase the two parties exchange [RFC002](./RFC-002-SWAP.md) SWAP messages to negotiate the parameters to the HTLCs.
+In the setup phase the two parties exchange [RFC002](./RFC-002-SWAP.md) SWAP messages to negotiate the parameters of the HTLCs.
 The values α, β, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
 Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β ledgers.
 
@@ -79,18 +79,18 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 | `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                     |
 | `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock of the beta HTLC                                                      |
 | `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                   |
-| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret. |
-| `secret_hash`           | `hex-encoded-bytes` | The output by calling `hash_function` with the secret as input                                            |
+| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret  |
+| `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                       |
 
 
 ### Swap Response (Accept)
 
-If responding with `OK00`, the responder MUST include the following fields in the response body.
+If responding with `OK00`, the responder MUST include the following fields in the response body:
 
 | Name                    | JSON Encoding | Description                                                                                               |
 |-------------------------|---------------|-----------------------------------------------------------------------------------------------------------|
-| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret. |
-| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`.     |
+| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret  |
+| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`      |
 
 
 ### Swap Response (Decline)
@@ -101,7 +101,7 @@ This RFC extends the SWAP [reason header](./RFC-002-SWAP.md#reason) with the fol
 
 This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time.
 
-parameters:
+Parameters:
 
 | Name          | JSON Encoding | Description                                                                         |
 | ------------- | ------------- | ----------------------------------------------------------------------------------- |
@@ -135,7 +135,7 @@ When Bob sees that the α-HTLC is deployed on α he decides whether to deploy th
 He MUST make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
 If Bob deploys β-HTLC too close to or after `beta_expiry` Alice MUST abort the protocol.
 
-If he decides to continue the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
+If he decides to continue with the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
 
   - asset: `beta_asset`
   - redeem_identity: `beta_redeem_identity`
@@ -167,7 +167,7 @@ To activate the redeem path he uses the secret and the procedure defined in the 
 
 This protocol offers an application the following functionality:
 
-- **Up for Sale**: Alice puts an asset **A** up for sale until `alpha_expiry`
+- **Up for Sale**: Alice puts an asset **A** up for sale until `alpha_expiry`.
 - **Give Option**: Bob can give Alice an *option* to exchange **A** for his asset **B** until `beta_expiry`
 - **Exercise Option**: Alice may exercise her option until `beta_expiry` and receive **B** in exchange for **A**.
 
@@ -186,7 +186,7 @@ A security model of the protocol and its associated parameters will be included 
 This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways:
 
 - **identity**: The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
-- **`reason` header**: Adds an additional possible value to the `timeouts-too-tight` to the `reason` header.
+- **`reason` header**: Adds an additional possible value `timeouts-too-tight` to the `reason` header.
 - **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
 
 # Examples
