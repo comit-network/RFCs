@@ -268,8 +268,9 @@ This section defines a text-based encoding of the above concepts. Later RFCs mig
 Nodes MUST use UTF-8 for the actual character encoding. (JSON technically requires that but just to be sure, it is stated here again.)
 
 A protocol needs to somehow encode, where messages start and where they end. In the JSON encoding of BAM, this is solved through newlines. Thus, each message MUST be on a single line.
-
-In the following sections
+All examples in the following sections are **pretty-printed** over several lines.
+This is just for increased readability of the RFC.
+As mentioned, the JSON documents are actually sent over the wire **without** newlines.
 
 #### Frames
 
