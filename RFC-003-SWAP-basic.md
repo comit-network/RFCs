@@ -1,5 +1,39 @@
 # Basic HTLC Atomic Swap
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [Basic HTLC Atomic Swap](#basic-htlc-atomic-swap)
+    - [Description](#description)
+    - [Status](#status)
+    - [Concepts](#concepts)
+        - [Identity](#identity)
+        - [Hash Time Lock Contract (HTLC)](#hash-time-lock-contract-htlc)
+    - [Setup Phase](#setup-phase)
+        - [SWAP Request Header](#swap-request-header)
+            - [`hash_function`](#hashfunction)
+        - [SWAP Request Body](#swap-request-body)
+        - [Swap Response (Accept)](#swap-response-accept)
+        - [Swap Response (Decline)](#swap-response-decline)
+            - [`timeouts-too-tight`](#timeouts-too-tight)
+    - [Execution Phase](#execution-phase)
+        - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
+        - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
+        - [3. Alice redeems](#3-alice-redeems)
+        - [4. Bob redeems](#4-bob-redeems)
+    - [Application Considerations](#application-considerations)
+    - [Security Considerations](#security-considerations)
+    - [Registry Extensions](#registry-extensions)
+    - [References](#references)
+- [Examples](#examples)
+    - [Bitcoin to Ethereum](#bitcoin-to-ethereum)
+        - [SWAP REQUEST](#swap-request)
+        - [SWAP RESPONSE (accept)](#swap-response-accept)
+        - [SWAP RESPONSE (reject: `timeouts-too-tight`)](#swap-response-reject-timeouts-too-tight)
+
+<!-- markdown-toc end -->
+
+
 ## Description
 
 This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
