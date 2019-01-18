@@ -19,6 +19,15 @@ This registry may be expanded with new RFCs.
 |          |                        |           |            |                  | `ropsten`          | Ropsten testnet (network id 3)  |
 |          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
 
+
+[RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
+
+| Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
+|:----     |:-------      |:-------------            |:--------- | --------------------------------------------------------------------------------- |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
+| Ethereum | `address`     | Ethereum address        | TBD       | An Ethereum address                                        |
+
+
 ## Assets
 <!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
 | Name           | Description                   | Reference | `value`   | `parameters` key | `parameters` value type | `parameters` description |
@@ -30,15 +39,30 @@ This registry may be expanded with new RFCs.
 
 ## Protocols
 
-TODO
+The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
+
+| Name                   | Reference                       |
+|:----------------------- |:-------------------------------- |
+| Basic HTLC Atomic Swap | [RFC-003](./RFC-003-SWAP-basic) |
+
+
+## Hash Functions
+
+The following is a list of cryptographic hash functions for use within COMIT protocols:
+
+
+| Name    | Reference  |
+|:------- |:----------- |
+| `SHA-256`| [IETF RFC463](https://tools.ietf.org/html/rfc4634#section-4.1) |
 
 ## Headers
 
-| Name           | Reference                                 | `value`
-|:---            |:---                                       |:---                                    
-| `alpha_ledger` | [RFC-002](./RFC-002-SWAP.md#alpha_ledger) | See [Ledgers](#ledgers)
-| `beta_ledger`  | [RFC-002](./RFC-002-SWAP.md#beta_ledger)  | See [Ledgers](#ledgers)
-| `alpha_asset ` | [RFC-002](./RFC-002-SWAP.md#alpha_asset)  | See [Assets](#assets)
-| `beta_asset`   | [RFC-002](./RFC-002-SWAP.md#beta_asset)   | See [Assets](#assets)
-| `protocol`     | [RFC-002](./RFC-002-SWAP.md#protocol)     | See [Protocols](#protocols)
-| `reason`       | [RFC-002](./RFC-002-SWAP.md#reason-optional)       | [`unsatisfactory-rate`](./RFC-002-SWAP.md#reason-optional), [`unsatisfactory-quantity`](./RFC-002-SWAP.md#reason-optional), [`protocol-unsupported`](./RFC-002-SWAP.md#reason-optional), [`unsupported-ledger`](./RFC-002-SWAP.md#reason-optional), [`unavailable-asset`](./RFC-002-SWAP.md#reason-optional)
+| Name           | Reference                                    | `value`                                                                                                                                                                                                                                                                                                                                                                          |
+|:---------------|:---------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alpha_ledger` | [RFC-002](./RFC-002-SWAP.md#alpha_ledger)    | See [Ledgers](#ledgers)                                                                                                                                                                                                                                                                                                                                                          |
+| `beta_ledger`  | [RFC-002](./RFC-002-SWAP.md#beta_ledger)     | See [Ledgers](#ledgers)                                                                                                                                                                                                                                                                                                                                                          |
+| `alpha_asset ` | [RFC-002](./RFC-002-SWAP.md#alpha_asset)     | See [Assets](#assets)                                                                                                                                                                                                                                                                                                                                                            |
+| `beta_asset`   | [RFC-002](./RFC-002-SWAP.md#beta_asset)      | See [Assets](#assets)                                                                                                                                                                                                                                                                                                                                                            |
+| `protocol`     | [RFC-002](./RFC-002-SWAP.md#protocol)        | See [Protocols](#protocols)                                                                                                                                                                                                                                                                                                                                                      |
+| `reason`       | [RFC-002](./RFC-002-SWAP.md#reason-optional) | [`unsatisfactory-rate`](./RFC-002-SWAP.md#reason-optional), [`unsatisfactory-quantity`](./RFC-002-SWAP.md#reason-optional), [`protocol-unsupported`](./RFC-002-SWAP.md#reason-optional), [`unsupported-ledger`](./RFC-002-SWAP.md#reason-optional), [`unavailable-asset`](./RFC-002-SWAP.md#reason-optional), [`timeouts-too-tight`](./RFC-003-SWAP-basic.md#timeouts-too-tight) |
+|                |                                              |                                                                                                                                                                                                                                                                                                                                                                                  |
