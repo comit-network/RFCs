@@ -46,6 +46,7 @@ It is a simplified version of the protocol originally described by TierNolan[¹]
 RFC-Number: 003
 Status: Draft
 ```
+Please feedback comments in [Tracking issue for RFC-003-SWAP-basic](../../issues/19)
 
 ## Concepts
 

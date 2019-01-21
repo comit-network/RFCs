@@ -50,6 +50,7 @@ This RFC describes BAM!: **B**i-directional **A**pplication **M**essaging. It is
 RFC-Number: 001
 Status: Draft
 ```
+Please feedback comments in [Tracking issue for RFC-001-BAM](../../issues/17).
 
 ## Motivation & Requirements 
 
