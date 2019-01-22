@@ -210,7 +210,7 @@ This protocol offers an application the following functionality:
 
 It is important to note that Bob gives Alice an option not an *offer*.
 He cannot cancel this option; it simply exists until `beta_expiry`.
-If **A** declines in value relative to **B** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
+If **B** declines in value relative to **A** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
 
