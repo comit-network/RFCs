@@ -53,11 +53,9 @@ This RFC contains the definition of the following `BAM!` headers:
 
 ## Status
 
-```
-RFC-Number: 002
-Status: Draft
-```
-Please feedback comments in [Tracking issue for RFC-002-SWAP](../../issues/18).
+- RFC-Number: 002
+- Status: Draft
+- Discussion issue: [#18](../../issues/18)
 
 ## Terminology
 

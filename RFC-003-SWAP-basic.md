@@ -42,11 +42,9 @@ It is a simplified version of the protocol originally described by TierNolan[¹]
 
 ## Status
 
-```
-RFC-Number: 003
-Status: Draft
-```
-Please feedback comments in [Tracking issue for RFC-003-SWAP-basic](../../issues/19)
+- RFC-Number: 003
+- Status: Draft
+- Discussion issue: [#19](../../issues/19)
 
 ## Concepts
 
