@@ -44,7 +44,7 @@ It is a simplified version of the protocol originally described by TierNolan[¹]
 
 - RFC-Number: 003
 - Status: Draft
-- Discussion issue: [#19](../../issues/19)
+- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
 
 ## Concepts
 
