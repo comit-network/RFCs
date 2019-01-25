@@ -33,9 +33,8 @@
     - [Header](#header)
       - [Representation](#representation)
       - [Default values](#default-values)
-      - [Multiple values](#multiple-values)
+      - [Allowed values](#allowed-values)
       - [Compact representation](#compact-representation)
-      - [Data types](#data-types)
     - [Naming conventions](#naming-conventions)
 - [References](#references)
 
@@ -167,14 +166,16 @@ The design of the `status` field is similar to the status-code in HTTP. It's goa
 
 ##### Headers
 
-`Headers` and `Body` are supposed to be used by the application protocol (for the beginning, just GANP). Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the protocol headers in order to describe the encoding of the payload.
+`Headers` and `Body` are supposed to be used by an application protocol defined on top of `BAM`.
+Application protocols can be defined by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
+Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
 
-In addition, protocol headers also encode compatibility information. Each header is available in two variants:
+In addition, headers also encode compatibility information. Each header is available in two variants:
 
 - MUST understand
 - MAY ignore
 
-If a node receives a protocol header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with a `SE01` response. See section [Sender Error Responses](#sender-errors-se00-se99) for further details. Headers encoded as `MAY ignore` are ok to be not understood. Nodes may simply ignore them as if they were not there.
+If a node receives a header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with a `SE01` response. See section [Sender Error Responses](#sender-errors-se00-se99) for further details. Headers encoded as `MAY ignore` are ok to be not understood. Nodes may simply ignore them as if they were not there.
 
 If a node receives a `RESPONSE` frame with a header that is marked as `MUST understand` but it does not understand it, it MUST stop processing this response. The reason behind this is that the responding party demanded understanding of this header in order to continue. This is most likely due to a backwards-incompatible change in a protocol where the receiving party would act in an incompatible way if it did not take the mandatory header into account.
 
@@ -240,13 +241,12 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 2. A value: The actual value that is associated with the header
 
-    A header's value MUST be a single token, e.g. no nested structure etc. This is to facilitate comparisons of header-values. If a value needs to parameterized further, `parameters` should be used. Every header MUST have a value.
+    Every header MUST have a value. A header's value determines, what the `parameters` look like.
 
 3. Parameters
 
-    Parameters are to be used to further specify a header's value. Parameters are a key-value structure with **unique** keys. Similar to the actual header value, both keys and values must be single tokens. Parameters are optional and may therefore be empty or left out if the encoding allows this.
-
-Headers can occur multiple times, e.g. a single header-key can map to multiple values where all of them have one `value` and `parameters`. How this is represented depends on the encoding.
+    Parameters are additional data that depend on a header's value.
+    Parameters are optional and may therefore be empty or left out if the encoding allows this.
 
 Splitting headers up into `value` and `parameters` was done for the following reasons:
 
@@ -360,7 +360,7 @@ Let's start off with an example:
 ```
 
 In the above example:
-- "Source-Ledger" is the header-key.
+- "source_ledger" is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood. Respectively, if the key does_not start with an underscore, the header is mandatory and MUST be understood by the node.
 - `value` is the header-value (see [Headers - Requirement 2](#headers))
 - `parameters` encode the parameters of the header.
@@ -369,28 +369,9 @@ In the above example:
 
 Implementations MUST NOT fail if they receive a header without a `parameters` field but rather default to an empty object (which is equivalent to no parameters).
 
-##### Multiple values
+##### Allowed values
 
-If the header supports multiple values it MUST be represented as list (and if it is only a single value it MUST be a single object). For example, consider a header "supported_ledgers" which lists the ledgers a node supports:
-
-```json
-"supported_ledgers" : [
-    {
-        "value": "Bitcoin",
-        "parameters": {
-            "network": "mainnet"
-        }
-    },
-    {
-        "value": "Ethereum",
-        "parameters": {
-            "network": "mainnet"
-        }
-    }
-]
-```
-
-Note how the inner structure of the header is list of the same ledger structure as defined above.
+The `value` of a header MAY be any valid JSON-value. This includes `object`s and `lists`.
 
 ##### Compact representation
 
@@ -410,15 +391,25 @@ In cases like these, where there are no parameters, implementations can choose t
 
 Implementations MUST be able to process compact representations. They MUST treat them identical to the version with only a `value` field.
 
-##### Data types
+In the compact representation, the `value` of a header MUST NOT be an `object`.
 
-In the JSON encoding, `value` can take any scalar JSON data type (except `null`), meaning:
+The following is therefore invalid:
 
-- numbers
-- booleans
-- strings
+```json
+"invalid_header": {
+    "some_key": "foobar"
+}
+```
 
-The same thing applies to the values of parameters.
+If a header needs an `object` to express its value, you should resort to the default representation to make it unambigous:
+
+```json
+"valid_header": {
+    "value": {
+        "some_key": "foobar"
+    }
+}
+```
 
 #### Naming conventions
 
