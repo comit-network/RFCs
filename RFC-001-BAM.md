@@ -4,40 +4,39 @@
 - [Status](#status)
 - [Motivation & Requirements](#motivation--requirements)
 - [Evaluation of existing protocols](#evaluation-of-existing-protocols)
-    - [HTTP(2)](#http2)
-    - [WebSockets](#websockets)
-    - [A profile for BEEP](#a-profile-for-beep)
-    - [gRPC](#grpc)
+  - [HTTP(2)](#http2)
+  - [WebSockets](#websockets)
+  - [A profile for BEEP](#a-profile-for-beep)
+  - [gRPC](#grpc)
 - [Introducing **BAM!**](#introducing-bam)
-    - [Frames](#frames)
-        - [Type](#type)
-        - [Id](#id)
-    - [Different frame types](#different-frame-types)
-        - [Notification](#notification)
-        - [Request / Response](#request--response)
-            - [Structure](#structure)
-            - [Optional fields](#optional-fields)
-            - [Type](#type)
-            - [Status](#status)
-            - [Application data](#application-data)
-            - [Headers](#headers)
-            - [Status code families](#status-code-families)
-                - [Successful responses (OK00-OK99)](#successful-responses-ok00-ok99)
-                - [Sender errors (SE00-SE99)](#sender-errors-se00-se99)
-                - [Receiver errors (RE00-RE99)](#receiver-errors-re00-re99)
-    - [Headers](#headers)
-    - [JSON Encoding](#json-encoding)
-        - [Frames](#frames)
-        - [Encoding of the individual frame types](#encoding-of-the-individual-frame-types)
-            - [Request](#request)
-            - [Response](#response)
-        - [Header](#header)
-            - [Representation](#representation)
-            - [Default values](#default-values)
-            - [Multiple values](#multiple-values)
-            - [Compact representation](#compact-representation)
-            - [Data types](#data-types)
-        - [Naming conventions](#naming-conventions)
+  - [Frames](#frames)
+    - [Type](#type)
+    - [Id](#id)
+  - [Different frame types](#different-frame-types)
+    - [Notification](#notification)
+    - [Request / Response](#request--response)
+      - [Structure](#structure)
+      - [Optional fields](#optional-fields)
+      - [Type](#type-1)
+      - [Status](#status-1)
+      - [Headers](#headers)
+      - [Status code families](#status-code-families)
+        - [Successful responses (OK00-OK99)](#successful-responses-ok00-ok99)
+        - [Sender errors (SE00-SE99)](#sender-errors-se00-se99)
+        - [Receiver errors (RE00-RE99)](#receiver-errors-re00-re99)
+  - [Headers](#headers-1)
+  - [JSON Encoding](#json-encoding)
+    - [Frames](#frames-1)
+    - [Encoding of the individual frame types](#encoding-of-the-individual-frame-types)
+      - [Request](#request)
+      - [Response](#response)
+    - [Header](#header)
+      - [Representation](#representation)
+      - [Default values](#default-values)
+      - [Multiple values](#multiple-values)
+      - [Compact representation](#compact-representation)
+      - [Data types](#data-types)
+    - [Naming conventions](#naming-conventions)
 - [References](#references)
 
 ## Description
@@ -145,14 +144,12 @@ A request is a type of message that implies an answer. Nodes MUST be prepared to
 A frame of type `REQUEST` carries the following payload:
 
 - Type
-- Application data
 - Headers
 - Body
 
 whereas a frame of type `RESPONSE` looks like this:
 
 - Status
-- Application data
 - Headers
 - Body
 
@@ -167,10 +164,6 @@ The field `type` in a request defines the semantics of the given request. Defini
 ##### Status
 
 The design of the `status` field is similar to the status-code in HTTP. It's goal is to be easily machine-readable and assign semantics to status codes that are related to each other. See [[1], Section 3.3]( https://tools.ietf.org/html/rfc3117#section-3.3) for more information on the design of status codes.
-
-##### Application data
-
-This transport protocol defines generic functionality for our application protocol `GANP`. In order to avoid conventions like prefixing custom headers with `X-` as in HTTP, the `REQUEST` and the `RESPONSE` frame reserves a dedicated place for sending application data to other nodes. 
 
 ##### Headers
 
@@ -332,7 +325,6 @@ For the `REQUEST` frame, the `payload` looks like this:
 ```json
 {
     "type": "...",
-    "application_data": {},
     "headers": {},
     "body": {},
 }
@@ -345,7 +337,6 @@ The `payload` of a `RESPONSE` frame shares the same encoding as the `REQUEST` fr
 ```json
 {
     "status": "...",
-    "application_data": {},
     "headers": {},
     "body": {},
 }
