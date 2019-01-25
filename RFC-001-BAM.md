@@ -36,6 +36,8 @@
       - [Allowed values](#allowed-values)
       - [Compact representation](#compact-representation)
     - [Naming conventions](#naming-conventions)
+  - [Connection errors / failure cases](#connection-errors--failure-cases)
+    - [Malformed response](#malformed-response)
 - [References](#references)
 
 ## Description
@@ -416,6 +418,18 @@ If a header needs an `object` to express its value, you should resort to the def
 - Frame types should use all caps convention. For example, `REQUEST`.
 - Headers should use snake case convention. For example, `source_ledger`.
 - `REQUEST` types should use all caps convention as well. For example: `SWAP`.
+
+### Connection errors / failure cases
+
+The following section describes the behaviour in certain failure scenarios.
+
+#### Malformed response
+
+It can happen that a counterparty sends a malformed response or that the response is not deserializable due to some other cause.
+For requests, we can send back a response to inform the other party of the problem.
+However, we don't have responses for responses.
+In this case, implementations should treat this as a *temporary* failure by logging the incident and dropping the response.
+Implementations should be able to receive further messages on this connection.
 
 ## References
 
