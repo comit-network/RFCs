@@ -42,10 +42,9 @@ It is a simplified version of the protocol originally described by TierNolan[¹]
 
 ## Status
 
-```
-RFC-Number: 003
-Status: Draft
-```
+- RFC-Number: 003
+- Status: Draft
+- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
 
 ## Concepts
 
