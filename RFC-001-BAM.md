@@ -426,10 +426,10 @@ The following section describes the behaviour in certain failure scenarios.
 #### Malformed response
 
 It can happen that a counterparty sends a malformed response or that the response is not deserializable due to some other cause.
-For requests, we can send back a response to inform the other party of the problem.
-However, we don't have responses for responses.
-In this case, implementations should treat this as a *temporary* failure by logging the incident and dropping the response.
-Implementations should be able to receive further messages on this connection.
+For requests, a response can be sent back to inform the other party of the problem.
+However, there are no response messages for responses.
+In this case, implementations should treat this as a *temporary* failure by logging the incident and dropping the malformed response.
+Implementations should be able to receive further messages on the connection.
 
 ## References
 
