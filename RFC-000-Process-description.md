@@ -9,8 +9,8 @@
 
 ## Description
 
-This document describes the RFC (Request-for-comments) process that is used to document and specify the COMIT procotol.
-The reason for using an RFC process for this is that we would like the documentation itself and the process around it to be open-source and accessible to anyone.
+This document describes the RFC (Request For Comments) process that is used to document and specify the COMIT protocol.
+We are using an RFC process because we want the documentation and the process around it to be open-source and accessible to anyone.
 
 ## Lifecycle
 
@@ -18,7 +18,7 @@ The reason for using an RFC process for this is that we would like the documenta
 
 Anybody is welcome to submit an RFC to extend or change the COMIT protocol by opening a pull-request to this repository.
 All accepted changes will have status `Draft`.
-RFCs in status `Draft` MUST have a discussion issue that can be used to discuss the current state of the RFC.
+RFCs in `Draft` status MUST have a discussion issue that can be used to discuss the current content of the RFC.
 This will be the place where anybody can voice opinions or point out possible flaws or inconsistencies.
 As instructed by the [issue template](./.github/ISSUE_TEMPLATE/discussion_issue.md), please add a checklist for unresolved problems or open questions at the end of the discussion issue.
 As long as an RFC is in `Draft`, new PRs can change it accordingly to reflect the newest findings of the discussions.
