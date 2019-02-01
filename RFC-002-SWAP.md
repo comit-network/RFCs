@@ -63,13 +63,13 @@ This RFC contains the definition of the following `BAM!` headers:
 
 A ledger is anything that records ownership and allows transferal of that ownership.
 
-Refer to the [common registry](./COMIT-registry.md#ledgers) for the definition of supported ledgers.
+Refer to the [registry](./registry.md#ledgers) for the definition of supported ledgers.
 
 ### Asset
 
 An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
-Refer to the [common registry](./COMIT-registry.md#assets) for the definition of supported assets.
+Refer to the [registry](./registry.md#assets) for the definition of supported assets.
 
 ## SWAP REQUEST
 

@@ -4,6 +4,7 @@
 2. [SWAP Message Types](./RFC-002-SWAP.md)
 3. [Basic HTLC Atomic Swap](./RFC-003-SWAP-basic.md)
 
-## Registries
+# Registry
 
-[COMIT Registry](./COMIT-registry.md)
+The [registry](./registry.md) is our lean attempt to do something like [IANA](https://www.iana.org/) for the COMIT protocol.
+For the time being, it is just a text file involved in the RFC process.

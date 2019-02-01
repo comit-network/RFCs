@@ -101,7 +101,7 @@ The protocol begins with one party (the sender) sending a SWAP REQUEST message t
 The header MUST have the following parameters:
 
 #### `hash_function`
-Type: [Hash Function](./COMIT-registry.md#hash-function)
+Type: [Hash Function](./registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
 It MUST be available on the `alpha_ledger` and the `beta_ledger`.
@@ -219,7 +219,7 @@ A security model of the protocol and its associated parameters will be included 
 
 ## Registry Extensions
 
-This RFC extends the [COMIT-registry](./COMIT-registry.md) in the following ways:
+This RFC extends the [registry](./registry.md) in the following ways:
 
 - **identity**: The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
 - **`reason` header**: Adds an additional possible value `timeouts-too-tight` to the `reason` header.
