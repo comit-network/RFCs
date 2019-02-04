@@ -205,7 +205,10 @@ Refer to the RFC of the given swap protocol.
     },
     "alpha_asset": {
       "value": "erc20",
-      "parameters": { "quantity": "42000000000000000000" }
+      "parameters": {
+        "quantity": "42000000000000000000",
+        "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280"
+      }
     },
     "beta_asset": {
       "value": "bitcoin",
@@ -240,7 +243,10 @@ Refer to the RFC of the given swap protocol.
       "parameters": {
         "alpha_asset": {
           "value": "erc20",
-          "parameters": { "quantity": "42500000000000000000" }
+          "parameters": {
+            "quantity": "42500000000000000000",
+            "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280"
+          }
         },
         "beta_asset": {
           "value": "bitcoin",
