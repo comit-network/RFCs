@@ -19,7 +19,7 @@ What is the motivation behind the change/addition?
 
 ## Content
 
-This is where the actual content of the RFC goes. You are free to structure this in the way you see best fit.
+This is where the actual content of the RFC goes. You are free to structure this in the way you best see fit.
 
 ## Registry extension
 
