@@ -25,7 +25,7 @@ As long as an RFC is in `Draft`, new PRs can change it accordingly to reflect th
 
 ### On to stabilization
 
-As soon as all the contributors are happy with the RFC, a stabilization PR can be opened.
+Once all open issues have been resolved and no other objections are raised within a month, a stabilization PR can be opened.
 This PR MUST:
 - close the discussion issue via `Resolves #...`
 - apply the changes the PR documents to the [registry](./COMIT-registry.md)
