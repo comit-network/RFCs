@@ -375,7 +375,7 @@ Implementations MUST NOT fail if they receive a header without a `parameters` fi
 
 ##### Allowed values
 
-The `value` of a header MAY be any valid JSON-value. This includes `object`s and `lists`.
+The `value` of a header MAY be any valid JSON-value. This includes `object`s and `list`s.
 
 ##### Compact representation
 
