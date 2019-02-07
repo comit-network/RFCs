@@ -169,7 +169,7 @@ The design of the `status` field is similar to the status-code in HTTP. It's goa
 ##### Headers
 
 `Headers` and `Body` are supposed to be used by an application protocol defined on top of `BAM`.
-Application protocols can be defined by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
+Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
 Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
 
 In addition, headers also encode compatibility information. Each header is available in two variants:
