@@ -243,7 +243,7 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 2. A value: The actual value that is associated with the header
 
-    Every header MUST have a value. A header's value determines, what the `parameters` look like.
+    Every header MUST have a value. A header's value determines the parameters.
 
 3. Parameters
 
