@@ -5,7 +5,11 @@
 - Discussion-issue: -
 - Created on: 25 Jan. 2019
 
-<!-- TOC GOES here -->
+# Table of contents
+- [Description](#description)
+- [Lifecycle](#lifecycle)
+  - [Everything starts as `Draft`](#everything-starts-as-draft)
+  - [On to stabilization](#on-to-stabilization)
 
 ## Description
 
