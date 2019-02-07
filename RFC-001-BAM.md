@@ -248,7 +248,7 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 3. Parameters
 
     Parameters are additional data that depend on a header's value.
-    Parameters are optional and may therefore be empty or left out if the encoding allows this.
+    Depending on a header's value, parameters might be entirely optional and MAY therefore be empty or completely left out if the encoding allows this.
 
 Splitting headers up into `value` and `parameters` was done for the following reasons:
 
