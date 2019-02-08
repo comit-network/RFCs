@@ -243,14 +243,15 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 2. A value: The actual value that is associated with the header
 
-    Every header MUST have a value. A header's value determines the parameters.
+    Every header MUST have a value.
+    It functions as the *identity* for the given header.
 
 3. Parameters
 
     Parameters are additional data that depend on a header's value.
-    They might be optional or also empty if the header's value doesn't define any parameters.
-    If the encoding supports this, parameters might even be completely left out.
-    In this case, implementations should treat the header as if the empty set of parameters was sent.
+    A parameter for a given header value may be optional or mandatory.
+    Optional parameters may be omitted.
+    If the header value specifies no mandatory parameters, then the parameters section may be completely left out and implementations should treat this as if the empty set of parameters was sent.
 
 Splitting headers up into `value` and `parameters` was done for the following reasons:
 
