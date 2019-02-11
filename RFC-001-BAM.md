@@ -4,40 +4,40 @@
 - [Status](#status)
 - [Motivation & Requirements](#motivation--requirements)
 - [Evaluation of existing protocols](#evaluation-of-existing-protocols)
-    - [HTTP(2)](#http2)
-    - [WebSockets](#websockets)
-    - [A profile for BEEP](#a-profile-for-beep)
-    - [gRPC](#grpc)
+  - [HTTP(2)](#http2)
+  - [WebSockets](#websockets)
+  - [A profile for BEEP](#a-profile-for-beep)
+  - [gRPC](#grpc)
 - [Introducing **BAM!**](#introducing-bam)
-    - [Frames](#frames)
-        - [Type](#type)
-        - [Id](#id)
-    - [Different frame types](#different-frame-types)
-        - [Notification](#notification)
-        - [Request / Response](#request--response)
-            - [Structure](#structure)
-            - [Optional fields](#optional-fields)
-            - [Type](#type)
-            - [Status](#status)
-            - [Application data](#application-data)
-            - [Headers](#headers)
-            - [Status code families](#status-code-families)
-                - [Successful responses (OK00-OK99)](#successful-responses-ok00-ok99)
-                - [Sender errors (SE00-SE99)](#sender-errors-se00-se99)
-                - [Receiver errors (RE00-RE99)](#receiver-errors-re00-re99)
-    - [Headers](#headers)
-    - [JSON Encoding](#json-encoding)
-        - [Frames](#frames)
-        - [Encoding of the individual frame types](#encoding-of-the-individual-frame-types)
-            - [Request](#request)
-            - [Response](#response)
-        - [Header](#header)
-            - [Representation](#representation)
-            - [Default values](#default-values)
-            - [Multiple values](#multiple-values)
-            - [Compact representation](#compact-representation)
-            - [Data types](#data-types)
-        - [Naming conventions](#naming-conventions)
+  - [Frames](#frames)
+    - [Type](#type)
+    - [Id](#id)
+  - [Different frame types](#different-frame-types)
+    - [Notification](#notification)
+    - [Request / Response](#request--response)
+      - [Structure](#structure)
+      - [Optional fields](#optional-fields)
+      - [Type](#type-1)
+      - [Status](#status-1)
+      - [Headers](#headers)
+      - [Status code families](#status-code-families)
+        - [Successful responses (OK00-OK99)](#successful-responses-ok00-ok99)
+        - [Sender errors (SE00-SE99)](#sender-errors-se00-se99)
+        - [Receiver errors (RE00-RE99)](#receiver-errors-re00-re99)
+  - [Headers](#headers-1)
+  - [JSON Encoding](#json-encoding)
+    - [Frames](#frames-1)
+    - [Encoding of the individual frame types](#encoding-of-the-individual-frame-types)
+      - [Request](#request)
+      - [Response](#response)
+    - [Header](#header)
+      - [Representation](#representation)
+      - [Default values](#default-values)
+      - [Allowed values](#allowed-values)
+      - [Compact representation](#compact-representation)
+    - [Naming conventions](#naming-conventions)
+  - [Connection errors / failure cases](#connection-errors--failure-cases)
+    - [Malformed response](#malformed-response)
 - [References](#references)
 
 ## Description
@@ -144,14 +144,12 @@ A request is a type of message that implies an answer. Nodes MUST be prepared to
 A frame of type `REQUEST` carries the following payload:
 
 - Type
-- Application data
 - Headers
 - Body
 
 whereas a frame of type `RESPONSE` looks like this:
 
 - Status
-- Application data
 - Headers
 - Body
 
@@ -167,20 +165,18 @@ The field `type` in a request defines the semantics of the given request. Defini
 
 The design of the `status` field is similar to the status-code in HTTP. It's goal is to be easily machine-readable and assign semantics to status codes that are related to each other. See [[1], Section 3.3]( https://tools.ietf.org/html/rfc3117#section-3.3) for more information on the design of status codes.
 
-##### Application data
-
-This transport protocol defines generic functionality for our application protocol `GANP`. In order to avoid conventions like prefixing custom headers with `X-` as in HTTP, the `REQUEST` and the `RESPONSE` frame reserves a dedicated place for sending application data to other nodes. 
-
 ##### Headers
 
-`Headers` and `Body` are supposed to be used by the application protocol (for the beginning, just GANP). Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the protocol headers in order to describe the encoding of the payload.
+`Headers` and `Body` are supposed to be used by an application protocol defined on top of `BAM`.
+Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
+Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
 
-In addition, protocol headers also encode compatibility information. Each header is available in two variants:
+In addition, headers also encode compatibility information. Each header is available in two variants:
 
 - MUST understand
 - MAY ignore
 
-If a node receives a protocol header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with a `SE01` response. See section [Sender Error Responses](#sender-errors-se00-se99) for further details. Headers encoded as `MAY ignore` are ok to be not understood. Nodes may simply ignore them as if they were not there.
+If a node receives a header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with a `SE01` response. See section [Sender Error Responses](#sender-errors-se00-se99) for further details. Headers encoded as `MAY ignore` are ok to be not understood. Nodes may simply ignore them as if they were not there.
 
 If a node receives a `RESPONSE` frame with a header that is marked as `MUST understand` but it does not understand it, it MUST stop processing this response. The reason behind this is that the responding party demanded understanding of this header in order to continue. This is most likely due to a backwards-incompatible change in a protocol where the receiving party would act in an incompatible way if it did not take the mandatory header into account.
 
@@ -246,13 +242,15 @@ A header's key acts as its identifier. A header's value MUST encode the followin
 
 2. A value: The actual value that is associated with the header
 
-    A header's value MUST be a single token, e.g. no nested structure etc. This is to facilitate comparisons of header-values. If a value needs to parameterized further, `parameters` should be used. Every header MUST have a value.
+    Every header MUST have a value.
+    It functions as the *identity* for the given header.
 
 3. Parameters
 
-    Parameters are to be used to further specify a header's value. Parameters are a key-value structure with **unique** keys. Similar to the actual header value, both keys and values must be single tokens. Parameters are optional and may therefore be empty or left out if the encoding allows this.
-
-Headers can occur multiple times, e.g. a single header-key can map to multiple values where all of them have one `value` and `parameters`. How this is represented depends on the encoding.
+    Parameters are additional data that depend on a header's value.
+    A parameter for a given header value may be optional or mandatory.
+    Optional parameters may be omitted.
+    If the header value specifies no mandatory parameters, then the parameters section may be completely left out and implementations should treat this as if the empty set of parameters was sent.
 
 Splitting headers up into `value` and `parameters` was done for the following reasons:
 
@@ -331,7 +329,6 @@ For the `REQUEST` frame, the `payload` looks like this:
 ```json
 {
     "type": "...",
-    "application_data": {},
     "headers": {},
     "body": {},
 }
@@ -344,7 +341,6 @@ The `payload` of a `RESPONSE` frame shares the same encoding as the `REQUEST` fr
 ```json
 {
     "status": "...",
-    "application_data": {},
     "headers": {},
     "body": {},
 }
@@ -368,7 +364,7 @@ Let's start off with an example:
 ```
 
 In the above example:
-- "Source-Ledger" is the header-key.
+- `source_ledger` is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood. Respectively, if the key does_not start with an underscore, the header is mandatory and MUST be understood by the node.
 - `value` is the header-value (see [Headers - Requirement 2](#headers))
 - `parameters` encode the parameters of the header.
@@ -377,28 +373,9 @@ In the above example:
 
 Implementations MUST NOT fail if they receive a header without a `parameters` field but rather default to an empty object (which is equivalent to no parameters).
 
-##### Multiple values
+##### Allowed values
 
-If the header supports multiple values it MUST be represented as list (and if it is only a single value it MUST be a single object). For example, consider a header "supported_ledgers" which lists the ledgers a node supports:
-
-```json
-"supported_ledgers" : [
-    {
-        "value": "Bitcoin",
-        "parameters": {
-            "network": "mainnet"
-        }
-    },
-    {
-        "value": "Ethereum",
-        "parameters": {
-            "network": "mainnet"
-        }
-    }
-]
-```
-
-Note how the inner structure of the header is list of the same ledger structure as defined above.
+The `value` of a header MAY be any valid JSON-value. This includes `object`s and `list`s.
 
 ##### Compact representation
 
@@ -418,21 +395,43 @@ In cases like these, where there are no parameters, implementations can choose t
 
 Implementations MUST be able to process compact representations. They MUST treat them identical to the version with only a `value` field.
 
-##### Data types
+In the compact representation, the `value` of a header MUST NOT be an `object`.
 
-In the JSON encoding, `value` can take any scalar JSON data type (except `null`), meaning:
+The following is therefore invalid:
 
-- numbers
-- booleans
-- strings
+```json
+"invalid_header": {
+    "some_key": "foobar"
+}
+```
 
-The same thing applies to the values of parameters.
+If a header needs an `object` to express its value, you should resort to the default representation to make it unambigous:
+
+```json
+"valid_header": {
+    "value": {
+        "some_key": "foobar"
+    }
+}
+```
 
 #### Naming conventions
 
 - Frame types should use all caps convention. For example, `REQUEST`.
 - Headers should use snake case convention. For example, `source_ledger`.
 - `REQUEST` types should use all caps convention as well. For example: `SWAP`.
+
+### Connection errors / failure cases
+
+The following section describes the behaviour in certain failure scenarios.
+
+#### Malformed response
+
+It can happen that a counterparty sends a malformed response or that the response is not deserializable due to some other cause.
+For requests, a response can be sent back to inform the other party of the problem.
+However, there are no response messages for responses.
+In this case, implementations should treat this as a *temporary* failure by logging the incident and ignoring the malformed response.
+Implementations should be able to receive further messages on the connection.
 
 ## References
 
