@@ -1,8 +1,11 @@
-# Process description
+# Title
 
-RFC-Number: XXX
-Status: Draft
-Tracking-issue: -
+- RFC-Number: 000
+- Status: Draft
+- Discussion-issue: -
+- Created on: 25 Jan. 2019
+
+# Table of contents
 
 - [Description](#description)
 - [Motivation](#motivation)

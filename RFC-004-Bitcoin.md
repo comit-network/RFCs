@@ -1,41 +1,63 @@
 # Bitcoin Definitions
 
-As per [Bitcoin Core](https://github.com/bitcoin/bitcoin/) concensus.
+- RFC-Number: 004
+- Status: Draft
+- Discussion-issue: -
+- Created on: 26 Feb. 2019
 
-Introduced for RFC-003 (should RFC-003 be part of the title?)
+# Table of contents
 
-## Ledger definition
+- [Description](#description)
+- [Motivation](#motivation)
+- [Content](#content)
+- [Registry extension](#registry-extension)
 
-Taken from registry
+## Description
 
-| Name     | Description            | Reference |  `value`   | `parameters` key | `parameters` value |`parameters` description         |
-|:---      |:---                    |:---       |:---        |:---              |:---                |:---                             |
-| Bitcoin  | Bitcoin-core network   | TBD       | `bitcoin`  | `network`        |                    | The network on which to operate |
-|          |                        |           |            |                  | `regtest`          | Bitcoin-core regtest            |
-|          |                        |           |            |                  | `testnet`          | Bitcoin testnet                 |
-|          |                        |           |            |                  | `mainnet`          | Bitcoin mainnet                 |
+Introduces definitions to allow the execution of RFC-003 for Bitcoin asset on the [Bitcoin Core](https://github.com/bitcoin/bitcoin/) network.
 
-## Asset definition
+TODO: Decide we if do 1 RFC that introduce general Bitcoin terms + RFC003 or 2 RFCs (one for each)
 
-Taken from registry
+This includes the exact Bitcoin scripts to be used.
 
-| Name           | Description                   | Reference | `value`   | `parameters` key | `parameters` value type | `parameters` description |
-|:---            |:----                          |:---       |:---       |:---              |:---                     |:---                      |
-| Bitcoin        | Native Bitcoin network asset  | TBD       | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
+TODO: Do we want p2sh(p2wsh) support? (more wallets support it)
 
-## Identities
+TODO: Do we want p2sh native support? (more wallets support it + more straightforward than p2sh(p2wsh))
 
-Taken from registry
+TODO: based on both TODO above, decide to include version and/or BIPs to be enabled.
 
-| Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
-|:----     |:-------      |:-------------            |:--------- | --------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
+## Motivation
 
-## RFC-003
+TODO: the motivation is already in the description, not sure this section is relevant.
 
-Mention that it should be p2wsh.
-Do we want p2sh(p2wsh) support?
-Do we want p2sh native support?
+## Content
+
+### Ledger definition
+
+- Name: Bitcoin
+- Description: Bitcoin Core Network
+- `value`: `bitcoin`
+
+#### Parameters
+
+| `parameters` key | `parameters` value |`parameters` description         |
+|:---              |:---                |:---                             |
+| `network`        |                    | The network on which to operate |
+|                  | `regtest`          | Bitcoin-core regtest            |
+|                  | `testnet`          | Bitcoin testnet                 |
+|                  | `mainnet`          | Bitcoin mainnet                 |
+
+### Asset definition
+
+| Name           | Description                   | `value`   | `parameters` key | `parameters` value type | `parameters` description |
+|:---            |:----                          |:---       |:---              |:---                     |:---                      |
+| Bitcoin        | Native Bitcoin network asset  | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
+
+### Identities
+
+| Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
+|:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
 
 ### HTLC
 
@@ -52,3 +74,6 @@ Describe refund script and any caveat/things to watch out
 
 Do we want to discuss timeouts?
 
+## Registry extension
+
+A list of changes to the registry described in this RFC. For example, new protocols, hash functions etc.
