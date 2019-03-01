@@ -66,7 +66,7 @@ Other non-native assets should be defined in dedicated RFCs.
 All quantities are encoded without a unit.
 They are to be interpreted as satoshis to avoid ambiguity in parser implementations.
 
-Because implementations of Json deserialiser may have different opinions on the maximum size of an integer, the amount is stored in a Json String to avoid unexpected truncation.
+To avoid issues with lost precision during parsing, the actual amount is encoded as an integer inside a string.
 
 | Name           | Description                   | `value`   | `parameters` key | `parameters` value type | `parameters` description |
 |:---            |:----                          |:---       |:---              |:---                     |:---                      |
