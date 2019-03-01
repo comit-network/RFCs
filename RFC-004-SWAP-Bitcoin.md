@@ -30,6 +30,9 @@ This, added to complimentary RFCs per SWAP protocol, allows the execution of SWA
 
 ## Content
 
+In order to create SWAP messages that make use of the `bitcoin` ledger or the `bitcoin` asset, those need to be defined first.
+The next sections define how the `bitcoin` ledger and `bitcoin` asset are encoded when used within a SWAP message.
+
 ### Ledger definition
 
 This RFC's objective is to uniquely identify the Ledger on which the SWAP will operate.
@@ -68,9 +71,9 @@ They are to be interpreted as satoshis to avoid ambiguity in parser implementati
 
 To avoid issues with lost precision during parsing, the actual amount is encoded as an integer inside a string.
 
-| Name           | Description                   | `value`   | `parameters` key | `parameters` value type | `parameters` description |
-|:---            |:----                          |:---       |:---              |:---                     |:---                      |
-| Bitcoin        | Native Bitcoin network asset  | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
+| Name           | Description                   | `value`   | `parameters` key | `parameters` value type   | `parameters` description |
+|:---            |:----                          |:---       |:---              |:---                       |:---                      |
+| Bitcoin        | Native Bitcoin network asset  | `bitcoin` | `quantity`       | integer in a JSON string  | Amount in satoshi        |
 
 ## Registry extension
 

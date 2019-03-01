@@ -59,16 +59,17 @@ The information in the table is needed to build the HTLC.
 
 the `[20]` denotation is used to express a push of the value between bracket onto the stack. Note that, as per usual Bitcoin script foramt, all values and placeholder presents MUST be encoded in hexadecimal without a leading `0x`. E.g. `[20]` would be replaced with `01 20` to push the decimal number `32` on the stack.
 
-| Variable | Description |
-| `secret` | |
-| `secret_hash` | The SHA-256 hash of the `secret` |
+| Variable             | Description |
+|:---                  |:---         |
+| `secret`             | As defined in [RFC-003](./RFC-003-SWAP-basic.md), random 32-Bytes value chosen by Alice   |
+| `secret_hash`        | The SHA-256 hash of the `secret`                                                          |
 | `recipient_identity` | The identity of the recipient, as defined in [Identities](#identities), in case of redeem |
-| `sender_identity` | The identity of the sender, as defined in [Identities](#identities), in case of refund |
-| `timestamp` | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
+| `sender_identity`    | The identity of the sender, as defined in [Identities](#identities), in case of refund    |
+| `timestamp`          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded, used as input of `OP_CHECKLOCKTIMEVERIFY`[2] |
 
 #### HTLC
 
-The Bitcoin script we purpose is a P2WSH (Pay-to-Witness-Script-Hash), meaning a Bitcoin Basic HTLC Atomic Swap can only be executed on a Bitcoin node with Segregated Witness activated[2].
+The Bitcoin script we purpose is a P2WSH (Pay-to-Witness-Script-Hash), meaning a Bitcoin Basic HTLC Atomic Swap can only be executed on a Bitcoin node with Segregated Witness activated[3].
 
 ##### Human friendly - Opcode representation
 
@@ -138,4 +139,5 @@ A list of changes to the registry described in this RFC. For example, new protoc
 ---
 
 - [1] Compressed keys in P2WSH: See [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)
-- [2] Segregated Witness: [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
+- [2] OP_CHECKLOCKTIMEVERIFY: See [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)
+- [3] Segregated Witness: See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
