@@ -63,7 +63,8 @@ Such network should be represented as `regtest`.
 Only the native Bitcoin asset is defined in this RFC.
 Other non-native assets should be defined in dedicated RFCs.
 
-Note that the smallest unit (satoshis) is to be used to avoid ambiguity.
+All quantities are encoded without a unit.
+They are to be interpreted as satoshis to avoid ambiguity in parser implementations.
 
 Because implementations of Json deserialiser may have different opinions on the maximum size of an integer, the amount is stored in a Json String to avoid unexpected truncation.
 
