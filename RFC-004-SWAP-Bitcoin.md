@@ -45,19 +45,18 @@ We define Bitcoin Core as the network and consensus whose standard implementatio
 
 For security reason, to avoid mainnet asset (valuable) to be swapped with test assets (expendable), a network parameter is defined and must be present for the Bitcoin Ledger.
 
-There are other known test network such as [btcd](https://github.com/btcsuite/btcd) simnet.
-Such network should be represented as `regtest` in SWAP.
-
 - Name: Network
 - Description: the network on which to operate
 - `parameters` key: `network` 
-
 
 | `parameters` value |`parameters` description                                             |
 |:---                |:---                                                                 |
 | `regtest`          | Bitcoin Core regtest or other local/private test network            |
 | `testnet`          | Bitcoin Core testnet                                                |
 | `mainnet`          | Bitcoin Core mainnet                                                |
+
+There are other known test network such as [btcd](https://github.com/btcsuite/btcd) simnet.
+Such network should be represented as `regtest`.
 
 ### Asset definition
 
