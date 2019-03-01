@@ -7,32 +7,30 @@ This registry may be expanded with new RFCs.
 
 ## Ledgers
 
-<!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
-| Name     | Description            | Reference |  `value`   | `parameters` key | `parameters` value |`parameters` description         |
-|:---      |:---                    |:---       |:---        |:---              |:---                |:---                             |
-| Bitcoin  | Bitcoin-core network   | TBD       | `bitcoin`  | `network`        |                    | The network on which to operate |
-|          |                        |           |            |                  | `regtest`          | Bitcoin-core regtest            |
-|          |                        |           |            |                  | `testnet`          | Bitcoin testnet                 |
-|          |                        |           |            |                  | `mainnet`          | Bitcoin mainnet                 |
-| Ethereum | Ethereum network       | TBD       | `ethereum` | `network`        |                    | The network on which to operate |
-|          |                        |           |            |                  | `regtest`          | Local dev network               |
-|          |                        |           |            |                  | `ropsten`          | Ropsten testnet (network id 3)  |
-|          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
+| Name     | Description            | Reference                            |  `value`   | `parameters` key | `parameters` value |`parameters` description         |
+|:---      |:---                    |:---                                  |:---        |:---              |:---                |:---                             |
+| Bitcoin  | Bitcoin-core network   | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | `bitcoin`  | `network`        |                    | The network on which to operate |
+|          |                        |                                      |            |                  | `regtest`          | Bitcoin-core regtest            |
+|          |                        |                                      |            |                  | `testnet`          | Bitcoin testnet                 |
+|          |                        |                                      |            |                  | `mainnet`          | Bitcoin mainnet                 |
+| Ethereum | Ethereum network       | TBD                                  | `ethereum` | `network`        |                    | The network on which to operate |
+|          |                        |                                      |            |                  | `regtest`          | Local dev network               |
+|          |                        |                                      |            |                  | `ropsten`          | Ropsten testnet (network id 3)  |
+|          |                        |                                      |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
 
 
 [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
-| Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
-|:----     |:-------      |:-------------            |:--------- | --------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
-| Ethereum | `address`     | Ethereum address        | TBD       | An Ethereum address                                        |
+| Ledger   | Identity Name | JSON Encoding            | Reference                            | Description                                                                                  |
+|:----     |:-------      |:-------------             |:---------                            | ---------------------------------------------------------------------------------            |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
+| Ethereum | `address`     | Ethereum address         | TBD                                  | An Ethereum address                                                                          |
 
 
 ## Assets
-<!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
 | Name           | Description                   | Reference | `value`   | `parameters` key | `parameters` value type | `parameters` description |
 |:---            |:----                          |:---       |:---       |:---              |:---                     |:---                      |
-| Bitcoin        | Native Bitcoin network asset  | TBD       | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
+| Bitcoin        | Native Bitcoin network asset  | [RFC-004](./RFC-004-SWAP-Bitcoin.md)       | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
 | Ether          | Native Ethereum network asset | TBD       | `ether`   | `quantity`       | integer in Json string  | Amount in wei            |
 | ERC-20 Token   | As defined by [ERC-20 standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) | TBD | `erc20` | `address` | hex string including `0x` prefix | The hex address of the smart contract defining the given token |
 |                 |                              |           |           |  `quantity`      |  integer in Json string  | The token amount without the decimal, e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY smart contract defines 18 decimals for its token |
