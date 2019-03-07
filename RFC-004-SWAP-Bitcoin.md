@@ -21,61 +21,71 @@
 
 ## Description
 
-This RFC introduces Ledger & Asset definitions to be used in SWAP Messages for [Bitcoin Core](https://github.com/bitcoin/bitcoin/) network.
+This RFC specifies the how the Bitcoin blockchain and its native asset Bitcoin can described in RFC002 SWAP messages.
+Bitcoin refers specifically to the Bitcoin Core  [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
+As required by RFC002, this RFC defines the *ledger* value `bitcoin` and its associated parameters as well as the *asset* `bitcoin`.
+This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to execute and negotiate Bitcoin swaps.
 
-## Motivation
+## The Bitcoin Ledger
 
-This RFC aims to define the necessary values and parameters to support Bitcoin Core in SWAP messages.
-This, added to complimentary RFCs per SWAP protocol, allows the execution of SWAP involving assets defined on the Bitcoin Core Ledger.
+To specify Bitcoin in one of the RFC002 ledger headers (`alpha_ledger` or `beta_ledger`) use the value `bitcoin` with the following parameter:
 
-## Content
+### `network`
 
-In order to create SWAP messages that make use of the `bitcoin` ledger or the `bitcoin` asset, those need to be defined first.
-The next sections define how the `bitcoin` ledger and `bitcoin` asset are encoded when used within a SWAP message.
+The `network` parameter describes whether you are intending to do a SWAP with *real* Bitcoin on the mainnet or are doing a test SWAP on the testnet or a shared regtest node.
+The `network` parameter is mandatory and can take the following values:
 
-### Ledger definition
+| value     | description                                              |
+|:----------|:---------------------------------------------------------|
+| `regtest` | Bitcoin Core regtest or other local/private test network |
+| `testnet` | Bitcoin Core testnet                                     |
+| `mainnet` | Bitcoin Core mainnet                                     |
 
-This RFC's objective is to uniquely identify the Ledger on which the SWAP will operate.
-It is a difficult task as soft and hard forks may happen and there is no guarantee that the conditions identifying today are valid tomorrow.
 
-We define Bitcoin Core as the network and consensus whose standard implementation is [bitcoind](https://github.com/bitcoin/bitcoin/).
+All private test networks like [btcd](https://github.com/btcsuite/btcd)'s `simnet` should be specified as `regtest`.
 
-- Name: Bitcoin
-- Description: Bitcoin Core Network
-- `value`: `bitcoin`
+## The Bitcoin Asset
 
-#### Parameters
+Bitcoin is also the name of the Bitcoin blockchain's native asset.
+This RFC only pertains to the native Bitcoin asset.
+Other non-native assets will be defined in subsequent RFCs.
 
-For security reason, to avoid mainnet asset (valuable) to be swapped with test assets (expendable), a network parameter is defined and must be present for the Bitcoin Ledger.
+Although Bitcoin is nominally the native asset, ownership of Bitcoin is really the ability to unlock *unspent transaction outputs* whose value is measured in *satoshi*.
+1 Bitcoin is simply the name for 100,000,000 satoshi.
 
-- Name: Network
-- Description: the network on which to operate
-- `parameters` key: `network` 
+To specify the Bitcoin in one of the RFC002 asset headers (`alpha_asset` or `beta_asset`) use the value `bitcoin` with the following parameter:
 
-| `parameters` value |`parameters` description                                             |
-|:---                |:---                                                                 |
-| `regtest`          | Bitcoin Core regtest or other local/private test network            |
-| `testnet`          | Bitcoin Core testnet                                                |
-| `mainnet`          | Bitcoin Core mainnet                                                |
+### `quantity`
 
-There are other known test network such as [btcd](https://github.com/btcsuite/btcd) simnet.
-Such network should be represented as `regtest`.
-
-### Asset definition
-
-Only the native Bitcoin asset is defined in this RFC.
-Other non-native assets should be defined in dedicated RFCs.
-
-All quantities are encoded without a unit.
-They are to be interpreted as satoshis to avoid ambiguity in parser implementations.
-
-To avoid issues with lost precision during parsing, the actual amount is encoded as an integer inside a string.
-
-| Name           | Description                   | `value`   | `parameters` key | `parameters` value type   | `parameters` description |
-|:---            |:----                          |:---       |:---              |:---                       |:---                      |
-| Bitcoin        | Native Bitcoin network asset  | `bitcoin` | `quantity`       | integer in a JSON string  | Amount in satoshi        |
+The `quantity` parameter describes the quantity of satoshi that the asset represents.
+The `quantity` parameter is mandatory.
+Its value MUST be a `u64` (note that in the JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
 
 ## Registry extension
 
 - Addition of [Bitcoin Ledger](./registry.md#ledgers)
 - Addition of [Bitcoin Asset](./registry.md#assets)
+
+# Examples
+
+The following shows a generic JSON encoded SWAP request (with irrelevant fields filled with `...`) with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`:
+
+``` json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {...},
+    "alpha_asset": {
+      "value": "bitcoin",
+      "parameters": { "quantity": "100000000" }
+    },
+    "beta_asset": {...},
+    "protocol": "...",
+  },
+  "body": {...},
+}
+```

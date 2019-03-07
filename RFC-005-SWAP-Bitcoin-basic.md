@@ -21,123 +21,154 @@
     - [Redeem](#redeem)
     - [Refund](#refund)
     - [Timeouts](#timeouts)
-- [Registry extension](#registry-extension)
+}- [Registry extension](#registry-extension)
 
 <!-- tocstop -->
 
 ## Description
 
-This RFC introduces the Hashed TimeLock Contract and identity to allow the execution of a [Basic HTLC Atomic Swap](./RFC-003-SWAP-basic.md) involving [Bitcoin Core](https://github.com/bitcoin/bitcoin/).
+This RFC defines the Bitcoin ledger and the Bitcoin asset for use in an execution [RFC002](./RFC-002-SWAP.md) SWAP with `comit-rfc-003` ([RFC003](./RFC-003-SWAP-basic.md)) as the SWAP protocol.
 
-<!-- TODO: Mention P2SH as open question in RFC tracking issue -->
-TODO: based on both TODO above, decide to include version and/or BIPs to be enabled.
-This includes the exact Bitcoin scripts to be used.
+For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitcoin).
+
+To fulfil the requirements of RFC003 this RFC defines:
+
+- The *identity* to be used when negotiating a SWAP on the Bitcoin ledger.
+- How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
+- How to deploy, redeem and refund the HTLC during the execution phase of RFC003
+
 
 ## Motivation
 
-This RFC aims to define the Bitcoin Script and other needed element to support Bitcoin Core in [Basic HTLC Atomic Swap](./RFC-003-SWAP-basic.md).
+The motivation for creating this RFC is to allow implementations to negotiate and execute [RFC003 Basic HTLC Atomic Swaps](./RFC-003-SWAP-basic.md) using the COMIT protocol. The identity definition introduced in this RFC should also be useful for future protocols.
 
-## Content
+## Bitcoin Identity
 
-### Identities
+The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
+The compressed public key is used because it needs to be compatiable with segwit transactions (see [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)).
 
-While it may seem obvious at first to use an address as an identity, such choice would come with a number of unnecessary manipulation and checks to validate the address. Such as verifying that it is a p2pkh or p2wpkh address, extraction of the public key hash, validation of the network.
+While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in RFC003. Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as such as verifying that it is a p2pkh or p2wpkh address, extraction of the pubkeyhash, validation of the network.
 
-For simplicity purposes, the identity on bitcoin is defined as the public key hash. It is the same public key hash (SHA256+RIPEMD160) that is used to construct addresses, ensuring similar security level to sharing an address.
-
-Note that only compressed public keys are accepted as it needs to be usable in P2WSH[1].
+When using the pubkeyhash as one of the identities in an RFC003 message body it MUST be encoded as 20 hex encoded string.
+This RFC extends the [registry](./registry.md) with the following entry in the identity table:
 
 | Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
 |:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
 | Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
 
-### Scripts
+## Hash Time Lock Contract
 
-#### Variables
+### Hash Functions
 
-The information in the table is needed to build the HTLC.
 
-the `[20]` denotation is used to express a push of the value between bracket onto the stack. Note that, as per usual Bitcoin script foramt, all values and placeholder presents MUST be encoded in hexadecimal without a leading `0x`. E.g. `[20]` would be replaced with `01 20` to push the decimal number `32` on the stack.
+The `hash_function` header must be set to one of the following values if Bitcoin is used as a ledger:
 
-| Variable             | Description |
-|:---                  |:---         |
-| `secret`             | As defined in [RFC-003](./RFC-003-SWAP-basic.md), random 32-Bytes value chosen by Alice   |
-| `secret_hash`        | The SHA-256 hash of the `secret`                                                          |
-| `recipient_identity` | The identity of the recipient, as defined in [Identities](#identities), in case of redeem |
-| `sender_identity`    | The identity of the sender, as defined in [Identities](#identities), in case of refund    |
-| `timestamp`          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded, used as input of `OP_CHECKLOCKTIMEVERIFY`[2] |
+- SHA-256
 
-#### HTLC
+### Parameters
 
-The Bitcoin script we purpose is a P2WSH (Pay-to-Witness-Script-Hash), meaning a Bitcoin Basic HTLC Atomic Swap can only be executed on a Bitcoin node with Segregated Witness activated[3].
+The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and are described concretely in the following table:
 
-##### Human friendly - Opcode representation
+| Variable        | Description                                                                                                               |
+|:----------------|:--------------------------------------------------------------------------------------------------------------------------|
+| asset           | The quantity of satoshi                                                                                                   |
+| secret          | The secret (32 bytes for SHA-256)                                                                                         |
+| secret_hash     | The SHA-256 hash of the `secret` (32 bytes for SHA-256)                                                                   |
+| redeem_identity | The `pubkeyhash` of the redeeming parry                                                                                   |
+| refund_identity | The `pubkeyhash` of the refunding party                                                                                   |
+| expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
 
-The HTLC is as below in Opcode format. 
+### Contract
 
-Note that an implementation SHOULD not relay on this format but instead use the .... 
+The HTLC is constructed by locking an output with the following script:
 
 ```asm
 OP_IF
-OP_SIZE
-[20]
-OP_EQUALVERIFY 
-OP_SHA256
-[secret_hash]
-OP_EQUALVERIFY
-OP_DUP
-OP_HASH160
-[recipient_identity]
+    OP_SIZE 32 OP_EQUALVERIFY
+    OP_SHA256 <secret_hash> OP_EQUALVERIFY
+    OP_DUP OP_HASH160 <redeem_identity>
 OP_ELSE
-[timestamp]
-OP_CHECKLOCKTIMEVERIFY
-OP_DROP
-OP_DUP
-OP_HASH160
-[sender_identity]
+    <timestamp> OP_CHECKLOCKTIMEVERIFY OP_DROP
+    OP_DUP OP_HASH160 <refund_identity>
 OP_ENDIF
 OP_EQUALVERIFY
 OP_CHECKSIG
 ```
 
-##### Implementation friendly - Hex representation
+As required by RFC003, this HTLC uses absolute time locks to check whether `expiry` has been reached.
+Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `expiry` in the contract.
 
-The hexadecimal representation of the HTLC SHOULD be used to implement [RFC-003](./RFC-003-SWAP-basic.md) for Bitcoin.
+To compute the exact bytes of the contract implementaions should use the following offset table:
 
-Replacement of placeholders SHOULD NOT be used, instead, building by concatenation or byte position is recommended for security purposes. See [TODO](#security-concern) for more details.
+| Data              | Position of first byte | Position of last byte | Length | Description                                                                |
+|:------------------|:-----------------------|:----------------------|:-------|:---------------------------------------------------------------------------|
+| `6382012088a820`  | 0                      | 6                     | 7      | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
+| `secret_hash`     | 7                      | 39                    | 32     | See [Parameters](#parameters)                                              |
+| `8876a9`          | 40                     | 42                    | 3      | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
+| `redeem_identity` | 43                     | 74                    | 32     | See [Parameters](#parameters)                                              |
+| `67`              | 75                     | 75                    | 1      | `OP_ELSE`                                                                  |
+| `timestamp`       | 76                     | 79                    | 4      | See [Parameters](#parameters)                                              |
+| `b17576a9`        | 80                     | 83                    | 4      | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
+| `refund_identity` | 84                     | 115                   | 32     | See [Parameters](#parameters)                                              |
+| `6888ac`          | 116                    | 118                   | 3      | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
 
-Use the following steps to build the script:
-<!-- TODO: Verify this is correct! -->
-| Data                 | Position of first Byte | Position of last Byte| Length | Description                                                                  |
-|:---                  |:---                    |:---                  |:---    |:---                                                                          |
-| `6382012088a820`     | 0                      | 6                    | 7      | `OP_IF OP_SIZE [20] OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
-| `secret_hash`        | 7                      | 39                   | 32     | See [Variables](#variables)                                                  |
-| `8876a9`             | 40                     | 42                   | 3      | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                           |
-| `recipient_identity` | 43                     | 74                   | 32     | See [Variables](#variables)                                                  |
-| `67`                 | 75                     | 75                   | 1      | `OP_ELSE`                                                                    |
-| `timestamp`          | 76                     | 79                   | 4      | See [Variables](#variables)                                                  |
-| `b17576a9`           | 80                     | 83                   | 4      | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                           |
-| `sender_identity`    | 84                     | 115                  | 32     | See [Variables](#variables)                                                  |
-| `6888ac`             | 116                    | 118                  | 3      | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                        |
 
+## Execution Phase
+
+### Deployment
+
+The party who is required to deploy the Bitcoin HTLC (the refunder) compiles the contract as described in the previous section.
+Then, they MUST send a transaction to the Bitcoin Blockchain with an output with value exactly equal to the quantity of satoshi specified by `asset` and a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from the contract. See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification)
+for how to construct the `scriptPubkey`.
+
+The redeeming party should likewise compile the contract script and wait until the above transaction appears in the Bitcoin blockchain with enough confirmations such that they consider it permanent. They should do this by watching the Blockchain for a transaction with an output matching the `scriptPubkey` and having the required value.
 
 #### Redeem
-Describe redeem script
+
+To redeem from the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
+The redeemer can use following witness data to spend the output if they know the `secret`:
+
+| Data             | Description                                                                                             |
+|:-----------------|:--------------------------------------------------------------------------------------------------------|
+| redeem_signature | A valid SECP256k1 ECDSA DER encoded signature on the transaction with respect to the `redeem_pubkey`    |
+| redeem_pubkey    | The 33 byte SECP256k1 compressed public key that was hashed to produce the pubkeyhash `redeem_identity` |
+| secret           | The secret                                                                                              |
+| `01`             | Used to activate the redeem path in the `OP_IF`                                                         |
+| contract         | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
+
+For how to use this to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
 #### Refund
-Describe refund script and any caveat/things to watch out
 
-#### Timeouts
+To refund the HTLC, the refunder should submit a transaction to the blockchain which spends the P2WSH output.
+The refunder can use the following witness data to spend the output after the `expiry`:
 
-TODO: Do we want to discuss timeouts?
+| Data             | Description                                                                                             |
+|:-----------------|:--------------------------------------------------------------------------------------------------------|
+| refund_signature | A valid SECP256k1 ECDSA DER encoded signature on the transaction with respect to the `refund_pubkey`    |
+| redeem_pubkey    | The 33 byte SECP256k1 compressed public key that was hashed to produce the pubkeyhash `redeem_identity` |
+| `00`              | Used to activate the refund path in the `OP_IF`                                                         |
+| contract         | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 
 ## Registry extension
 
-A list of changes to the registry described in this RFC. For example, new protocols, hash functions etc.
+This RFC extends the [registry](./registry.md) in the following ways:
 
----
+- **pubkeyhash**: The identities table now includes:
+| Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
+|:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
 
-- [1] Compressed keys in P2WSH: See [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)
-- [2] OP_CHECKLOCKTIMEVERIFY: See [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)
-- [3] Segregated Witness: See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
+
+# Examples
+
+## Example RFC003 message body
+
+TODO
+
+
+## HTLC Test Vectors
+
+
+TODO put some example test vectors for the HTLC script
