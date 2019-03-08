@@ -170,10 +170,57 @@ This RFC extends the [registry](./registry.md) with an identity definition for t
 
 ## Example RFC003 message body
 
-TODO
+This following shows what a SWAP message looks like where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
 
+``` json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {...},
+    "alpha_asset": {
+      "value": "bitcoin",
+      "parameters": { "quantity": "100000000" }
+    },
+    "beta_asset": {...},
+    "protocol": "comit-rfc-003",
+  },
+  "body": {
+    "aplha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
+    "alpha_expiry": 123456789,
+    "hash_function": "SHA-256",
+    "secret_hash" : "51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c",
+    "beta_ledger_redeem_identity" : "...",
+    "beta_expiry" : ...
+  },
+}
+```
 
-## HTLC Test Vectors
+And a valid `RESPONSE` could look like:
 
+``` json
+{
+  "body": {
+     "alpha_ledger_redeem_identity": "c021f17be99c6adfbcba5d38ee0d292c0399d2f5",
+     "beta_ledger_refund_identity": "...",
+  }
+}
+```
 
-TODO put some example test vectors for the HTLC script
+Which would give us the following parameters for the HTLC:
+
+| Parameter       | value                                                              |
+|:----------------|--------------------------------------------------------------------|
+| redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
+| redund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
+| secret_hash     | `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c` |
+| expiry          | 123456789                                                          |
+
+Both parties should be able to compile the HTLC into this byte sequence:
+
+```
+6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670415cd5b07b17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
+```
