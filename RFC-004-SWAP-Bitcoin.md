@@ -32,15 +32,8 @@ To specify Bitcoin in one of the RFC002 ledger headers (`alpha_ledger` or `beta_
 
 ### `network`
 
-The `network` parameter describes whether you are intending to do a SWAP with *real* Bitcoin on the mainnet or are doing a test SWAP on the testnet or a shared regtest node.
-The `network` parameter is mandatory and can take the following values:
-
-| value     | description                                              |
-|:----------|:---------------------------------------------------------|
-| `regtest` | Bitcoin Core regtest or other local/private test network |
-| `testnet` | Bitcoin Core testnet                                     |
-| `mainnet` | Bitcoin Core mainnet                                     |
-
+The `network` parameter describes whether you are intending to do a SWAP with *real* Bitcoin on the `mainnet` or are doing a test SWAP on the `testnet` or a shared `regtest` node.
+The `network` parameter is mandatory.
 
 All private test networks like [btcd](https://github.com/btcsuite/btcd)'s `simnet` should be specified as `regtest`.
 
@@ -63,8 +56,44 @@ Its value MUST be a `u64` (note that in the JSON encoding a `u64` is encoded as 
 
 ## Registry extension
 
-- Addition of [Bitcoin Ledger](./registry.md#ledgers)
-- Addition of [Bitcoin Asset](./registry.md#assets)
+### The Bitcoin Ledger
+
+This RFC extends the registry [Ledgers section](./registry#ledgers) with the `bitcoin` ledger:
+
+| Value     | Description             |
+|:----------|-------------------------|
+| `bitcoin` | Bitcoin Core Blockchain |
+
+
+And defines the `network` parameter for it:
+
+| Parameter | Value Type                                  | Description                              |
+|:----------|---------------------------------------------|------------------------------------------|
+| `network` | see [Bitcoin Networks](./#bitcoin-networks) | The particular blockchain network to use |
+
+#### Bitcoin Networks
+
+And adds a Bitcoin Networks section describing the possible values for this header:
+
+| Value     | Description          |
+|:----------|:---------------------|
+| `regtest` | Bitcoin-core regtest |
+| `testnet` | Bitcoin testnet      |
+| `mainnet` | Bitcoin mainnet      |
+
+### The Bitcoin Asset
+
+This RFC extends the registry [Assets section](./registry#assets) with the `bitcoin` asset:
+
+| Value     | Description                  |
+|:----------|:-----------------------------|
+| `bitcoin` | Native Bitcoin network asset |
+
+And defines the `quantity` parameter for it:
+
+| Key        | Value Type | Description         |
+|:-----------|------------|---------------------|
+| `quantity` | `u64`      | Quantity in satoshi |
 
 # Examples
 

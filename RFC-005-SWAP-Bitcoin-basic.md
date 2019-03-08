@@ -153,13 +153,11 @@ The refunder can use the following witness data to spend the output after the `e
 
 ## Registry extension
 
-This RFC extends the [registry](./registry.md) in the following ways:
+This RFC extends the [registry](./registry.md) with an identity definition for the Bitcoin ledger:
 
-- **pubkeyhash**: The identities table now includes:
-| Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
-|:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
-
+| Ledger  | Identity Name | JSON Encoding            | Description                                                                           |
+|:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
+| Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
 
 # Examples
 
