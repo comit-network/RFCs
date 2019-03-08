@@ -5,19 +5,23 @@
 - Discussion-issue: -
 - Created on: 1 Mar. 2019
 
-# Table of contents
+# Table of Contents
+<!-- markdown-toc start -->
 
-<!-- toc -->
+- [Bitcoin Ledger in SWAP Messages](#bitcoin-ledger-in-swap-messages)
+- [Table of contents](#table-of-contents)
+    - [Description](#description)
+    - [The Bitcoin Ledger](#the-bitcoin-ledger)
+        - [`network`](#network)
+    - [The Bitcoin Asset](#the-bitcoin-asset)
+        - [`quantity`](#quantity)
+    - [Registry extension](#registry-extension)
+        - [The Bitcoin Ledger](#the-bitcoin-ledger-1)
+            - [Bitcoin Networks](#bitcoin-networks)
+        - [The Bitcoin Asset](#the-bitcoin-asset-1)
+- [Examples](#examples)
 
-- [Description](#description)
-- [Motivation](#motivation)
-- [Content](#content)
-  - [Ledger definition](#ledger-definition)
-    - [Parameters](#parameters)
-  - [Asset definition](#asset-definition)
-- [Registry extension](#registry-extension)
-
-<!-- tocstop -->
+<!-- markdown-toc end -->
 
 ## Description
 

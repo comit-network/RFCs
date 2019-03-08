@@ -1,6 +1,6 @@
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
+# Table of contents
 
+<!-- markdown-toc start -->
 - [Registry](#registry)
     - [Description](#description)
     - [Ledgers](#ledgers)
@@ -16,7 +16,6 @@
     - [Protocols](#protocols)
     - [Hash Functions](#hash-functions)
     - [Headers](#headers)
-
 <!-- markdown-toc end -->
 
 # Registry

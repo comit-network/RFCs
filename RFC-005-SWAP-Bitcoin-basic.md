@@ -5,25 +5,28 @@
 - Discussion-issue: -
 - Created on: 01 Mar. 2019
 
-# Table of contents
+# Table of Contents
+<!-- markdown-toc start -->
 
-<!-- toc -->
+- [Bitcoin Basic HTLC Atomic Swap](#bitcoin-basic-htlc-atomic-swap)
+- [Table of contents](#table-of-contents)
+    - [Description](#description)
+    - [Motivation](#motivation)
+    - [Bitcoin Identity](#bitcoin-identity)
+    - [Hash Time Lock Contract](#hash-time-lock-contract)
+        - [Hash Functions](#hash-functions)
+        - [Parameters](#parameters)
+        - [Contract](#contract)
+    - [Execution Phase](#execution-phase)
+        - [Deployment](#deployment)
+            - [Redeem](#redeem)
+            - [Refund](#refund)
+    - [Registry extension](#registry-extension)
+- [Examples](#examples)
+    - [Example RFC003 message body](#example-rfc003-message-body)
+    - [HTLC Test Vectors](#htlc-test-vectors)
 
-- [Description](#description)
-- [Motivation](#motivation)
-- [Content](#content)
-  - [Identities](#identities)
-  - [Scripts](#scripts)
-    - [Variables](#variables)
-    - [HTLC](#htlc)
-      - [Human friendly - Opcode representation](#human-friendly---opcode-representation)
-      - [Implementation friendly - Hex representation](#implementation-friendly---hex-representation)
-    - [Redeem](#redeem)
-    - [Refund](#refund)
-    - [Timeouts](#timeouts)
-}- [Registry extension](#registry-extension)
-
-<!-- tocstop -->
+<!-- markdown-toc end -->
 
 ## Description
 
