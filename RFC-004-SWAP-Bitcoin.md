@@ -26,7 +26,7 @@
 ## Description
 
 This RFC specifies how the Bitcoin blockchain and its native asset Bitcoin are described in RFC002 SWAP messages.
-Bitcoin refers specifically to the Bitcoin Core  [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
+Bitcoin refers specifically to [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
 As required by RFC002, this RFC defines the *ledger* value `bitcoin` and its associated parameters as well as the *asset* `bitcoin`.
 This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to execute and negotiate Bitcoin swaps.
 
