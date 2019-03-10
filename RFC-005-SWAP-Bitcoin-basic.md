@@ -40,12 +40,6 @@ To fulfil the requirements of RFC003 this RFC defines:
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
 - How to deploy, redeem and refund the HTLC during the execution phase of RFC003.
 
-
-## Motivation
-
-The motivation for creating this RFC is to allow implementations to negotiate and execute [RFC003 Basic HTLC Atomic Swaps](./RFC-003-SWAP-basic.md) using the COMIT protocol.
-The identity definition introduced in this RFC should also be useful for future protocols.
-
 ## Bitcoin Identity
 
 The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
