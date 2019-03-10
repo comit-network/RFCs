@@ -40,12 +40,13 @@ To fulfil the requirements of RFC003 this RFC defines:
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
 - How to deploy, redeem and refund the HTLC during the execution phase of RFC003.
 
-## Bitcoin Identity
+## The Bitcoin Identity
 
 The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
 The compressed public key is used because it needs to be compatible with segwit transactions (see [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)).
 
-While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in RFC003. Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as such as verifying that it is a p2pkh or p2wpkh address, extraction of the pubkeyhash, validation of the network.
+While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in RFC003.
+Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as verifying that it is a p2pkh or p2wpkh address, extracting the pubkeyhash and validating the network.
 
 When using the pubkeyhash as one of the identities in an RFC003 message body it MUST be encoded as 20 hex encoded string.
 This RFC extends the [registry](./registry.md) with the following entry in the identity table:
