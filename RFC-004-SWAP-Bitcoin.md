@@ -44,10 +44,10 @@ All private test networks like [btcd](https://github.com/btcsuite/btcd)'s `simne
 ## The Bitcoin Asset
 
 Bitcoin is also the name of the Bitcoin blockchain's native asset.
-This RFC only pertains to the native Bitcoin asset.
-Other non-native assets will be defined in subsequent RFCs.
+This RFC only contains protocol definitions for the native Bitcoin asset.
+Non-native assets like [colored coins](https://en.bitcoin.it/wiki/Colored_Coins) may be defined in subsequent RFCs.
 
-Although Bitcoin is nominally the native asset, ownership of Bitcoin is really the ability to unlock *unspent transaction outputs* whose value is measured in *satoshi*.
+Although Bitcoin is nominally the native asset, ownership of Bitcoin is really the ability to unlock *unspent transaction outputs* (UTXOs) whose value is measured in *satoshi*.
 1 Bitcoin is simply the name for 100,000,000 satoshi.
 
 To specify Bitcoin in one of the RFC002 asset headers (`alpha_asset` or `beta_asset`) use the value `bitcoin` with the following parameter:
