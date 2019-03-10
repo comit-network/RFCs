@@ -36,9 +36,9 @@ For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitc
 
 To fulfil the requirements of RFC003 this RFC defines:
 
-- The *identity* to be used when negotiating a SWAP on the Bitcoin ledger.
+- The [identity](./RFC-003-SWAP-basic.md#identity) to be used when negotiating a SWAP on the Bitcoin ledger.
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of RFC003
+- How to deploy, redeem and refund the HTLC during the execution phase of RFC003.
 
 
 ## Motivation
