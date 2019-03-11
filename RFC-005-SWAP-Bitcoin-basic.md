@@ -187,12 +187,14 @@ This following shows what a SWAP message looks like where the `alpha_ledger` is 
       "parameters": { "quantity": "100000000" }
     },
     "beta_asset": {...},
-    "protocol": "comit-rfc-003",
+    "protocol": {
+        "value" : "comit-rfc-003",
+        "parameters" : { "hash_function" : "SHA-256" }
+    }
   },
   "body": {
     "aplha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
     "alpha_expiry": 1552263040,
-    "hash_function": "SHA-256",
     "secret_hash" : "51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c",
     "beta_ledger_redeem_identity" : "...",
     "beta_expiry" : ...
@@ -204,9 +206,10 @@ And a valid `RESPONSE` could look like:
 
 ``` json
 {
+  "status" : "OK00",
   "body": {
      "alpha_ledger_redeem_identity": "c021f17be99c6adfbcba5d38ee0d292c0399d2f5",
-     "beta_ledger_refund_identity": "...",
+     "beta_ledger_refund_identity": "..."
   }
 }
 ```
