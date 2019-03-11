@@ -21,7 +21,7 @@ Ether is native asset of the Ethereum blockchain.
 This RFC only contains protocol definitions for the Ether asset.
 Non-native assets like [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard) tokens may be defined in subsequent RFCs.
 
-Although Ether is nominally the native asset, amounts of Ether counted in wei.
+Although Ether is nominally the native asset, amounts of Ether are counted in wei.
 1 Ether =  1,000,000,000,000,000,000 (10¹⁸) wei.
 
 To specify Ether as one of the [RFC002](./RFC-002-SWAP.md) asset headers (`alpha_asset` or `beta_asset`) use the value `ether` with the following parameter:
