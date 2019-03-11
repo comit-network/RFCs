@@ -115,11 +115,16 @@ The following section describes how both parties should interact with the Bitcoi
 
 ### Deployment
 
-The party who is required to deploy the Bitcoin HTLC (the funder) compiles the contract into bytes as described in the previous section.
-To deploy it, they send a transaction to the Bitcoin blockchain with an output whose value exactly equal to the `quantity` parameter in the relevant asset header and a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from the contract.
-See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the contract bytes.
+At the start of the deployment stage, both parties compile the contract into bytes as described in the previous section.
+We will call this value `contract_script`.
 
-The redeeming party (the redeemer) should likewise compile the contract script and wait until the above transaction appears in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
+To deploy the Bitcoin HTLC, the *funder* must confirm a transaction on the relevant Bitcoin network.
+One of the transaction's outputs must have the following properties:
+
+- Its `value` MUST be equal to the `quantity` parameter in the Bitcoin asset header.
+- It MUST have a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the `contract_script`).
+
+The redeeming party (the *redeemer*) should wait until an transaction with the above output is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
 They MAY do this by watching the blockchain for a transaction with an output matching the `scriptPubkey` and having the required value.
 
 #### Redeem
