@@ -19,6 +19,7 @@ The Identity to be used on Ethereum is the Ethereum *address* as defined in sect
 It is defined as the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
 
 In the JSON encoding, an ethereum address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
+Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
 
 This RFC extends the [registry](./registry.md) with the following entry in the identity table:
 
