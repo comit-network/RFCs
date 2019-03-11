@@ -92,6 +92,7 @@ OP_CHECKSIG
 
 As required by RFC003, this HTLC uses absolute time locks to check whether `expiry` has been reached.
 Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `expiry` in the contract.
+Due to [`lock_time`](https://en.bitcoin.it/wiki/Protocol_documentation#tx) transaction field interpreting values below `500000000` as block heights, implementations MUST consider such an `expiry` invalid.
 
 To compute the exact bytes of the contract implementations should use the following offset table:
 
