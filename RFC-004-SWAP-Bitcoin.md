@@ -75,7 +75,7 @@ And defines the `network` parameter for it:
 
 #### Bitcoin Networks
 
-And adds a Bitcoin Networks section describing the possible values for this header:
+And adds a Bitcoin Networks section describing the possible values for this parameter:
 
 | Value     | Description                          |
 |:----------|:-------------------------------------|
