@@ -8,20 +8,18 @@
 # Table of Contents
 <!-- markdown-toc start -->
 
-- [Bitcoin Basic HTLC Atomic Swap](#bitcoin-basic-htlc-atomic-swap)
-- [Table of contents](#table-of-contents)
-    - [Description](#description)
-    - [Motivation](#motivation)
-    - [Bitcoin Identity](#bitcoin-identity)
-    - [Hash Time Lock Contract](#hash-time-lock-contract)
-        - [Hash Functions](#hash-functions)
-        - [Parameters](#parameters)
-        - [Contract](#contract)
-    - [Execution Phase](#execution-phase)
-        - [Deployment](#deployment)
-            - [Redeem](#redeem)
-            - [Refund](#refund)
-    - [Registry extension](#registry-extension)
+- [Description](#description)
+- [Motivation](#motivation)
+- [Bitcoin Identity](#bitcoin-identity)
+- [Hash Time Lock Contract](#hash-time-lock-contract)
+    - [Hash Functions](#hash-functions)
+    - [Parameters](#parameters)
+    - [Contract](#contract)
+- [Execution Phase](#execution-phase)
+    - [Deployment](#deployment)
+    - [Redeem](#redeem)
+    - [Refund](#refund)
+- [Registry extension](#registry-extension)
 - [Examples](#examples)
     - [Example RFC003 message body](#example-rfc003-message-body)
     - [HTLC Test Vectors](#htlc-test-vectors)
@@ -127,7 +125,7 @@ One of the transaction's outputs must have the following properties:
 The redeeming party (the *redeemer*) should wait until an transaction with the above output is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
 They MAY do this by watching the blockchain for a transaction with an output matching the `scriptPubkey` and having the required value.
 
-#### Redeem
+### Redeem
 
 To redeem from the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
 The redeemer can use following witness data to spend the output if they know the `secret`:
@@ -145,7 +143,7 @@ For how to use this to construct the redeem transaction see [BIP141](https://git
 To be notified of the redeem event both parties may watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger`, then the funder (Bob) MUST watch for such a transaction and then extract the `secret` from the witness data and continue the protocol.
 
-#### Refund
+### Refund
 
 To refund the HTLC, the funder should submit a transaction to the blockchain which spends the P2WSH output.
 The funder can use the following witness data to spend the output after the `expiry`:

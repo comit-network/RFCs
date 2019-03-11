@@ -8,17 +8,15 @@
 # Table of Contents
 <!-- markdown-toc start -->
 
-- [Bitcoin Ledger in SWAP Messages](#bitcoin-ledger-in-swap-messages)
-- [Table of contents](#table-of-contents)
-    - [Description](#description)
-    - [The Bitcoin Ledger](#the-bitcoin-ledger)
-        - [`network`](#network)
-    - [The Bitcoin Asset](#the-bitcoin-asset)
-        - [`quantity`](#quantity)
-    - [Registry extension](#registry-extension)
-        - [The Bitcoin Ledger](#the-bitcoin-ledger-1)
-            - [Bitcoin Networks](#bitcoin-networks)
-        - [The Bitcoin Asset](#the-bitcoin-asset-1)
+- [Description](#description)
+- [The Bitcoin Ledger](#the-bitcoin-ledger)
+    - [`network`](#network)
+- [The Bitcoin Asset](#the-bitcoin-asset)
+    - [`quantity`](#quantity)
+- [Registry extension](#registry-extension)
+    - [The Bitcoin Ledger](#the-bitcoin-ledger-1)
+        - [Bitcoin Networks](#bitcoin-networks)
+    - [The Bitcoin Asset](#the-bitcoin-asset-1)
 - [Examples](#examples)
 
 <!-- markdown-toc end -->
