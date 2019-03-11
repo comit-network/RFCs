@@ -138,7 +138,7 @@ The redeemer can use following witness data to spend the output if they know the
 | redeem_pubkey    | The 33 byte SECP256k1 compressed public key that was hashed to produce the pubkeyhash `redeem_identity` |
 | secret           | The pre-image to the `secret_hash` used to generate the HTLC                                            |
 | `01`             | A single byte used to activate the redeem path in the `OP_IF`                                           |
-| contract         | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
+| contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 For how to use this to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
@@ -155,7 +155,7 @@ The funder can use the following witness data to spend the output after the `exp
 | refund_signature | A valid SECP256k1 ECDSA DER encoded signature on the transaction with respect to the `refund_pubkey`    |
 | refund_pubkey    | The 33 byte SECP256k1 compressed public key that was hashed to produce the pubkeyhash `refund_identity` |
 | `00`             | A single byte used to activate the refund path in the `OP_IF`                                           |
-| contract         | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
+| contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 To be notified of the refund event both parties may watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 
