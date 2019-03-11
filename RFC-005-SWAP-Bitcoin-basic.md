@@ -29,25 +29,25 @@
 
 ## Description
 
-This RFC defines how to execute a ([RFC003](./RFC-003-SWAP-basic.md)) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
+This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
 
 For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitcoin).
 
-To fulfil the requirements of RFC003 this RFC defines:
+To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
 
 - The [identity](./RFC-003-SWAP-basic.md#identity) to be used when negotiating a SWAP on the Bitcoin ledger.
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of RFC003.
+- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md).
 
 ## The Bitcoin Identity
 
 The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
 The compressed public key is used because it needs to be compatible with segwit transactions (see [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)).
 
-While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in RFC003.
+While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in [RFC003](./RFC-003-SWAP-basic.md).
 Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as verifying that it is a p2pkh or p2wpkh address, extracting the pubkeyhash and validating the network.
 
-When using the pubkeyhash as one of the identities in an RFC003 message body it MUST be encoded as 20 hex encoded string.
+When using the pubkeyhash as one of the identities in an [RFC003](./RFC-003-SWAP-basic.md) message body it MUST be encoded as 20 hex encoded string.
 This RFC extends the [registry](./registry.md) with the following entry in the identity table:
 
 | Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
@@ -89,7 +89,7 @@ OP_EQUALVERIFY
 OP_CHECKSIG
 ```
 
-As required by RFC003, this HTLC uses absolute time locks to check whether `expiry` has been reached.
+As required by [RFC003](./RFC-003-SWAP-basic.md), this HTLC uses absolute time locks to check whether `expiry` has been reached.
 Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `expiry` in the contract.
 Due to [`lock_time`](https://en.bitcoin.it/wiki/Protocol_documentation#tx) transaction field interpreting values below `500000000` as block heights, implementations MUST consider such an `expiry` invalid.
 
@@ -110,7 +110,7 @@ To compute the exact Bitcoin script bytes of the contract, implementations shoul
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-basic#execution-phase).
+The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-basic.md#execution-phase).
 
 ### Deployment
 
@@ -160,7 +160,7 @@ To be notified of the refund event both parties may watch the blockchain for tra
 
 ## Registry extension
 
-This RFC extends the [registry](./registry.md) with an identity definition for the Bitcoin ledger:
+This RFC extends the [registry](./registry.md#identities) with an identity definition for the Bitcoin ledger:
 
 | Ledger  | Identity Name | JSON Encoding            | Description                                                                           |
 |:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
