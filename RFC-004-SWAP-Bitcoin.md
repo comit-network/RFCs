@@ -71,17 +71,17 @@ And defines the `network` parameter for it:
 
 | Parameter | Value Type                                  | Description                              |
 |:----------|---------------------------------------------|------------------------------------------|
-| `network` | see [Bitcoin Networks](./#bitcoin-networks) | The particular blockchain network to use |
+| `network` | see [Bitcoin Networks](#bitcoin-networks) | The particular blockchain network to use |
 
 #### Bitcoin Networks
 
 And adds a Bitcoin Networks section describing the possible values for this header:
 
-| Value     | Description          |
-|:----------|:---------------------|
-| `regtest` | Bitcoin-core regtest |
-| `testnet` | Bitcoin testnet      |
-| `mainnet` | Bitcoin mainnet      |
+| Value     | Description                          |
+|:----------|:-------------------------------------|
+| `regtest` | Private Bitcoin Core regtest network |
+| `testnet` | Bitcoin Core testnet                 |
+| `mainnet` | Bitcoin Core mainnet                 |
 
 ### The Bitcoin Asset
 
