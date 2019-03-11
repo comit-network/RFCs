@@ -83,7 +83,7 @@ OP_IF
     OP_SHA256 <secret_hash> OP_EQUALVERIFY
     OP_DUP OP_HASH160 <redeem_identity>
 OP_ELSE
-    <timestamp> OP_CHECKLOCKTIMEVERIFY OP_DROP
+    <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP
     OP_DUP OP_HASH160 <refund_identity>
 OP_ENDIF
 OP_EQUALVERIFY
@@ -103,7 +103,7 @@ To compute the exact bytes of the contract implementations should use the follow
 | `8876a9`          | 40                     | 42                    | 3      | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
 | `redeem_identity` | 43                     | 64                    | 20     | See [Parameters](#parameters)                                              |
 | `67`              | 65                     | 65                    | 1      | `OP_ELSE`                                                                  |
-| `timestamp`       | 66                     | 69                    | 4      | See [Parameters](#parameters)                                              |
+| `expiry`          | 66                     | 69                    | 4      | See [Parameters](#parameters)                                              |
 | `b17576a9`        | 70                     | 73                    | 4      | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
 | `refund_identity` | 74                     | 93                    | 20     | See [Parameters](#parameters)                                              |
 | `6888ac`          | 94                     | 96                    | 3      | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
