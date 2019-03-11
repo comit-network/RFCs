@@ -70,7 +70,7 @@ The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and
 |:----------------|:----------------------------------------------------------------------------|
 | asset           | The quantity of satoshi                                                     |
 | secret_hash     | The hash of the `secret` (32 bytes for SHA-256)                             |
-| redeem_identity | The `pubkeyhash` requ the redeeming party                                   |
+| redeem_identity | The `pubkeyhash` of the redeeming party                                     |
 | refund_identity | The `pubkeyhash` of the refunding party                                     |
 | expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
 
