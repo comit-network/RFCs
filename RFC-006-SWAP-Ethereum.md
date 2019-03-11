@@ -2,8 +2,8 @@
 
 ## Description
 
-This RFC specifies how the Ethereum blockchain and its native asset Ethereum are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
-Ethereum refers specifically to [Ethereum](https://www.ethereum.org) (and its associated testnets) and not any blockchains related to or derived from it.
+This RFC specifies how the Ethereum blockchain and its native asset Ether are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
+*Ethereum* refers specifically to the blockchain endorsed by [The Ethereum Foundation](https://www.ethereum.org/foundation) and its associated testnets but not any other blockchains related to or derived from it.
 As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *ledger* value `ethereum` and as well as the *asset* `ether`.
 
 ## The Ethereum Ledger
