@@ -191,7 +191,7 @@ This following shows what a SWAP message looks like where the `alpha_ledger` is 
   },
   "body": {
     "aplha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
-    "alpha_expiry": 123456789,
+    "alpha_expiry": 1552263040,
     "hash_function": "SHA-256",
     "secret_hash" : "51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c",
     "beta_ledger_redeem_identity" : "...",
@@ -218,10 +218,10 @@ Which would give us the following parameters for the HTLC:
 | redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
 | redund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
 | secret_hash     | `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c` |
-| expiry          | 123456789                                                          |
+| expiry          | 1552263040                                                         |
 
 Both parties should be able to compile the HTLC into this byte sequence:
 
 ```
-6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670415cd5b07b17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
+6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
 ```
