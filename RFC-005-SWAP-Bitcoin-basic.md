@@ -76,7 +76,7 @@ The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and
 
 The HTLC is constructed by locking an output with the following script:
 
-```asm
+```
 OP_IF
     OP_SIZE 32 OP_EQUALVERIFY
     OP_SHA256 <secret_hash> OP_EQUALVERIFY
