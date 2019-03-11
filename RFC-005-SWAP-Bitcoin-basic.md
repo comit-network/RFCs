@@ -120,31 +120,31 @@ The following section describes how both parties should interact with the Bitcoi
 At the start of the deployment stage, both parties compile the contract into bytes as described in the previous section.
 We will call this value `contract_script`.
 
-To deploy the Bitcoin HTLC, the *funder* must confirm a transaction on the relevant Bitcoin network.
+To deploy the Bitcoin HTLC, the *funder* must confirm a transaction on the relevant Bitcoin blockchain.
 One of the transaction's outputs must have the following properties:
 
 - Its `value` MUST be equal to the `quantity` parameter in the Bitcoin asset header.
 - It MUST have a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the `contract_script`).
 
 The redeeming party (the *redeemer*) should wait until an transaction with the above output is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
-They MAY do this by watching the blockchain for a transaction with an output matching the `scriptPubkey` and having the required value.
+They MAY do this by watching the blockchain for a transaction with an output matching the required `scriptPubkey` and having the required value.
 
 ### Redeem
 
-To redeem from the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
+To redeem the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
 The redeemer can use following witness data to spend the output if they know the `secret`:
 
 | Data             | Description                                                                                             |
 |:-----------------|:--------------------------------------------------------------------------------------------------------|
 | redeem_signature | A valid SECP256k1 ECDSA DER encoded signature on the transaction with respect to the `redeem_pubkey`    |
 | redeem_pubkey    | The 33 byte SECP256k1 compressed public key that was hashed to produce the pubkeyhash `redeem_identity` |
-| secret           | The pre-image to the `secret_hash` used to generate the HTLC                                            |
+| secret           | The pre-image of the `secret_hash` under the `hash_function`                                            |
 | `01`             | A single byte used to activate the redeem path in the `OP_IF`                                           |
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 For how to use this to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
-To be notified of the redeem event both parties may watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
+To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger`, then the funder (Bob) MUST watch for such a transaction and then extract the `secret` from the witness data and continue the protocol.
 
 ### Refund
@@ -159,7 +159,7 @@ The funder can use the following witness data to spend the output after the `exp
 | `00`             | A single byte used to activate the refund path in the `OP_IF`                                           |
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
-To be notified of the refund event both parties may watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
+To be notified of the refund event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 
 ## Registry extension
 
