@@ -225,3 +225,11 @@ Both parties should be able to compile the HTLC into this byte sequence:
 ```
 6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
 ```
+
+Which results in the following P2WSH address by network:
+
+| Network   | Address                                                            |
+|:----------|--------------------------------------------------------------------|
+| `regtest` | `bcrt1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qthjvrp` |
+| `testnet` | `tb1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qxwc2km`   |
+| `mainnet` | `bc1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24q3xw9v5`   |
