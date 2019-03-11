@@ -18,7 +18,7 @@
         - [Bitcoin Networks](#bitcoin-networks)
     - [The Bitcoin Asset](#the-bitcoin-asset-1)
 - [Examples](#examples)
-
+    - [SWAP Request](#swap-request)
 <!-- markdown-toc end -->
 
 ## Description
@@ -99,7 +99,10 @@ And defines the `quantity` parameter for it:
 
 # Examples
 
-The following shows a generic JSON encoded SWAP request (with irrelevant fields filled with `...`) with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`:
+## SWAP Request
+
+The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`.
+Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json
 {

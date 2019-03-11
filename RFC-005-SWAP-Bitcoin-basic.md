@@ -21,8 +21,9 @@
     - [Refund](#refund)
 - [Registry extension](#registry-extension)
 - [Examples](#examples)
-    - [Example RFC003 message body](#example-rfc003-message-body)
-    - [HTLC Test Vectors](#htlc-test-vectors)
+    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
+    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+    - [HTLC](#htlc)
 
 <!-- markdown-toc end -->
 
@@ -167,9 +168,9 @@ This RFC extends the [registry](./registry.md) with an identity definition for t
 
 # Examples
 
-## Example RFC003 message body
+## RFC003 SWAP REQUEST
 
-This following shows what a SWAP message looks like where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
+This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
@@ -200,7 +201,8 @@ This following shows what a SWAP message looks like where the `alpha_ledger` is 
 }
 ```
 
-And a valid `RESPONSE` could look like:
+## RFC003 SWAP RESPONSE
+A valid `RESPONSE` to the above `REQUEST` could look like:
 
 ``` json
 {
@@ -212,7 +214,10 @@ And a valid `RESPONSE` could look like:
 }
 ```
 
-Which would give us the following parameters for the HTLC:
+
+## HTLC
+
+The above `REQUEST` and `RESPONSE` results in the following parameters to the HTLC:
 
 | Parameter       | value                                                              |
 |:----------------|--------------------------------------------------------------------|
@@ -221,7 +226,8 @@ Which would give us the following parameters for the HTLC:
 | secret_hash     | `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c` |
 | expiry          | 1552263040                                                         |
 
-Both parties should be able to compile the HTLC into this byte sequence:
+
+Which should compile to the following Bitcoin script bytes:
 
 ```
 6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
