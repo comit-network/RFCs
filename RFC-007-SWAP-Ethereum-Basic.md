@@ -193,7 +193,7 @@ They SHOULD do this by sending a contract deployment transaction to the relevant
 - `contract_code` as the `data` of the transaction
 - The quantity of wei specified in the Ether Asset header as the `value` of the transaction
 
-The funder SHOULD NOT do this using the `CREATE` opcode.
+The funder SHOULD NOT do this executing the `CREATE` opcode from another contract.
 
 To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with the `contract_code` as the data.
 Upon observing the deployment transaction, both parties MUST record the address the contract was deployed to (referred to as `contract_address` from now on).
