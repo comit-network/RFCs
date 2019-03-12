@@ -50,7 +50,6 @@ The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and
 | refund_identity | The `address` of the refunding party                                        |
 | expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
 
-
 ### Contract
 
 This RFC defines a single disposable contract as the HTLC.
