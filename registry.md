@@ -88,9 +88,9 @@ And the possible parameters they each may have:
 
 ### `ether` Parameters
 
-| Parameter  | Description     | Value Type |
-|:-----------|-----------------|------------|
-| `quantity` | Quantity in wei | `u256`     |
+| Parameter  | Value Type | Description     |
+|:-----------|------------|-----------------|
+| `quantity` | `u256`     | Quantity in wei |
 
 
 ### `erc20` Parameters
