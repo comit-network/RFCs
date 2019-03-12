@@ -53,7 +53,7 @@ The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and
 ### Contract
 
 This RFC defines a single disposable contract as the HTLC.
-It uses `selfdestruct` to release the funds to the desired party.
+It uses `selfdestruct` to release the funds to the intended party.
 
 This approach was chosen over a stateful contract written in solidity so the contracts can be precisely defined and verified.
 
