@@ -15,7 +15,7 @@ To specify Ethereum in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`a
 The `network` parameter describes whether you are intending to do a SWAP with *real* Ether on the `mainnet` or are doing a test SWAP on the `testnet` or a shared `regtest` node.
 The `network` parameter is mandatory.
 
-See [Ethereum Networks](#ethereum-networks) in the registry extension for possible value for `netowrk` introduced by this RFC.
+See [Ethereum Networks](#ethereum-networks) in the registry extension for possible value for `network` introduced by this RFC.
 
 ## The Ether Asset
 
