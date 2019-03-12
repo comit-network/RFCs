@@ -61,7 +61,8 @@ The contract itself works by hard coding the `redeem_identity` and `refund_ident
 When it is called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using a `selfdestruct`.
 When it is called without any calldata after the `expiry` it will transfer all the Ether to the `refund_identity` using a `selfdestruct`.
 
-Note that the contract doesn't check the identity of the caller.
+The contract never checks who is calling the contract so it can be called successfully by anyone.
+The funds will only ever be transferred to the `redeem_identity` or the `refund_identity`.
 
 The contract is compiled from the following EVM assembly:
 
