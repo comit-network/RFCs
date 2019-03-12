@@ -55,7 +55,7 @@ The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and
 This RFC defines a single disposable contract as the HTLC.
 It uses `selfdestruct` to release the funds to the intended party.
 
-This approach was chosen over a stateful contract written in solidity so the contracts can be precisely defined and verified.
+This approach was chosen over a stateful contract written in solidity so the contracts can be precisely defined, verified and updated.
 
 The contract itself works by hard coding the `redeem_identity` and `refund_identity` into the contract.
 When it is called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using a `selfdestruct`.
