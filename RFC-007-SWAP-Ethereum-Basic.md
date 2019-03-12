@@ -40,7 +40,7 @@ This may be expanded in subsequent RFCs.
 
 ### Parameters
 
-The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and are described concretely in the following table:
+The parameters for the Ether HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and are described concretely in the following table:
 
 | Variable        | Description                                                                 |
 |:----------------|:----------------------------------------------------------------------------|
@@ -217,18 +217,17 @@ To be notified of the refund event, both parties SHOULD watch the blockchain for
 
 ## Registry extension
 
-This RFC extends the [registry](./registry.md#identities) with an identity definition for the Bitcoin ledger:
+This RFC extends the [registry](./registry.md#identities) with an identity definition for the Ethereum ledger:
 
 | Ledger   | Identity Name | JSON Encoding         | Description         |
 |:---------|:--------------|:----------------------|---------------------|
 | Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
 
-
 # Examples
 
 ## RFC003 SWAP REQUEST
 
-This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
+This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
