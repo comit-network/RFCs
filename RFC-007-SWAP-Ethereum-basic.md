@@ -1,5 +1,29 @@
 # Ethereum Basic HTLC Atomic Swap
 
+- RFC-Number: 007
+- Status: Draft
+- Discussion-issue: -
+- Created on: 2019-03-12
+
+## Table of Contents
+<!-- toc -->
+- [Description](#description)
+- [The Ethereum Identity](#the-ethereum-identity)
+- [Hash Time Lock Contract](#hash-time-lock-contract)
+    - [Hash Functions](#hash-functions)
+    - [Parameters](#parameters)
+    - [Contract](#contract)
+- [Execution Phase](#execution-phase)
+    - [Deployment](#deployment)
+    - [Redeem](#redeem)
+    - [Refund](#refund)
+- [Registry extension](#registry-extension)
+- [Examples](#examples)
+    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
+    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+    - [HTLC](#htlc)
+
+<!-- tocstop -->
 
 ## Description
 
