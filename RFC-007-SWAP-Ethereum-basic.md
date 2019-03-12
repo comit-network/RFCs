@@ -59,7 +59,7 @@ There is nothing inherently wrong from the perspective of this RFC about using a
 
 ### Hash Functions
 
-This RFC specifies SHA-256 is the only value the `hash_function` header may take if Ethereum is used as a ledger.
+This RFC specifies SHA-256 as the only value the `hash_function` parameter to `comit-rfc-003` may take if Ethereum is used as a ledger.
 This may be expanded in subsequent RFCs.
 
 ### Parameters
