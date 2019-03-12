@@ -59,7 +59,7 @@ This RFC extends the [registry](./registry.md) with the following entry in the i
 
 ### Hash Functions
 
-This RFC specifies SHA-256 is the only value the `hash_function` header may take if Bitcoin is used as a ledger.
+This RFC specifies SHA-256 as the only value the `hash_function` parameter to `comit-rfc-003` may take if Bitcoin is used as a ledger.
 This may be expanded in subsequent RFCs.
 
 ### Parameters
