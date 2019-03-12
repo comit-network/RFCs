@@ -204,10 +204,10 @@ Before redeeming, the redeemer SHOULD wait until the deployment transaction has 
 
 To redeem the HTLC, the redeemer SHOULD send a transaction to the `contract_address` with the `data` of the transaction set to the `secret`.
 
-To be notified of the redeem event, both parties SHOULD watch the blockchain for a transaction send to `contract_address` that emits the `Redeemed()` topic: `0xb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a7413`.
-If Ethereum is the `beta_ledger`, then the funder (Bob) MUST watch for such a transaction, extract the `secret` from the transaction log and continue the protocol.
-<!-- TODO cite docs for transaction logs -->
-
+To be notified of the redeem event, both parties SHOULD watch the blockchain for `contract_address` emitting the `Redeemed()` log.
+If Ethereum is the `beta_ledger`, then the funder (Bob) MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
+In this case, Bob MUST NOT watch for a transaction sent to `contract_address` with the `secret` as `data`.
+If he does this, he may miss learning the `secret` by having the contract be redeemed by another contract.
 
 ### Refund
 
