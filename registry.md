@@ -32,7 +32,7 @@ The following is a list of possible values a `Ledger` type header can take:
 | Value      | Reference                            | Description                            |
 |:-----------|--------------------------------------|----------------------------------------|
 | `bitcoin`  | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The Bitcoin Core family of blockchains |
-| `ethereum` | TBD                                  | The Ethereum family of blockchains     |
+| `ethereum` | [RFC-006](./RFC-006-SWAP-Ethereum.md)| The Ethereum family of blockchains     |
 
 
 And the possible parameters they each may have:
@@ -75,7 +75,7 @@ The following is a list of possible values an `Asset` type header can take:
 | Value     | Reference                            | Description                   |
 |:----------|--------------------------------------|-------------------------------|
 | `bitcoin` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | Native Bitcoin network asset  |
-| `ether`   | TBD                                  | Native Ethereum network asset |
+| `ether`   | [RFC-006](./RFC-006-SWAP-Ethereum.md) | Native Ethereum network asset |
 | `erc20`   | TBD                                  | ERC20 token                   |
 
 And the possible parameters they each may have:
@@ -108,7 +108,7 @@ And the possible parameters they each may have:
 | Ledger   | Identity Name | JSON Encoding            | Reference                            | Description                                                                           |
 |:---------|:--------------|:-------------------------|:-------------------------------------|---------------------------------------------------------------------------------------|
 | Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
-| Ethereum | `address`     | TBD                      | TBD                                  | An Ethereum address                                                                   |
+| Ethereum | `address`     | `0x` prefixed address    | [RFC-007](./RFC-007-SWAP-Ethereum-Basic.md) | An Ethereum Address                                                                   |
 
 ## Protocols
 
