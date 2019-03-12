@@ -58,8 +58,8 @@ It uses `selfdestruct` to release the funds to the intended party.
 This approach was chosen over a stateful contract written in solidity so the contracts can be precisely defined, verified and updated.
 
 The contract itself works by hard coding the `redeem_identity` and `refund_identity` into the contract.
-When it is called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using a `selfdestruct`.
-When it is called without any calldata after the `expiry` it will transfer all the Ether to the `refund_identity` using a `selfdestruct`.
+When it is called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using `selfdestruct`.
+When it is called without any calldata after the `expiry` it will transfer all the Ether to the `refund_identity` using `selfdestruct`.
 
 The contract never checks who is calling the contract so it can be called successfully by anyone.
 The funds will only ever be transferred to the `redeem_identity` or the `refund_identity`.
