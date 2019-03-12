@@ -59,7 +59,7 @@ This approach was chosen over a stateful contract written in solidity so the con
 
 The contract itself works by hard coding the `redeem_identity` and `refund_identity` into the contract.
 When it is called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using a `selfdestruct`.
-When it is called without any data after the `expiry ` it will transfer all the Ether to the `refund_identity` using a `selfdestruct`.
+When it is called without any calldata after the `expiry` it will transfer all the Ether to the `refund_identity` using a `selfdestruct`.
 
 Note that the contract doesn't check the identity of the caller.
 
