@@ -1,5 +1,26 @@
 # Ethereum Basic HTLC Atomic Swap
 
+- RFC-Number: 006
+- Status: Draft
+- Discussion-issue: -
+- Created on: 2019-03-12
+
+
+## Table of Contents
+<!-- toc -->
+- [Description](#description)
+- [The Ethereum Ledger](#the-ethereum-ledger)
+    - [`network`](#network)
+- [The Ether Asset](#the-ether-asset)
+    - [`quantity`](#quantity)
+- [Registry extension](#registry-extension)
+    - [The Ethereum Ledger](#the-ethereum-ledger-1)
+        - [Ethereum Networks](#ethereum-networks)
+- [Assets](#assets)
+- [Examples](#examples)
+
+<!-- tocstop -->
+
 ## Description
 
 This RFC specifies how the Ethereum blockchain and its native asset Ether are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
