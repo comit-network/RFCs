@@ -162,6 +162,21 @@ To compile the contract code replace the placeholder values with the HTLC paramt
 | `redeem_identity` | 153                    | 172                   | 20     |
 | `refund_identity` | 219                    | 248                   | 20     |
 
+The contract emits two logs:
+
+| Topic        | keccack256(Topic)                                                  | Data     | Emitted When             |
+|:-------------|:-------------------------------------------------------------------|----------|:-------------------------|
+| `Redeemed()` | 0xb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a7413 | `secret` | The contract is redeemed |
+| `Refunded()` | 0x5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed55178 | -        | The contract is refunded |
+
+
+Implementations SHOULD use the following gas limits on the transactions related to the contract:
+
+| Transaction | recommended gas limit |
+|:------------|-----------------------|
+| Deployment  | 121,000               |
+| Redeem      | 100,000               |
+| Refund      | 100,000               |
 
 ## Execution Phase
 
