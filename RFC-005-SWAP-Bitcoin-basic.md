@@ -126,12 +126,13 @@ One of the transaction's outputs must have the following properties:
 - Its `value` MUST be equal to the `quantity` parameter in the Bitcoin asset header.
 - It MUST have a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the `contract_script`).
 
-The redeeming party (the *redeemer*) should wait until an transaction with the above output is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
-They MAY do this by watching the blockchain for a transaction with an output matching the required `scriptPubkey` and having the required value.
+To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with an output matching the required `scriptPubkey` and having the required value.
 
 ### Redeem
 
-To redeem the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
+Before redeeming, *the redeemer* SHOULD wait until the deployment transaction is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
+
+To redeem the HTLC, the redeemer MUST submit a transaction to the blockchain which spends the P2WSH output.
 The redeemer can use following witness data to spend the output if they know the `secret`:
 
 | Data             | Description                                                                                             |
@@ -142,14 +143,14 @@ The redeemer can use following witness data to spend the output if they know the
 | `01`             | A single byte used to activate the redeem path in the `OP_IF`                                           |
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
-For how to use this to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
+For how to use this witness data to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger`, then the funder (Bob) MUST watch for such a transaction and then extract the `secret` from the witness data and continue the protocol.
 
 ### Refund
 
-To refund the HTLC, the funder should submit a transaction to the blockchain which spends the P2WSH output.
+To refund the HTLC, the funder MUST submit a transaction to the blockchain which spends the P2WSH output.
 The funder can use the following witness data to spend the output after the `expiry`:
 
 | Data             | Description                                                                                             |
