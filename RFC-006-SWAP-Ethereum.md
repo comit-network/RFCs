@@ -19,7 +19,7 @@ See [Ethereum Networks](#ethereum-networks) in the registry extension for possib
 
 ## The Ether Asset
 
-Ether is native asset of the Ethereum blockchain.
+Ether is the native asset of the Ethereum blockchain.
 This RFC only contains protocol definitions for the Ether asset.
 Non-native assets like [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard) tokens may be defined in subsequent RFCs.
 
