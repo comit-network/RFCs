@@ -211,11 +211,9 @@ If he does this, he may miss learning the `secret` by having the contract be red
 
 ### Refund
 
-To reund the HTLC, the funder MUST confirm a transaction to `contract_address` with empty data in a block with timestamp greater than `expiry`.
+To refund the HTLC, the funder MUST send a transaction to `contract_address` with empty data in a block with timestamp greater than `expiry`.
 
-To be notified of the refund event, both parties SHOULD watch the blockchain for a transaction send to `contract_address` that emits the `Refunded()` topic:
-`0x5D26862916391BF49478B2F5103B0720A842B45EF145A268F2CD1FB2AED55178`
-
+To be notified of the refund event, both parties SHOULD watch the blockchain for  `contract_address` emitting the `Refunded()` log.
 
 ## Registry extension
 
