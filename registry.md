@@ -76,7 +76,7 @@ The following is a list of possible values an `Asset` type header can take:
 |:----------|--------------------------------------|-------------------------------|
 | `bitcoin` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | Native Bitcoin network asset  |
 | `ether`   | [RFC-006](./RFC-006-SWAP-Ethereum.md) | Native Ethereum network asset |
-| `erc20`   | TBD                                  | ERC20 token                   |
+| `erc20`   | [RFC-008](./RFC-008-ERC20.md)    | ERC20 token                   |
 
 And the possible parameters they each may have:
 
@@ -95,10 +95,10 @@ And the possible parameters they each may have:
 
 ### `erc20` Parameters
 
-| Parameter  | Value Type | Description                                                                 |
-|:-----------|------------|-----------------------------------------------------------------------------|
-| `quantity` | `u256`     | The ERC20 contract value to be transferred (not the decimal token quantity) |
-| `address`  | TBD        | The address of the ERC20 contract                                           |
+| Parameter  | Value Type            | Description                                                                 |
+|:-----------|-----------------------|-----------------------------------------------------------------------------|
+| `quantity` | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
+| `address`  | `0x` prefixed address | The address of the ERC20 contract                                           |
 
 
 ## Identities
