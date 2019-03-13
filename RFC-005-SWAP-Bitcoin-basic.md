@@ -31,7 +31,7 @@
 
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
 
-For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitcoin).
+For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitcoin.md).
 
 To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
 
@@ -53,13 +53,13 @@ This RFC extends the [registry](./registry.md) with the following entry in the i
 
 | Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
 |:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a user's SECP256k1 compressed public key |
 
 ## Hash Time Lock Contract
 
 ### Hash Functions
 
-This RFC specifies SHA-256 is the only value the `hash_function` header may take if Bitcoin is used as a ledger.
+This RFC specifies SHA-256 as the only value the `hash_function` parameter to `comit-rfc-003` may take if Bitcoin is used as a ledger.
 This may be expanded in subsequent RFCs.
 
 ### Parameters
@@ -98,17 +98,17 @@ Implementations MUST consider an `expiry` value below `500000000` for a Bitcoin 
 
 To compute the exact Bitcoin script bytes of the contract, implementations should use the following offset table:
 
-| Data              | Position of first byte | Position of last byte | Length | Description                                                                |
-|:------------------|:-----------------------|:----------------------|:-------|:---------------------------------------------------------------------------|
-| `6382012088a820`  | 0                      | 6                     | 7      | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
-| `secret_hash`     | 7                      | 39                    | 32     | See [Parameters](#parameters)                                              |
-| `8876a9`          | 40                     | 42                    | 3      | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
-| `redeem_identity` | 43                     | 64                    | 20     | See [Parameters](#parameters)                                              |
-| `67`              | 65                     | 65                    | 1      | `OP_ELSE`                                                                  |
-| `expiry`          | 66                     | 69                    | 4      | See [Parameters](#parameters)                                              |
-| `b17576a9`        | 70                     | 73                    | 4      | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
-| `refund_identity` | 74                     | 93                    | 20     | See [Parameters](#parameters)                                              |
-| `6888ac`          | 94                     | 96                    | 3      | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
+| Data              | Position of first byte | Position of last byte | Length (bytes) | Description                                                                |
+|:------------------|:-----------------------|:----------------------|:---------------|:---------------------------------------------------------------------------|
+| `6382012088a820`  | 0                      | 6                     | 7              | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
+| `secret_hash`     | 7                      | 39                    | 32             | See [Parameters](#parameters)                                              |
+| `8876a9`          | 40                     | 42                    | 3              | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
+| `redeem_identity` | 43                     | 64                    | 20             | See [Parameters](#parameters)                                              |
+| `67`              | 65                     | 65                    | 1              | `OP_ELSE`                                                                  |
+| `expiry`          | 66                     | 69                    | 4              | See [Parameters](#parameters)                                              |
+| `b17576a9`        | 70                     | 73                    | 4              | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
+| `refund_identity` | 74                     | 93                    | 20             | See [Parameters](#parameters)                                              |
+| `6888ac`          | 94                     | 96                    | 3              | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
 
 
 ## Execution Phase
@@ -126,12 +126,13 @@ One of the transaction's outputs must have the following properties:
 - Its `value` MUST be equal to the `quantity` parameter in the Bitcoin asset header.
 - It MUST have a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the `contract_script`).
 
-The redeeming party (the *redeemer*) should wait until an transaction with the above output is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
-They MAY do this by watching the blockchain for a transaction with an output matching the required `scriptPubkey` and having the required value.
+To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with an output matching the required `scriptPubkey` and having the required value.
 
 ### Redeem
 
-To redeem the HTLC, the redeemer should submit a transaction to the blockchain which spends the P2WSH output.
+Before redeeming, *the redeemer* SHOULD wait until the deployment transaction is included in the Bitcoin blockchain with enough confirmations such that they consider it permanent.
+
+To redeem the HTLC, the redeemer MUST submit a transaction to the blockchain which spends the P2WSH output.
 The redeemer can use following witness data to spend the output if they know the `secret`:
 
 | Data             | Description                                                                                             |
@@ -142,14 +143,14 @@ The redeemer can use following witness data to spend the output if they know the
 | `01`             | A single byte used to activate the redeem path in the `OP_IF`                                           |
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
-For how to use this to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
+For how to use this witness data to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger`, then the funder (Bob) MUST watch for such a transaction and then extract the `secret` from the witness data and continue the protocol.
 
 ### Refund
 
-To refund the HTLC, the funder should submit a transaction to the blockchain which spends the P2WSH output.
+To refund the HTLC, the funder MUST submit a transaction to the blockchain which spends the P2WSH output.
 The funder can use the following witness data to spend the output after the `expiry`:
 
 | Data             | Description                                                                                             |
@@ -167,13 +168,13 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 | Ledger  | Identity Name | JSON Encoding            | Description                                                                           |
 |:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
-| Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
+| Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
 
 # Examples
 
 ## RFC003 SWAP REQUEST
 
-This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
@@ -204,6 +205,8 @@ This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `
 }
 ```
 
+Note, the secret for the `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
+
 ## RFC003 SWAP RESPONSE
 A valid `RESPONSE` to the above `REQUEST` could look like:
 
@@ -226,20 +229,20 @@ The above `REQUEST` and `RESPONSE` results in the following parameters to the HT
 |:----------------|--------------------------------------------------------------------|
 | redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
 | redund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
-| secret_hash     | `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c` |
+| secret_hash     | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
 | expiry          | 1552263040                                                         |
 
 
 Which should compile to the following Bitcoin script bytes:
 
 ```
-6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
+6382012088a8201f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
 ```
 
 Which results in the following P2WSH address by network:
 
 | Network   | Address                                                            |
 |:----------|--------------------------------------------------------------------|
-| `regtest` | `bcrt1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qthjvrp` |
-| `testnet` | `tb1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qxwc2km`   |
-| `mainnet` | `bc1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24q3xw9v5`   |
+| `regtest` | `bcrt1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90ws9hj4q3` |
+| `testnet` | `tb1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wsgwcn4t`   |
+| `mainnet` | `bc1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wslxwu0y`   |
