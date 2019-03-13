@@ -251,7 +251,7 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 ## RFC003 SWAP REQUEST
 
-This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
