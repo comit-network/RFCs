@@ -26,7 +26,7 @@ Future RFCs may make modifications to the HTLC to allow other hash functions.
 
 ### Parameters
 
-The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-basic.md) and are described concretely in the following table:
+The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
 | Variable        | Description                                                                              |
 |:----------------|:-----------------------------------------------------------------------------------------|
