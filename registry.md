@@ -41,7 +41,7 @@ And the possible parameters they each may have:
 
 | Parameter | Value Type                                  | Description                              |
 |:----------|---------------------------------------------|------------------------------------------|
-| `network` | see [Bitcoin Networks](#bitcoin-networks) | The particular blockchain netowrk to use |
+| `network` | see [Bitcoin Networks](#bitcoin-networks) | The particular blockchain network to use |
 
 #### Bitcoin Networks
 
