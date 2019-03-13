@@ -205,6 +205,8 @@ The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `a
 }
 ```
 
+Note, the secret for the `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
+
 ## RFC003 SWAP RESPONSE
 A valid `RESPONSE` to the above `REQUEST` could look like:
 
@@ -227,20 +229,20 @@ The above `REQUEST` and `RESPONSE` results in the following parameters to the HT
 |:----------------|--------------------------------------------------------------------|
 | redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
 | redund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
-| secret_hash     | `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c` |
+| secret_hash     | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
 | expiry          | 1552263040                                                         |
 
 
 Which should compile to the following Bitcoin script bytes:
 
 ```
-6382012088a82051a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
+6382012088a8201f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
 ```
 
 Which results in the following P2WSH address by network:
 
 | Network   | Address                                                            |
 |:----------|--------------------------------------------------------------------|
-| `regtest` | `bcrt1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qthjvrp` |
-| `testnet` | `tb1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24qxwc2km`   |
-| `mainnet` | `bc1qg2swp7ytvxs509e9qrdq3ln0nrmuge2nza47l3vsxpwzafg2g24q3xw9v5`   |
+| `regtest` | `bcrt1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90ws9hj4q3` |
+| `testnet` | `tb1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wsgwcn4t`   |
+| `mainnet` | `bc1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wslxwu0y`   |
