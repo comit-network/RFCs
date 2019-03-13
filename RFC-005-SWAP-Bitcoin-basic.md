@@ -98,17 +98,17 @@ Implementations MUST consider an `expiry` value below `500000000` for a Bitcoin 
 
 To compute the exact Bitcoin script bytes of the contract, implementations should use the following offset table:
 
-| Data              | Position of first byte | Position of last byte | Length | Description                                                                |
-|:------------------|:-----------------------|:----------------------|:-------|:---------------------------------------------------------------------------|
-| `6382012088a820`  | 0                      | 6                     | 7      | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
-| `secret_hash`     | 7                      | 39                    | 32     | See [Parameters](#parameters)                                              |
-| `8876a9`          | 40                     | 42                    | 3      | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
-| `redeem_identity` | 43                     | 64                    | 20     | See [Parameters](#parameters)                                              |
-| `67`              | 65                     | 65                    | 1      | `OP_ELSE`                                                                  |
-| `expiry`          | 66                     | 69                    | 4      | See [Parameters](#parameters)                                              |
-| `b17576a9`        | 70                     | 73                    | 4      | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
-| `refund_identity` | 74                     | 93                    | 20     | See [Parameters](#parameters)                                              |
-| `6888ac`          | 94                     | 96                    | 3      | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
+| Data              | Position of first byte | Position of last byte | Length (bytes) | Description                                                                |
+|:------------------|:-----------------------|:----------------------|:---------------|:---------------------------------------------------------------------------|
+| `6382012088a820`  | 0                      | 6                     | 7              | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
+| `secret_hash`     | 7                      | 39                    | 32             | See [Parameters](#parameters)                                              |
+| `8876a9`          | 40                     | 42                    | 3              | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
+| `redeem_identity` | 43                     | 64                    | 20             | See [Parameters](#parameters)                                              |
+| `67`              | 65                     | 65                    | 1              | `OP_ELSE`                                                                  |
+| `expiry`          | 66                     | 69                    | 4              | See [Parameters](#parameters)                                              |
+| `b17576a9`        | 70                     | 73                    | 4              | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
+| `refund_identity` | 74                     | 93                    | 20             | See [Parameters](#parameters)                                              |
+| `6888ac`          | 94                     | 96                    | 3              | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
 
 
 ## Execution Phase
