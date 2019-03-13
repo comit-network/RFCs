@@ -166,14 +166,14 @@ The following is the contract deployment code encoded template as hex which will
 
 To compile the contract code replace the placeholder values with the HTLC paramters at the following offsets:
 
-| Data              | Position of first byte | Position of last byte | Length |
-|:------------------|:-----------------------|:----------------------|:-------|
-| `secret_hash`     | 53                     | 84                    | 32     |
-| `expiry`          | 102                    | 105                   | 4      |
-| `redeem_identity` | 157                    | 176                   | 20     |
-| `refund_identity` | 224                    | 253                   | 20     |
-| `token_quantity`  | 261                    | 292                   | 32     |
-| `token_contract_address`   | 307                    | 338                   | 32     |
+| Data                     | Position of first byte | Position of last byte | Length (bytes) |
+|:-------------------------|:-----------------------|:----------------------|:---------------|
+| `secret_hash`            | 53                     | 84                    | 32             |
+| `expiry`                 | 102                    | 105                   | 4              |
+| `redeem_identity`        | 157                    | 176                   | 20             |
+| `refund_identity`        | 224                    | 253                   | 20             |
+| `token_quantity`         | 261                    | 292                   | 32             |
+| `token_contract_address` | 307                    | 338                   | 32             |
 
 
 
