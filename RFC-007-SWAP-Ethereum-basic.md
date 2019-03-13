@@ -275,7 +275,7 @@ This following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `
   "body": {
     "aplha_ledger_refund_identity": "0x0f59e9e105be01d5e2206792a267406f255c5ea5",
     "alpha_expiry": 1552263040,
-    "secret_hash" : ""adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb"",
+    "secret_hash" : "adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb",
     "beta_ledger_redeem_identity" : "...",
     "beta_expiry" : ...
   },
