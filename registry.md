@@ -107,7 +107,7 @@ And the possible parameters they each may have:
 
 | Ledger   | Identity Name | JSON Encoding            | Reference                            | Description                                                                           |
 |:---------|:--------------|:-------------------------|:-------------------------------------|---------------------------------------------------------------------------------------|
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-005](./RFC-004-SWAP-Bitcoin-basic.md) | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-005](./RFC-004-SWAP-Bitcoin-basic.md) | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
 | Ethereum | `address`     | TBD                      | TBD                                  | An Ethereum address                                                                   |
 
 ## Protocols

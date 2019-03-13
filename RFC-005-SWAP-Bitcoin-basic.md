@@ -53,7 +53,7 @@ This RFC extends the [registry](./registry.md) with the following entry in the i
 
 | Ledger   | Identity Name | JSON Encoding            | Description                                                                                  |
 |:----     |:-------       |:-------------            | -------------------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 compressed public key |
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a user's SECP256k1 compressed public key |
 
 ## Hash Time Lock Contract
 
@@ -168,7 +168,7 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 | Ledger  | Identity Name | JSON Encoding            | Description                                                                           |
 |:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
-| Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
+| Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
 
 # Examples
 
