@@ -6,11 +6,10 @@
 - Created on: 01 Mar. 2019
 
 # Table of Contents
-<!-- markdown-toc start -->
 
+<!-- toc -->
 - [Description](#description)
-- [Motivation](#motivation)
-- [Bitcoin Identity](#bitcoin-identity)
+- [The Bitcoin Identity](#the-bitcoin-identity)
 - [Hash Time Lock Contract](#hash-time-lock-contract)
     - [Hash Functions](#hash-functions)
     - [Parameters](#parameters)
@@ -24,8 +23,7 @@
     - [RFC003 SWAP REQUEST](#rfc003-swap-request)
     - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
     - [HTLC](#htlc)
-
-<!-- markdown-toc end -->
+<!-- tocstop -->
 
 ## Description
 
