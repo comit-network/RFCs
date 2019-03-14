@@ -115,7 +115,7 @@ The following section describes how both parties should interact with the Bitcoi
 
 ### Deployment
 
-At the start of the deployment stage, both parties compile the contract into bytes as described in the previous section.
+At the start of the deployment stage, both parties compile the contract as described in the previous section.
 We will call this value `contract_script`.
 
 To deploy the Bitcoin HTLC, the *funder* must confirm a transaction on the relevant Bitcoin blockchain.
