@@ -29,7 +29,7 @@ As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *ledger* value 
 
 ## The Ethereum Ledger
 
-To specify Ethereum in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`alpha_ledger` or `beta_ledger`) use the value `ethereum` with the following parameter:
+To specify Ethereum in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`alpha_ledger` or `beta_ledger`), use the value `ethereum` with the following parameter:
 
 ### `network`
 
