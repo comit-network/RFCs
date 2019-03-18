@@ -32,7 +32,7 @@ The following is a list of possible values a `Ledger` type header can take:
 | Value      | Reference                            | Description                            |
 |:-----------|--------------------------------------|----------------------------------------|
 | `bitcoin`  | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The Bitcoin Core family of blockchains |
-| `ethereum` | [RFC-006](./RFC-006-SWAP-Ethereum.md)| The Ethereum family of blockchains     |
+| `ethereum` | [RFC-006](./RFC-006-SWAP-Ethereum.md)| A blockchain following the Ethereum consensus rules     |
 
 
 And the possible parameters they each may have:

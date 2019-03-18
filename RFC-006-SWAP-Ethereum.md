@@ -66,9 +66,9 @@ Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded a
 
 This RFC extends the registry [Ledgers section](./registry.md#ledgers) with the `ethereum` ledger:
 
-| Value      | Description                        |
-|:-----------|------------------------------------|
-| `ethereum` | The Ethereum family of blockchains |
+| Value      | Description                                         |
+|:-----------|-----------------------------------------------------|
+| `ethereum` | A blockchain following the Ethereum consensus rules |
 
 And defines the `network` parameter for it:
 
