@@ -20,7 +20,7 @@
     - [Redeem](#redeem)
     - [Refund](#refund)
 - [Registry extension](#registry-extension)
-- [Examples](#examples)
+- [Examples/Test vectors](#examplestest-vectors)
     - [RFC003 SWAP REQUEST](#rfc003-swap-request)
     - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
     - [HTLC](#htlc)
@@ -170,7 +170,7 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 |:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
 | Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
 
-# Examples
+# Examples/Test vectors
 
 ## RFC003 SWAP REQUEST
 
