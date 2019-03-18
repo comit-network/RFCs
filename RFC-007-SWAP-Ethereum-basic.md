@@ -199,7 +199,7 @@ Implementations SHOULD use the following gas limits on the transactions related 
 
 | Transaction | recommended gas limit |
 |:------------|-----------------------|
-| Deployment  | 121,000               |
+| Deployment  | 121,800               |
 | Redeem      | 100,000               |
 | Refund      | 100,000               |
 
