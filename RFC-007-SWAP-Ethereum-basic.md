@@ -39,8 +39,9 @@ To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines
 
 ## The Ethereum Identity
 
-The Identity to be used on Ethereum is the Ethereum *address* as defined in section 284 of the [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf).
-It is defined as the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
+[RFC003](./RFC-003-SWAP-basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
+
+The identity to be used on Ethereum is the Ethereum *address* as defined in equation 284 of the [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf) as the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
 
 In the JSON encoding, an ethereum address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
 Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
@@ -52,7 +53,7 @@ This RFC extends the [registry](./registry.md) with the following entry in the i
 | Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
 
 Note that since *contract* addresses and *user* addresses are indistinguishable, technically the address used in a SWAP could be that of a contract rather than a user.
-RFCs that use the Ethereum Identity defined here should explain the impact (if any) this has on the protocol.
+RFCs that use the Ethereum identity defined here should explain the impact (if any) this has on the protocol.
 There is nothing inherently wrong from the perspective of this RFC about using a contract address as an identity.
 
 ## Hash Time Lock Contract
