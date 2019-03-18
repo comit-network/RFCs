@@ -78,7 +78,7 @@ The parameters for the Ether HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-t
 ### Contract
 
 This RFC defines a single disposable contract as the HTLC.
-It uses `selfdestruct` to release the funds to the intended party.
+It uses the `selfdestruct` EVM opcode to release the funds to the intended party.
 
 This approach was chosen over a stateful contract written in solidity so the contracts can be precisely defined, verified and updated.
 
