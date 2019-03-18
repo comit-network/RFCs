@@ -33,8 +33,12 @@ To specify Ethereum in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`a
 
 ### `network`
 
-The `network` parameter describes whether you are intending to do a SWAP with *real* Ether on the `mainnet` or are doing a test SWAP on the `testnet` or a shared `regtest` node.
+The `network` parameter describes whether you are intending to do a SWAP with *real* Ether on the `mainnet` or are doing a test SWAP on a testnet or on a private development network.
 The `network` parameter is mandatory.
+The only testnet introduced by this RFC is `ropsten` but others may be added in subsequent RFCs.
+
+If you are conducting a SWAP on a private development network use the value `regtest`.
+It is expected that you and your counterparty know how to interpret this value in your given context.
 
 See [Ethereum Networks](#ethereum-networks) in the registry extension for possible values for `network` introduced by this RFC.
 
@@ -77,11 +81,11 @@ And defines the `network` parameter for it:
 
 And adds a Ethereum Networks section describing the possible values for this parameter:
 
-| Value     | Description                      | Network Id |
-|:----------|:---------------------------------|------------|
-| `regtest` | Private Ethereum regtest network | N/A        |
-| `ropsten` | Ropsten testnet                  | 3          |
-| `mainnet` | Ethereum mainnet                 | 1          |
+| Value     | Description                          | Network Id |
+|:----------|:-------------------------------------|------------|
+| `regtest` | Private Ethereum development network | N/A        |
+| `ropsten` | Ropsten testnet                      | 3          |
+| `mainnet` | Ethereum mainnet                     | 1          |
 
 
 ## Assets
