@@ -28,17 +28,15 @@ Future RFCs may make modifications to the HTLC to allow other hash functions.
 
 The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
-| Variable        | Description                                                                              |
+| Parameter       | Description                                                                              |
 |:----------------|:-----------------------------------------------------------------------------------------|
 | asset           | The quantity of the token to be locked in the HTLC AND the address of the token contract |
 | secret_hash     | The hash of the `secret` (32 bytes for SHA-256)                                          |
-| redeem_identity | The `address` of the redeeming party                                                     |
-| refund_identity | The `address` of the refunding party                                                     |
+| redeem_identity | The Ethereum address of the redeeming party                                              |
+| refund_identity | The Ethereum address` of the refunding party                                             |
 | expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded              |
 
-We will refer to the token contract address as `token_contract_address` and the quantity as `token_quantity`.
-
-Note that the `token_quantity` is a `u256` whose value represents the quantity measured in the smallest denomination (see [RFC008](./RFC-008-ERC20.md)).
+We will refer to the token contract address and quantity from the [RFC008](./RFC-008-ERC20.md) ERC20 asset definition as `token_contract` and `token_quantity` respectively.
 
 ### Contract
 
@@ -144,7 +142,7 @@ finishTransferTokens:
     mstore(64, <token_quantity>) // Amount
     call(
       sub(gas,100000),
-      <token_contract_address>, // Token Contract address
+      <token_contract>, // Token Contract address
       0,  // Ether to transfer
       28, // = 32-4
       68, // = 2*32+4
@@ -166,14 +164,14 @@ The following is the contract deployment code encoded template as hex which will
 
 To compile the contract code replace the placeholder values with the HTLC paramters at the following offsets:
 
-| Data                     | Position of first byte | Position of last byte | Length (bytes) |
-|:-------------------------|:-----------------------|:----------------------|:---------------|
-| `secret_hash`            | 53                     | 84                    | 32             |
-| `expiry`                 | 102                    | 105                   | 4              |
-| `redeem_identity`        | 157                    | 176                   | 20             |
-| `refund_identity`        | 224                    | 253                   | 20             |
-| `token_quantity`         | 261                    | 292                   | 32             |
-| `token_contract_address` | 307                    | 338                   | 32             |
+| Data              | Position of first byte | Position of last byte | Length (bytes) |
+|:------------------|:-----------------------|:----------------------|:---------------|
+| `secret_hash`     | 53                     | 84                    | 32             |
+| `expiry`          | 102                    | 105                   | 4              |
+| `redeem_identity` | 157                    | 176                   | 20             |
+| `refund_identity` | 224                    | 253                   | 20             |
+| `token_quantity`  | 261                    | 292                   | 32             |
+| `token_contract`  | 307                    | 338                   | 32             |
 
 
 
@@ -213,40 +211,40 @@ They SHOULD do this by sending a contract deployment transaction to the relevant
 
 
 To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with the `contract_code` as the data.
-Upon observing the deployment transaction, both parties SHOULD record the address the contract was deployed to (referred to as `contract_address` from now on).
+Upon observing the deployment transaction, both parties SHOULD record the address the contract was deployed to (referred to as `htlc_contract` from now on).
 
 
 ### Funding
 
-After deploying the contract, the funder must transfer ownership of the `token_quantity` to the `contract_address`.
-They MUST do this by calling the `transfer(contract_address,token_quantity)` function on the `token_contract_address`.
-This can be done by sending a transaction to the `token_contract_address` with the following data:
+After deploying the contract, the funder must transfer ownership of the `token_quantity` to the `htlc_contract`.
+They MUST do this by calling the `transfer(htlc_contract,token_quantity)` function on the `token_contract`.
+This can be done by sending a transaction to the `token_contract` with the following data:
 
 ```
-a9059cbb <20-byte contract_address> <32-byte token_quantity>
+a9059cbb <20-byte htlc_contract> <32-byte token_quantity>
 ```
 
-To be notified of the funding event, both parties MAY watch the blockchain for `token_contract_address` emitting the `Transfer(address,address,uint256)` log where the second `address` argument is the `contract_address`.
+To be notified of the funding event, both parties MAY watch the blockchain for `token_contract` emitting the `Transfer(address,address,uint256)` log where the second `address` argument is the `htlc_contract`.
 (The keccack256 topic filter for the log is: `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef`).
 
-The redeemer MUST check the transaction receipt that the amount transferred to `token_contract_address` was at least `token_quantity`.
+The redeemer MUST check the transaction receipt that the amount transferred to `token_contract` was at least `token_quantity`.
 
 ### Redeem
 
 Before redeeming, the redeemer SHOULD wait until the funding transaction has enough confirmation such that they consider it permanent.
 
-To redeem the HTLC, the redeemer SHOULD send a transaction to the `contract_address` with the `data` of the transaction set to the `secret`.
+To redeem the HTLC, the redeemer SHOULD send a transaction to the `htlc_contract` with the `data` of the transaction set to the `secret`.
 
-To be notified of the redeem event, both parties SHOULD watch the blockchain for `contract_address` emitting the `Redeemed()` log.
+To be notified of the redeem event, both parties SHOULD watch the blockchain for `htlc_contract` emitting the `Redeemed()` log.
 If Ethereum is the `beta_ledger`, then the funder (Bob) MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
-In this case, Bob MUST NOT watch for a transaction sent to `contract_address` with the `secret` as `data`.
+In this case, Bob MUST NOT watch for a transaction sent to `htlc_contract` with the `secret` as `data`.
 If he does this, he will miss learning the `secret` if the contract is redeemed by a call from another contract (rather than from a transaction).
 
 ### Refund
 
-To refund the HTLC, the funder MUST send a transaction to `contract_address` with empty data in a block with timestamp greater than `expiry`.
+To refund the HTLC, the funder MUST send a transaction to `htlc_contract` with empty data in a block with timestamp greater than `expiry`.
 
-To be notified of the refund event, both parties SHOULD watch the blockchain for  `contract_address` emitting the `Refunded()` log.
+To be notified of the refund event, both parties SHOULD watch the blockchain for `htlc_contract` emitting the `Refunded()` log.
 
 # Examples
 
@@ -305,14 +303,14 @@ A valid `RESPONSE` to the above `REQUEST` could look like:
 
 The above `REQUEST` and `RESPONSE` results in the following parameters to the HTLC:
 
-| Parameter              | value                                                              |
-|:-----------------------|--------------------------------------------------------------------|
-| redeem_identity        | `0x53fd2cac865d3aa1ad6fbdebaa00802c94239fba`                       |
-| redund_identity        | `0x0f59e9e105be01d5e2206792a267406f255c5ea5`                       |
-| token_contract_address | `0xb97048628db6b661d4c2aa833e95dbe1a905b280`                       |
-| token_quantity         | 1000000000000000000                                                |
-| secret_hash            | `adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb` |
-| expiry                 | 1552263040                                                         |
+| Parameter       | value                                                              |
+|:----------------|--------------------------------------------------------------------|
+| redeem_identity | `0x53fd2cac865d3aa1ad6fbdebaa00802c94239fba`                       |
+| redund_identity | `0x0f59e9e105be01d5e2206792a267406f255c5ea5`                       |
+| token_contract  | `0xb97048628db6b661d4c2aa833e95dbe1a905b280`                       |
+| token_quantity  | 1000000000000000000                                                |
+| secret_hash     | `adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb` |
+| expiry          | 1552263040                                                         |
 
 Which should compile to the following `contract_code`:
 

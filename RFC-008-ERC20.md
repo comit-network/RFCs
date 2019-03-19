@@ -40,15 +40,15 @@ The `quantity` paramter describes the quantity of token wei the asset represents
 The `quantity` parameter is mandatory.
 Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded as decimal string like `"1000000000000000000"`).
 
-### `address`
+### `token_contract`
 
-The `address` parameter specifies which token contract and therefore which token the asset header is referring to.
-The `address` parameter is mandatory.
+The `token_contract` parameter specifies which token contract and therefore which token the asset header is referring to.
+The `token_contract` parameter is mandatory.
 In the JSON encoding, the address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
 Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
 
 The address must be a *contract address* which complies with [EIP20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md).
-Implementations MAY use fixed list of known to be compliant contract addresses to validate the `address` parameter.
+Implementations MAY use fixed list of known to be compliant contract addresses to validate the `token_contract` parameter.
 
 
 ## Registry extension
@@ -61,10 +61,10 @@ This RFC extends the registry's [Assets table](./registry.md#assets) with the `e
 
 And defines its parameters:
 
-| Parameter  | Value Type            | Description                                                                 |
-|:-----------|-----------------------|-----------------------------------------------------------------------------|
-| `quantity` | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
-| `address`  | `0x` prefixed address | The address of the ERC20 contract                                           |
+| Parameter        | Value Type            | Description                                                                 |
+|:-----------------|-----------------------|-----------------------------------------------------------------------------|
+| `quantity`       | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
+| `token_contract` | `0x` prefixed address | The address of the ERC20 contract                                           |
 
 
 # Examples
@@ -85,7 +85,7 @@ Fields that are outside of the scope of this RFC are filled with `...`.
       "value": "erc20",
       "parameters": {
           "quantity": "1000000000000000000",
-          "address": "0xb97048628db6b661d4c2aa833e95dbe1a905b280"
+          "token_contract": "0xb97048628db6b661d4c2aa833e95dbe1a905b280"
       }
     },
     "beta_asset": {...},
