@@ -52,9 +52,8 @@ This RFC extends the [registry](./registry.md) with the following entry in the i
 |:---------|:--------------|:----------------------|---------------------|
 | Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
 
-Note that since *contract* addresses and *user* addresses are indistinguishable, technically the address used in a SWAP could be that of a contract rather than a user.
+Note that since *contract* addresses and *user* addresses are indistinguishable, a contract address could be used as an identity.
 RFCs that use the Ethereum identity defined here should explain the impact (if any) this has on the protocol.
-There is nothing inherently wrong from the perspective of this RFC about using a contract address as an identity.
 
 ## Hash Time Lock Contract
 
@@ -88,6 +87,7 @@ If called without any calldata after the `expiry` it will transfer all the Ether
 
 The contract never checks the caller so the redeem and refund transactions can be sent by anyone.
 The funds will only ever be transferred to the `redeem_identity` or the `refund_identity`.
+No special considerations need to be made when either identity is a contract address as they simply receive funds.
 
 The contract is compiled from the following EVM assembly:
 
