@@ -41,6 +41,8 @@ To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines
 
 ## The Bitcoin Identity
 
+[RFC003](./RFC-003-SWAP-basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
+
 The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
 The compressed public key is used because it needs to be compatible with segwit transactions (see [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)).
 
