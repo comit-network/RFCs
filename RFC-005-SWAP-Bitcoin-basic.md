@@ -148,7 +148,7 @@ The redeemer can use following witness data to spend the output if they know the
 For how to use this witness data to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
-If the Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
+If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
 
 ### Refund
 
