@@ -46,7 +46,7 @@ This RFC only contains protocol definitions for the native Bitcoin asset.
 Non-native assets like [colored coins](https://en.bitcoin.it/wiki/Colored_Coins) may be defined in subsequent RFCs.
 
 Although Bitcoin is nominally the native asset, ownership of Bitcoin is really the ability to unlock *unspent transaction outputs* (UTXOs) whose value is measured in *satoshi*.
-1 Bitcoin is simply the name for 100,000,000 satoshi.
+1 Bitcoin is simply the name for 100,000,000 (10<sup>8</sup>) satoshi.
 
 To specify Bitcoin in one of the [RFC002](./RFC-002-SWAP.md) asset headers (`alpha_asset` or `beta_asset`) use the value `bitcoin` with the following parameter:
 
