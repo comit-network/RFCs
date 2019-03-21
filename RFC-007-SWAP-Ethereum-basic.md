@@ -276,13 +276,14 @@ The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `a
   "body": {
     "aplha_ledger_refund_identity": "0x0f59e9e105be01d5e2206792a267406f255c5ea5",
     "alpha_expiry": 1552263040,
-    "secret_hash" : "adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb",
+    "secret_hash" : "ac5a18da6431ed256965b873ef49dc15a70a0a66e2d28d0c226b5db040123727",
     "beta_ledger_redeem_identity" : "...",
     "beta_expiry" : ...
   },
 }
 ```
 
+Note, the pre-image of `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
 
 ## RFC003 SWAP RESPONSE
 A valid `RESPONSE` to the above `REQUEST` could look like:
@@ -306,11 +307,11 @@ The above `REQUEST` and `RESPONSE` results in the following parameters to the HT
 |:----------------|--------------------------------------------------------------------|
 | redeem_identity | `0x53fd2cac865d3aa1ad6fbdebaa00802c94239fba`                       |
 | redund_identity | `0x0f59e9e105be01d5e2206792a267406f255c5ea5`                       |
-| secret_hash     | `adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb` |
+| secret_hash     | `ac5a18da6431ed256965b873ef49dc15a70a0a66e2d28d0c226b5db040123727` |
 | expiry          | 1552263040                                                         |
 
 Which should compile to the following `contract_code`:
 
 ```
-6100dc61000f6000396100dc6000f336156051576020361415605c57602060006000376020602160206000600060026048f17fadebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb602151141660625760006000f35b42635c85a78010609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17353fd2cac865d3aa1ad6fbdebaa00802c94239fbaff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1730f59e9e105be01d5e2206792a267406f255c5ea5ff
+6100dc61000f6000396100dc6000f336156051576020361415605c57602060006000376020602160206000600060026048f17fac5a18da6431ed256965b873ef49dc15a70a0a66e2d28d0c226b5db040123727602151141660625760006000f35b42635c85a78010609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17353fd2cac865d3aa1ad6fbdebaa00802c94239fbaff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1730f59e9e105be01d5e2206792a267406f255c5ea5ff
 ```
