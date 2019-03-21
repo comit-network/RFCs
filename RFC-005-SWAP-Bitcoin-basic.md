@@ -49,7 +49,7 @@ The compressed public key is used because it needs to be compatible with segwit 
 While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in [RFC003](./RFC-003-SWAP-basic.md).
 Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as verifying that it is a p2pkh or p2wpkh address, extracting the pubkeyhash and validating the network.
 
-In the JSON encoding, a *pubkeyhash* MUST be encoded as a 20 byte hex string.
+In the JSON encoding, a *pubkeyhash* MUST be encoded as a 20-byte hex string.
 
 This RFC extends the [registry](./registry.md) with the following entry in the identity table:
 
