@@ -6,11 +6,10 @@
 - Created on: 01 Mar. 2019
 
 # Table of Contents
-<!-- markdown-toc start -->
 
+<!-- markdown-toc start -->
 - [Description](#description)
-- [Motivation](#motivation)
-- [Bitcoin Identity](#bitcoin-identity)
+- [The Bitcoin Identity](#the-bitcoin-identity)
 - [Hash Time Lock Contract](#hash-time-lock-contract)
     - [Hash Functions](#hash-functions)
     - [Parameters](#parameters)
