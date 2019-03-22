@@ -56,7 +56,7 @@ And the possible parameters they each may have:
 
 | Parameter | Value Type                                    | Description                              |
 |:----------|-----------------------------------------------|------------------------------------------|
-| `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain netowrk to use |
+| `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain network to use |
 
 
 #### Ethereum Networks
