@@ -119,7 +119,7 @@ The following section describes how both parties should interact with the Bitcoi
 
 ### Deployment
 
-At the start of the deployment stage, both parties compile the contract into bytes as described in the previous section.
+At the start of the deployment stage, both parties compile the contract as described in the previous section.
 We will call this value `contract_script`.
 
 To deploy the Bitcoin HTLC, the *funder* must confirm a transaction on the relevant Bitcoin blockchain.
@@ -235,7 +235,7 @@ The above `REQUEST` and `RESPONSE` results in the following parameters to the HT
 | expiry          | 1552263040                                                         |
 
 
-Which should compile to the following Bitcoin script bytes:
+Which compiles into the following Bitcoin script bytes:
 
 ```
 6382012088a8201f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
