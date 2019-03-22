@@ -1,4 +1,24 @@
-# Registry for common types used across COMIT RFCs
+# Table of contents
+
+<!-- markdown-toc start -->
+- [Registry](#registry)
+    - [Description](#description)
+    - [Ledgers](#ledgers)
+        - [`bitcoin` Parameters](#bitcoin-parameters)
+            - [Bitcoin Networks](#bitcoin-networks)
+        - [`ethereum` Parameters](#ethereum-parameters)
+            - [Ethereum Networks](#ethereum-networks)
+    - [Assets](#assets)
+        - [`bitcoin` Parameters](#bitcoin-parameters-1)
+        - [`ether` Parameters](#ether-parameters)
+        - [`erc20` Parameters](#erc20-parameters)
+    - [Identities](#identities)
+    - [Protocols](#protocols)
+    - [Hash Functions](#hash-functions)
+    - [Headers](#headers)
+<!-- markdown-toc end -->
+
+# Registry
 
 ## Description
 
@@ -7,35 +27,88 @@ This registry may be expanded with new RFCs.
 
 ## Ledgers
 
-<!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
-| Name     | Description            | Reference |  `value`   | `parameters` key | `parameters` value |`parameters` description         |
-|:---      |:---                    |:---       |:---        |:---              |:---                |:---                             |
-| Bitcoin  | Bitcoin-core network   | TBD       | `bitcoin`  | `network`        |                    | The network on which to operate |
-|          |                        |           |            |                  | `regtest`          | Bitcoin-core regtest            |
-|          |                        |           |            |                  | `testnet`          | Bitcoin testnet                 |
-|          |                        |           |            |                  | `mainnet`          | Bitcoin mainnet                 |
-| Ethereum | Ethereum network       | TBD       | `ethereum` | `network`        |                    | The network on which to operate |
-|          |                        |           |            |                  | `regtest`          | Local dev network               |
-|          |                        |           |            |                  | `ropsten`          | Ropsten testnet (network id 3)  |
-|          |                        |           |            |                  | `mainnet`          | Ethereum mainnet (network id 1) |
+The following is a list of possible values a `Ledger` type header can take:
 
+| Value      | Reference                            | Description                            |
+|:-----------|--------------------------------------|----------------------------------------|
+| `bitcoin`  | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The Bitcoin Core family of blockchains |
+| `ethereum` | TBD                                  | The Ethereum family of blockchains     |
+
+
+And the possible parameters they each may have:
+
+### `bitcoin` Parameters
+
+| Parameter | Value Type                                  | Description                              |
+|:----------|---------------------------------------------|------------------------------------------|
+| `network` | see [Bitcoin Networks](#bitcoin-networks) | The particular blockchain network to use |
+
+#### Bitcoin Networks
+
+| Value     | Description                          |
+|:----------|:-------------------------------------|
+| `regtest` | Private Bitcoin Core regtest network |
+| `testnet` | Bitcoin Core testnet                 |
+| `mainnet` | Bitcoin Core mainnet                 |
+
+
+### `ethereum` Parameters
+
+| Parameter | Value Type                                    | Description                              |
+|:----------|-----------------------------------------------|------------------------------------------|
+| `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain netowrk to use |
+
+
+#### Ethereum Networks
+
+| Value     | Description                      | Network Id |
+|:----------|:---------------------------------|------------|
+| `regtest` | Private Ethereum regtest network | N/A        |
+| `ropsten` | Ropsten testnet                  | 3          |
+| `mainnet` | Ethereum mainnet                 | 1          |
+
+## Assets
+
+The following is a list of possible values an `Asset` type header can take:
+
+
+| Value     | Reference                            | Description                   |
+|:----------|--------------------------------------|-------------------------------|
+| `bitcoin` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | Native Bitcoin network asset  |
+| `ether`   | TBD                                  | Native Ethereum network asset |
+| `erc20`   | TBD                                  | ERC20 token                   |
+
+And the possible parameters they each may have:
+
+### `bitcoin` Parameters
+
+| Parameter  | Value Type | Description         |
+|:-----------|------------|---------------------|
+| `quantity` | `u64`      | Quantity in satoshi |
+
+### `ether` Parameters
+
+| Parameter  | Description     | Value Type |
+|:-----------|-----------------|------------|
+| `quantity` | Quantity in wei | `u256`     |
+
+
+### `erc20` Parameters
+
+| Parameter  | Value Type | Description                                                                 |
+|:-----------|------------|-----------------------------------------------------------------------------|
+| `quantity` | `u256`     | The ERC20 contract value to be transferred (not the decimal token quantity) |
+| `address`  | TBD        | The address of the ERC20 contract                                           |
+
+
+## Identities
 
 [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
-| Ledger   | Identity Name | JSON Encoding            | Reference | Description                                                                       |
-|:----     |:-------      |:-------------            |:--------- | --------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | TBD       | The result of applying SHA256 and then RIPEMD160 to a user's SECP256k1 public key |
-| Ethereum | `address`     | Ethereum address        | TBD       | An Ethereum address                                        |
-
-
-## Assets
-<!-- TODO: Parameters to be moved in Bitcoin/Ethereum RFC -->
-| Name           | Description                   | Reference | `value`   | `parameters` key | `parameters` value type | `parameters` description |
-|:---            |:----                          |:---       |:---       |:---              |:---                     |:---                      |
-| Bitcoin        | Native Bitcoin network asset  | TBD       | `bitcoin` | `quantity`       | integer in Json string  | Amount in satoshi        |
-| Ether          | Native Ethereum network asset | TBD       | `ether`   | `quantity`       | integer in Json string  | Amount in wei            |
-| ERC-20 Token   | As defined by [ERC-20 standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) | TBD | `erc20` | `address` | hex string including `0x` prefix | The hex address of the smart contract defining the given token |
-|                 |                              |           |           |  `quantity`      |  integer in Json string  | The token amount without the decimal, e.g. 9000 PAY Tokens: `"9000000000000000000000"`, knowing that the PAY smart contract defines 18 decimals for its token |
+| Ledger   | Identity Name | JSON Encoding            | Reference                            | Description                                                                           |
+|:---------|:--------------|:-------------------------|:-------------------------------------|---------------------------------------------------------------------------------------|
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-005](./RFC-004-SWAP-Bitcoin-basic.md) | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
+| Ethereum | `address`     | TBD                      | TBD                                  | An Ethereum address                                                                   |
 
 ## Protocols
 
