@@ -2,7 +2,7 @@
 
 - RFC-Number: 005
 - Status: Draft
-- Discussion-issue: -
+- Discussion-issue: [#42](https://github.com/comit-network/RFCs/issues/42)
 - Created on: 01 Mar. 2019
 
 # Table of Contents
