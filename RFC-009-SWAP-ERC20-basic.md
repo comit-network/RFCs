@@ -5,6 +5,26 @@
 - Discussion-issue: -
 - Created on: 2019-03-12
 
+## Table of Contents
+<!-- markdown-toc start -->
+
+- [Description](#description)
+- [Hash Time Lock Contract](#hash-time-lock-contract)
+    - [Hash Functions](#hash-functions)
+    - [Parameters](#parameters)
+    - [Contract](#contract)
+- [Execution Phase](#execution-phase)
+    - [Deployment](#deployment)
+    - [Funding](#funding)
+    - [Redeem](#redeem)
+    - [Refund](#refund)
+- [Examples/Test vectors](#examplestest-vectors)
+    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
+    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+    - [HTLC](#htlc)
+
+<!-- markdown-toc end -->
+
 ## Description
 
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is an ERC20 token.
@@ -246,7 +266,7 @@ To refund the HTLC, the funder MUST send a transaction to `htlc_contract` with e
 
 To be notified of the refund event, both parties SHOULD watch the blockchain for `htlc_contract` emitting the `Refunded()` log.
 
-# Examples
+# Examples/Test vectors
 
 ## RFC003 SWAP REQUEST
 
