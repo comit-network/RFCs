@@ -32,7 +32,7 @@ The following is a list of possible values a `Ledger` type header can take:
 | Value      | Reference                            | Description                            |
 |:-----------|--------------------------------------|----------------------------------------|
 | `bitcoin`  | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | The Bitcoin Core family of blockchains |
-| `ethereum` | TBD                                  | The Ethereum family of blockchains     |
+| `ethereum` | [RFC-006](./RFC-006-SWAP-Ethereum.md)| A blockchain following the Ethereum consensus rules     |
 
 
 And the possible parameters they each may have:
@@ -56,16 +56,16 @@ And the possible parameters they each may have:
 
 | Parameter | Value Type                                    | Description                              |
 |:----------|-----------------------------------------------|------------------------------------------|
-| `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain netowrk to use |
+| `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain network to use |
 
 
 #### Ethereum Networks
 
-| Value     | Description                      | Network Id |
-|:----------|:---------------------------------|------------|
-| `regtest` | Private Ethereum regtest network | N/A        |
-| `ropsten` | Ropsten testnet                  | 3          |
-| `mainnet` | Ethereum mainnet                 | 1          |
+| Value     | Description                          | Network Id |
+|:----------|:-------------------------------------|------------|
+| `regtest` | Private Ethereum development network | N/A        |
+| `ropsten` | Ropsten testnet                      | 3          |
+| `mainnet` | Ethereum mainnet                     | 1          |
 
 ## Assets
 
@@ -75,7 +75,7 @@ The following is a list of possible values an `Asset` type header can take:
 | Value     | Reference                            | Description                   |
 |:----------|--------------------------------------|-------------------------------|
 | `bitcoin` | [RFC-004](./RFC-004-SWAP-Bitcoin.md) | Native Bitcoin network asset  |
-| `ether`   | TBD                                  | Native Ethereum network asset |
+| `ether`   | [RFC-006](./RFC-006-SWAP-Ethereum.md) | Native Ethereum network asset |
 | `erc20`   | TBD                                  | ERC20 token                   |
 
 And the possible parameters they each may have:
@@ -88,9 +88,9 @@ And the possible parameters they each may have:
 
 ### `ether` Parameters
 
-| Parameter  | Description     | Value Type |
-|:-----------|-----------------|------------|
-| `quantity` | Quantity in wei | `u256`     |
+| Parameter  | Value Type | Description     |
+|:-----------|------------|-----------------|
+| `quantity` | `u256`     | Quantity in wei |
 
 
 ### `erc20` Parameters
@@ -105,10 +105,10 @@ And the possible parameters they each may have:
 
 [RFC003](./RFC-003-SWAP-basic.md#identity) requires that each ledger has an associated identity:
 
-| Ledger   | Identity Name | JSON Encoding            | Reference                            | Description                                                                           |
-|:---------|:--------------|:-------------------------|:-------------------------------------|---------------------------------------------------------------------------------------|
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-005](./RFC-004-SWAP-Bitcoin-basic.md) | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
-| Ethereum | `address`     | TBD                      | TBD                                  | An Ethereum address                                                                   |
+| Ledger   | Identity Name | JSON Encoding            | Reference                                   | Description                                                                           |
+|:---------|:--------------|:-------------------------|:--------------------------------------------|---------------------------------------------------------------------------------------|
+| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-004](./RFC-005-SWAP-Bitcoin-basic.md)  | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
+| Ethereum | `address`     | `0x` prefixed address    | [RFC-007](./RFC-007-SWAP-Ethereum-basic.md) | An Ethereum Address                                                                   |
 
 ## Protocols
 

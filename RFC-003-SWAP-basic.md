@@ -119,7 +119,7 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 | `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret  |
 | `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                       |
 
-Implementations SHOULD consider messages with values of `alpha_expiry` or `beta_expiry` that are in the past to be invalid.
+If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consider the request to be invalid.
 
 ### Swap Response (Accept)
 
