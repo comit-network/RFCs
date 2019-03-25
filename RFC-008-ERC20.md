@@ -44,7 +44,7 @@ Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded a
 
 The `token_contract` parameter specifies which token contract and therefore which token the asset header is referring to.
 The `token_contract` parameter is mandatory.
-In the JSON encoding, the address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
+In the JSON encoding, the address MUST be encoded as this 20-byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
 Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
 
 The address must be a *contract address* which complies with [EIP20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md).
