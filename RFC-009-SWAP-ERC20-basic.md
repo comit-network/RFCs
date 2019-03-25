@@ -53,7 +53,7 @@ The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-t
 | asset           | The quantity of the token to be locked in the HTLC AND the address of the token contract |
 | secret_hash     | The hash of the `secret` (32 bytes for SHA-256)                                          |
 | redeem_identity | The Ethereum address of the redeeming party                                              |
-| refund_identity | The Ethereum address` of the refunding party                                             |
+| refund_identity | The Ethereum address of the refunding party                                              |
 | expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded              |
 
 We will refer to the token contract address and quantity from the [RFC008](./RFC-008-ERC20.md) ERC20 asset definition as `token_contract` and `token_quantity` respectively.
