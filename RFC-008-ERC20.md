@@ -36,7 +36,7 @@ To describe ERC20 asset in an Asset type header specify `erc20` as the value alo
 
 ### `quantity`
 
-The `quantity` paramter describes the quantity of token wei the asset represents.
+The `quantity` parameter describes the quantity of token wei the asset represents.
 The `quantity` parameter is mandatory.
 Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded as decimal string like `"1000000000000000000"`).
 
