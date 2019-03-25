@@ -2,7 +2,7 @@
 
 - RFC-Number: 004
 - Status: Draft
-- Discussion-issue: -
+- Discussion-issue: [#41](https://github.com/comit-network/RFCs/issues/41)
 - Created on: 1 Mar. 2019
 
 # Table of Contents
@@ -26,7 +26,7 @@
 This RFC specifies how the Bitcoin blockchain and its native asset Bitcoin are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
 Bitcoin refers specifically to [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
 As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *ledger* value `bitcoin` and its associated parameters as well as the *asset* `bitcoin`.
-This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to execute and negotiate Bitcoin swaps.
+This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to negotiate and execute Bitcoin swaps.
 
 ## The Bitcoin Ledger
 
