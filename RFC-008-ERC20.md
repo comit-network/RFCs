@@ -25,7 +25,7 @@ The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe 
 ## The ERC20 Asset
 
 The ERC20 token standard was introduced in [EIP20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md).
-Token contracts are record how much of the token is owned by particular addresses.
+Token contracts record how much of the token is owned by particular addresses.
 
 Each ERC20 token contract defines its name.
 Just as with the native Ether asset, the nominal token quantity is measured in a smaller denomination which we will call *token wei*.
