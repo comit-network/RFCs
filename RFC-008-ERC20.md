@@ -6,7 +6,7 @@
 - Created on: 2019-03-12
 
 ## Table of Contents
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+<!-- markdown-toc start -->
 - [Description](#description)
 - [The ERC20 Asset](#the-erc20-asset-1)
     - [`quantity`](#quantity)
