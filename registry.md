@@ -61,11 +61,11 @@ And the possible parameters they each may have:
 
 #### Ethereum Networks
 
-| Value     | Description                          | Network Id |
-|:----------|:-------------------------------------|------------|
-| `regtest` | Private Ethereum development network | N/A        |
-| `ropsten` | Ropsten testnet                      | 3          |
-| `mainnet` | Ethereum mainnet                     | 1          |
+| Value     | Description                          |
+|:----------|:-------------------------------------|
+| `regtest` | Private Ethereum development network |
+| `ropsten` | Ropsten testnet                      |
+| `mainnet` | Ethereum mainnet                     |
 
 ## Assets
 
