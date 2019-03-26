@@ -1,4 +1,4 @@
-# Ethereum Basic HTLC Atomic Swap
+# Ethereum Ledger in SWAP Messages
 
 - RFC-Number: 006
 - Status: Draft
