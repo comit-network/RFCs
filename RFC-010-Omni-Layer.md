@@ -20,10 +20,12 @@
 
 ## Description
 
-This RFC specifies how Bitcoin-based Omni Layer Assets MUST be described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
-Omni Layer refers specifically to the [Omni Protocol](https://github.com/OmniLayer/spec).
-As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *asset* value `omni_layer`.
-This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enables users to negotiate and execute Omni Layer assts swaps.
+This RFC defines how the Bitcoin-based Omni Layer Asset MUST be described in Asset type headers.
+Omni Layer refers specifically to the [Omni Layer Protocol](https://github.com/OmniLayer/spec).
+
+The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
+
+This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enables users to negotiate and execute Omni Layer asset swaps.
 
 ## The Omni Layer Assets
 
