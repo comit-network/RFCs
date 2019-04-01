@@ -108,8 +108,8 @@ And the possible parameters they each may have:
 
 | Parameter        | Value Type | Description                                            |
 |:-----------------|------------|--------------------------------------------------------|
-| `quantity`       | `u64`      | The number of coins as the eponymous Omni Layer field. |
-| `property_id`    | number     | The property id of the Omni Layer token                |
+| `quantity`       | `u64`      | The amount of Omni Layer assets to be transferred |
+| `property_id`    | number     | The property id of the Omni Layer asset                |
 
 ## Identities
 

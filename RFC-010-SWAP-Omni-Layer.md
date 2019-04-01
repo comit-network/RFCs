@@ -1,4 +1,4 @@
-# The Omni Layer Token Asset
+# The Omni Layer Asset
 
 - RFC-Number: 010
 - Status: Draft
@@ -20,54 +20,55 @@
 
 ## Description
 
-This RFC specifies how Bitcoin based Omni Layer Assets MUST be described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
-OmniLayer refers specifically to [Omni Protocol](https://github.com/OmniLayer/spec).
+This RFC specifies how Bitcoin-based Omni Layer Assets MUST be described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
+Omni Layer refers specifically to the [Omni Protocol](https://github.com/OmniLayer/spec).
 As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *asset* value `omni_layer`.
-This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to negotiate and execute Omni Layer Token swaps.
+This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enables users to negotiate and execute Omni Layer assts swaps.
 
 ## The Omni Layer Assets
 
-The Omni Protocol defines several _cryptocurrencies_, also commonly referred as _coins_ or _tokens_.
-It also allow the definition of new tokens by the mean of a Bitcoin transaction containing specific data.
+The Omni Layer Protocol defines several _assets_, also commonly referred as _coins_ or _tokens_ (from now on referred as Omni _asset_).
+It also allows the definition of new assets by the mean of a Bitcoin transaction containing specific data.
 
 This asset MUST be used on the Bitcoin Ledger, as defined in [RFC-004](./RFC-004-SWAP-Bitcoin.md).
-Subsequent RFCs MAY introduce the support of other ledgers for the Omni Layer token Asset.
+Subsequent RFCs MAY introduce the support of other ledgers for Omni Layer Assets.
 
-While *Omni* or *OmniCoin* holds a special place among the tokens as being predefined and having special properties in the Omni Protocol, it is not different than other Omni Layer tokens in the context of the COMIT protocol family.
+While *Omni* or *OmniCoin* holds a special place among the assets as being predefined and having special properties in the Omni Layer Protocol, it is not different than other Omni assets in the context of the COMIT protocol family.
 
-Each Omni Layer token defines its name.
-Omni Layer tokens are uniquely identified by a *property id*.
-Notable tokens have the following property ids:
+Each Omni asset defines its name.
+Omni assets are uniquely identified by a *property id*.
+Notable Omni assets have the following property ids:
 - Omni Coin (predefined): `1`
 - Test Omni Coin (predefined): `2`
 - TetherUS: `31`
 
-For a full list of pre-defined coins refer to [Omni Layer Specs](https://github.com/OmniLayer/spec).
- 
-To specify an Omni Layer Token in one of the [RFC002](./RFC-002-SWAP.md) asset headers (`alpha_asset` or `beta_asset`) use the value `omni_layer` with the following parameter:
+For a full list of pre-defined Omni assets refer to [Omni Layer Specs](https://github.com/OmniLayer/spec).
+
+To describe an Omni asset in an Asset type header specify `omni_layer` as the value along with the following paramters:
 
 ### `quantity`
 
-The `quantity` parameter describes the quantity of tokens that the asset represents.
+The parameter `quantity` describes the asset's amount.
 The `quantity` parameter is mandatory.
 
-A given Omni Layer token is defined as *divisible* or *indivisible* at creation.
-To cater for these two types of token, the [Omni Protocol- Number of coins field](https://github.com/OmniLayer/spec#field-number-of-coins) defines the following behaviour in Omni Layer transactions:
-- If the token is **indivisible** then the `quantity` value is the exact number of tokens: `1` represents one token.
-- If the token is **divisible** then the `quantity` value is to be divided by 100,000,000: `100,000,000` represents one token.
+
+A given Omni asset is defined as *divisible* or *indivisible* at creation.
+To cater for these two types of assets, the following behaviour is defined in the Omni Layer protocol field [Number of coins field](https://github.com/OmniLayer/spec#field-number-of-coins):
+- If the asset is **indivisible** then the `quantity` value is the exact number of assets: `1` represents one asset.
+- If the asset is **divisible** then the `quantity` value represents a hundred millionth of an asset: `100,000,000` represents one asset.
 
 The `quantity` value will be inserted in the appropriate Omni Layer transactions, hence the same behaviour is adopted.
 
-Its value MUST be a `u64` (note that in the JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
+Its value MUST be a `u64` (note that in JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
 
 ### `property_id`
 
-The `property_id` parameter specifies which property id and therefore which token the asset header is referring to.
+The `property_id` parameter specifies which property id and therefore which specific asset the asset header is referring to.
 The `property_id` parameter is mandatory.
 
-Note that property id is assigned by the Omni Protocol at the creation of a token, it is simply the next available property id.
+Note that property id is assigned by the Omni Layer Protocol at the creation of an asset - it is simply the next available property id.
 
-The property id MUST be of an existing token on the target Bitcoin ledger.
+The property id MUST be of an existing asset on the target Bitcoin ledger.
 
 
 ## Registry extension
@@ -76,19 +77,19 @@ This RFC extends the registry's [Assets table](./registry.md#assets) with the `o
 
 | Value        | Description      |
 :---           |---               |
-| `omni_layer` | Omni Layer token |
+| `omni_layer` | Omni Layer Asset |
 
 And defines its parameters:
 
 | Parameter        | Value Type | Description                                            |
 |:-----------------|------------|--------------------------------------------------------|
-| `quantity`       | `u64`      | The number of coins as the eponymous Omni Layer field. |
-| `property_id`    | number     | The property id of the Omni Layer token                |
+| `quantity`       | `u64`      | The Omni Layer asset amount to be transferred |
+| `property_id`    | number     | The property id of the Omni Layer asset                |
 
 
 # Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer token TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
+The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer asset TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 Note: TetherUS is divisible.
 
