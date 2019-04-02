@@ -1,4 +1,4 @@
-# Ethereum Ledger in SWAP Messages
+# The Ethereum Ledger
 
 - RFC-Number: 006
 - Status: Draft

@@ -1,4 +1,4 @@
-# Bitcoin Ledger and Asset
+# The Bitcoin Ledger
 
 - RFC-Number: 004
 - Status: Draft
