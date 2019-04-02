@@ -6,7 +6,7 @@ If you want to get involved, make sure to read [RFC-000](./RFC-000-Process-descr
 0. [RFC-Process description](./RFC-000-Process-description.md)
 1. [BAM!-Protocol (Bidirectional Application Messaging)](./RFC-001-BAM.md)
 2. [SWAP Message Types](./RFC-002-SWAP.md)
-3. [Basic HTLC Atomic Swap](./RFC-003-SWAP-basic.md)
+3. [Basic HTLC Atomic Swap](./RFC-003-SWAP-Basic.md)
 4. [Bitcoin Ledger in SWAP Messages](./RFC-004-Bitcoin.md)
 5. [Bitcoin Basic HTLC Atomic Swap](./RFC-005-SWAP-Bitcoin-basic.md)
 6. [Ethereum Ledger in SWAP Messages](./RFC-006-SWAP-Ethereum.md)

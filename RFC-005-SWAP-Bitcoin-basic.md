@@ -28,24 +28,24 @@
 
 ## Description
 
-This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
+This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
 
 For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-Bitcoin.md).
 
-To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
+To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
 
-- The [identity](./RFC-003-SWAP-basic.md#identity) to be used when negotiating a SWAP on the Bitcoin ledger.
+- The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a SWAP on the Bitcoin ledger.
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on the Bitcoin blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md).
+- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-Basic.md).
 
 ## The Bitcoin Identity
 
-[RFC003](./RFC-003-SWAP-basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
+[RFC003](./RFC-003-SWAP-Basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
 
 The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
 The compressed public key is used because it needs to be compatible with segwit transactions (see [BIP143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)).
 
-While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in [RFC003](./RFC-003-SWAP-basic.md).
+While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in [RFC003](./RFC-003-SWAP-Basic.md).
 Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as verifying that it is a p2pkh or p2wpkh address, extracting the pubkeyhash and validating the network.
 
 In the JSON encoding, a *pubkeyhash* MUST be encoded as a 20-byte hex string.
@@ -65,7 +65,7 @@ This may be expanded in subsequent RFCs.
 
 ### Parameters
 
-The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
+The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
 | Variable        | Description                                                                 |
 |:----------------|:----------------------------------------------------------------------------|
@@ -92,7 +92,7 @@ OP_EQUALVERIFY
 OP_CHECKSIG
 ```
 
-As required by [RFC003](./RFC-003-SWAP-basic.md), this HTLC uses absolute time locks to check whether `expiry` has been reached.
+As required by [RFC003](./RFC-003-SWAP-Basic.md), this HTLC uses absolute time locks to check whether `expiry` has been reached.
 Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `expiry` in the contract.
 
 Implementations MUST consider an `expiry` value below `500000000` for a Bitcoin HTLC to be invalid due to the [`lock_time`](https://en.bitcoin.it/wiki/Protocol_documentation#tx) transaction field interpreting values below `500000000` as block heights.
@@ -114,7 +114,7 @@ To compute the exact Bitcoin script bytes of the contract, implementations shoul
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-basic.md#execution-phase).
+The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
 
 ### Deployment
 
@@ -147,7 +147,7 @@ The redeemer can use following witness data to spend the output if they know the
 For how to use this witness data to construct the redeem transaction see [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#transaction-id).
 
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
-If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
+If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
 
 ### Refund
 
@@ -175,7 +175,7 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 ## RFC003 SWAP REQUEST
 
-The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
