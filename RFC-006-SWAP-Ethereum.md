@@ -1,8 +1,8 @@
-# Ethereum Basic HTLC Atomic Swap
+# Ethereum Ledger in SWAP Messages
 
 - RFC-Number: 006
 - Status: Draft
-- Discussion-issue: -
+- Discussion-issue: [#47](https://github.com/comit-network/RFCs/issues/47)
 - Created on: 2019-03-12
 
 
