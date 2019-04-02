@@ -1,4 +1,4 @@
-# Ethereum Basic HTLC Atomic Swap
+# Ether Basic HTLC Atomic Swap
 
 - RFC-Number: 007
 - Status: Draft
