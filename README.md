@@ -12,7 +12,7 @@ If you want to get involved, make sure to read [RFC-000](./RFC-000-Process-descr
 6. [Ethereum Ledger in SWAP Messages](./RFC-006-Ethereum.md)
 7. [Ethereum Basic HTLC Atomic Swap](./RFC-007-SWAP-Basic-Ether.md)
 8. [The ERC20 Asset](./RFC-008-ERC20.md)
-9. [ERC20 Basic HTLC Atomic Swap](./RFC-009-SWAP-ERC20-basic.md)
+9. [ERC20 Basic HTLC Atomic Swap](./RFC-009-SWAP-Basic-ERC20.md)
 
 # Registry
 
