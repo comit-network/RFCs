@@ -1,4 +1,4 @@
-# Bitcoin Ledger in SWAP Messages
+# Bitcoin Ledger and Asset
 
 - RFC-Number: 004
 - Status: Draft
@@ -23,14 +23,13 @@
 
 ## Description
 
-This RFC specifies how the Bitcoin blockchain and its native asset Bitcoin are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
+This RFC specifies how the Bitcoin blockchain and its native asset Bitcoin are described in Ledger and Asset type headers within the COMIT protocol.
 Bitcoin refers specifically to [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
-As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *ledger* value `bitcoin` and its associated parameters as well as the *asset* `bitcoin`.
-This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enable users to negotiate and execute Bitcoin swaps.
+The Ledger and Asset type headers were introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The Bitcoin Ledger
 
-To specify Bitcoin in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`alpha_ledger` or `beta_ledger`) use the value `bitcoin` with the following parameter:
+To specify Bitcoin in a Ledger type header use the value `bitcoin` with the following parameter:
 
 ### `network`
 
@@ -48,7 +47,7 @@ Non-native assets like [colored coins](https://en.bitcoin.it/wiki/Colored_Coins)
 Although Bitcoin is nominally the native asset, ownership of Bitcoin is really the ability to unlock *unspent transaction outputs* (UTXOs) whose value is measured in *satoshi*.
 1 Bitcoin is simply the name for 100,000,000 (10<sup>8</sup>) satoshi.
 
-To specify Bitcoin in one of the [RFC002](./RFC-002-SWAP.md) asset headers (`alpha_asset` or `beta_asset`) use the value `bitcoin` with the following parameter:
+To specify Bitcoin in an Asset type header use the value `bitcoin` with the following parameter:
 
 ### `quantity`
 

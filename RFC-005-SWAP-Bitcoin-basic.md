@@ -30,7 +30,7 @@
 
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is the native Bitcoin asset.
 
-For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-SWAP-Bitcoin.md).
+For definitions of the Bitcoin ledger and asset see [RFC004](./RFC-004-Bitcoin.md).
 
 To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
 
