@@ -8,7 +8,7 @@ If you want to get involved, make sure to read [RFC-000](./RFC-000-Process-descr
 2. [SWAP Message Types](./RFC-002-SWAP.md)
 3. [Basic HTLC Atomic Swap](./RFC-003-SWAP-Basic.md)
 4. [Bitcoin Ledger in SWAP Messages](./RFC-004-Bitcoin.md)
-5. [Bitcoin Basic HTLC Atomic Swap](./RFC-005-SWAP-Bitcoin-basic.md)
+5. [Bitcoin Basic HTLC Atomic Swap](./RFC-005-SWAP-Basic-Bitcoin.md)
 6. [Ethereum Ledger in SWAP Messages](./RFC-006-SWAP-Ethereum.md)
 7. [Ethereum Basic HTLC Atomic Swap](./RFC-007-SWAP-Ethereum-basic.md)
 8. [The ERC20 Asset](./RFC-008-ERC20.md)
