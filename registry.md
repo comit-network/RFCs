@@ -32,7 +32,7 @@ The following is a list of possible values a `Ledger` type header can take:
 | Value      | Reference                            | Description                            |
 |:-----------|--------------------------------------|----------------------------------------|
 | `bitcoin`  | [RFC-004](./RFC-004-Bitcoin.md) | The Bitcoin Core family of blockchains |
-| `ethereum` | [RFC-006](./RFC-006-SWAP-Ethereum.md)| A blockchain following the Ethereum consensus rules     |
+| `ethereum` | [RFC-006](./RFC-006-Ethereum.md)| A blockchain following the Ethereum consensus rules     |
 
 
 And the possible parameters they each may have:
@@ -75,7 +75,7 @@ The following is a list of possible values an `Asset` type header can take:
 | Value     | Reference                            | Description                   |
 |:----------|--------------------------------------|-------------------------------|
 | `bitcoin` | [RFC-004](./RFC-004-Bitcoin.md) | Native Bitcoin network asset  |
-| `ether`   | [RFC-006](./RFC-006-SWAP-Ethereum.md) | Native Ethereum network asset |
+| `ether`   | [RFC-006](./RFC-006-Ethereum.md) | Native Ethereum network asset |
 | `erc20`   | [RFC-008](./RFC-008-ERC20.md)    | ERC20 token                   |
 
 And the possible parameters they each may have:

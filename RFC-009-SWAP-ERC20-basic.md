@@ -29,7 +29,7 @@
 
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is an ERC20 token.
 
-The definition of the Ethereum ledger was introduced in [RFC006](./RFC-006-SWAP-Ethereum.md).
+The definition of the Ethereum ledger was introduced in [RFC006](./RFC-006-Ethereum.md).
 The definition of ERC20 token asset was introduced in [RFC008](./RFC-008-ERC20.md).
 
 To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:

@@ -23,13 +23,13 @@
 
 ## Description
 
-This RFC specifies how the Ethereum blockchain and its native asset Ether are described in [RFC002](./RFC-002-SWAP.md) SWAP messages.
+This RFC specifies how the Ethereum blockchain and its native asset Ether are described in Ledger and Asset type headers within the COMIT protocol.
 *Ethereum* refers specifically to the blockchain endorsed by [The Ethereum Foundation](https://www.ethereum.org/foundation) and its associated testnets but not any other blockchains related to or derived from it.
-As required by [RFC002](./RFC-002-SWAP.md), this RFC defines the *ledger* value `ethereum`, as well as the *asset* `ether`.
+The Ledger and Asset type headers were introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The Ethereum Ledger
 
-To specify Ethereum in one of the [RFC002](./RFC-002-SWAP.md) ledger headers (`alpha_ledger` or `beta_ledger`), use the value `ethereum` with the following parameter:
+To specify Ethereum in a Ledger type header use the value `ethereum` with the following parameter:
 
 ### `network`
 
@@ -51,7 +51,7 @@ Non-native assets like [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_
 Although Ether is nominally the native asset, amounts of Ether are counted in wei.
 1 Ether =  1,000,000,000,000,000,000 (10<sup>18</sup>) wei.
 
-To specify Ether as one of the [RFC002](./RFC-002-SWAP.md) asset headers (`alpha_asset` or `beta_asset`) use the value `ether` with the following parameter:
+To specify Ether in an Asset type header use the value `ether` with the following parameter:
 
 ### `quantity`
 

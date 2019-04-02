@@ -29,7 +29,7 @@
 
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is the native Ether asset.
 
-For definitions of the Ethereum ledger and Ether asset see [RFC006](./RFC-006-SWAP-Ethereum.md).
+For definitions of the Ethereum ledger and Ether asset see [RFC006](./RFC-006-Ethereum.md).
 
 To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
 
