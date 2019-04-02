@@ -1,5 +1,12 @@
 # SWAP Message Types
 
+- RFC-Number: 002
+- Status: Draft
+- Discussion issue: [#18](https://github.com/comit-network/RFCs/issues/18)
+- Created on: 28 Dec. 2018
+
+# Table of Contents
+
 <!-- toc -->
 
   * [Introduction](#introduction)
@@ -50,12 +57,6 @@ This RFC contains the definition of the following `BAM!` headers:
 - [`beta_asset`](#beta_asset)
 - [`beta_ledger`](#beta_ledger)
 - [`protocol`](#protocol)
-
-## Status
-
-- RFC-Number: 002
-- Status: Draft
-- Discussion issue: [#18](https://github.com/comit-network/RFCs/issues/18)
 
 ## Terminology
 
