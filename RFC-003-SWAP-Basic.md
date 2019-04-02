@@ -1,8 +1,13 @@
 # Basic HTLC Atomic Swap
 
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
+- RFC-Number: 003
+- Status: Draft
+- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
+- Created on: 15 Jan. 2019
 
+# Table of Contents
+
+<!-- markdown-toc start  -->
 - [Basic HTLC Atomic Swap](#basic-htlc-atomic-swap)
     - [Description](#description)
     - [Status](#status)
@@ -39,12 +44,6 @@
 This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
 It is a simplified version of the protocol originally described by TierNolan[¹](#references).
-
-## Status
-
-- RFC-Number: 003
-- Status: Draft
-- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
 
 ## Concepts
 
