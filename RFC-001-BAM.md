@@ -1,5 +1,12 @@
 # BAM! - Bidirectional Application Messaging
 
+- RFC-Number: 001
+- Status: Draft
+- Discussion-issue: [#17](https://github.com/comit-network/RFCs/issues/17)
+- Created on: 04 Sep. 2018
+
+# Table of Contents
+
 - [Description](#description)
 - [Status](#status)
 - [Motivation & Requirements](#motivation--requirements)
@@ -43,12 +50,6 @@
 ## Description
 
 This RFC describes BAM!: **B**i-directional **A**pplication **M**essaging. It is a domain-agnostic and self-descriptive protocol and potentially supports multiple encodings.
-
-## Status
-
-- RFC-Number: 001
-- Status: Draft
-- Discussion issue: [#17](https://github.com/comit-network/RFCs/issues/17)
 
 ## Motivation & Requirements 
 
