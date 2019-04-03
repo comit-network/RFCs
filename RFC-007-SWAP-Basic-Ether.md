@@ -185,7 +185,7 @@ To compile the contract code replace the placeholder values with the HTLC parame
 | `secret_hash`     | 51                     | 82                    | 32             |
 | `expiry`          | 99                     | 102                   | 4              |
 | `redeem_identity` | 153                    | 172                   | 20             |
-| `refund_identity` | 219                    | 248                   | 20             |
+| `refund_identity` | 214                    | 233                   | 20             |
 
 The contract emits two logs:
 
