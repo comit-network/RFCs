@@ -27,15 +27,15 @@
 
 ## Description
 
-This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is an ERC20 token.
+This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is an ERC20 token.
 
-The definition of the Ethereum ledger was introduced in [RFC006](./RFC-006-SWAP-Ethereum.md).
+The definition of the Ethereum ledger was introduced in [RFC006](./RFC-006-Ethereum.md).
 The definition of ERC20 token asset was introduced in [RFC008](./RFC-008-ERC20.md).
 
-To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
+To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
 
 - How to construct a Hash Time Lock Contract (HTLC) to lock an ERC20 token asset on the Ethereum blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md).
+- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-Basic.md).
 
 ## Hash Time Lock Contract
 
@@ -46,7 +46,7 @@ Future RFCs may make modifications to the HTLC to allow other hash functions.
 
 ### Parameters
 
-The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
+The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
 | Parameter       | Description                                                                              |
 |:----------------|:-----------------------------------------------------------------------------------------|
@@ -215,7 +215,7 @@ Implementations SHOULD use the following gas limits on the transactions related 
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-basic.md#execution-phase).
+The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
 
 Note that with the ERC20 HTLC there's a *funding* stage after the *deployment* stage.
 The funding stage MUST be completed before the redeemer tries to redeem.
@@ -270,7 +270,7 @@ To be notified of the refund event, both parties SHOULD watch the blockchain for
 
 ## RFC003 SWAP REQUEST
 
-The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 PAY token (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 PAY token (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
