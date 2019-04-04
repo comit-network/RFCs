@@ -3,5 +3,5 @@
     "editor.detectIndentation": false,
     "editor.tabSize": 4,
     "markdown.extension.list.indentationSize": "inherit",
-    "markdown.extension.toc.githubCompatibility": true,
+    "markdown.extension.toc.githubCompatibility": true
 }

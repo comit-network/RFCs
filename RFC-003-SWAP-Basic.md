@@ -7,6 +7,7 @@
 
 **Table of Contents**
 - [Description](#description)
+
 - [Concepts](#concepts)
     - [Identity](#identity)
     - [Hash Time Lock Contract (HTLC)](#hash-time-lock-contract-htlc)
@@ -18,8 +19,8 @@
     - [Swap Response (Decline)](#swap-response-decline)
         - [`timeouts-too-tight`](#timeouts-too-tight)
 - [Execution Phase](#execution-phase)
-    - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
-    - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
+    - [1. Alice deploys α-HTLC](#1-alice-deploys-%CE%B1-htlc)
+    - [2. Bob deploys β-HTLC](#2-bob-deploys-%CE%B2-htlc)
     - [3. Alice redeems](#3-alice-redeems)
     - [4. Bob redeems](#4-bob-redeems)
 - [Application Considerations](#application-considerations)
