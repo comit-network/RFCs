@@ -65,7 +65,8 @@ A HTLC locks an asset until someone activates one of two possible paths:
 - **Activation with secret**: The contract is activated with a *secret* whose hash matches the hash in the contract.
 - **Activation after expiry**: The contract is activated after an expiry time specified in the contract.
 
-Each activation path transfers the asset to a different party. The parties are decided at the time of contract creation.
+Each activation path transfers the asset to a different party.
+The parties are decided at the time of contract creation.
 In this RFC, the expiry activation returns the asset to the original owner while a secret activation transfers it to the other party.
 Therefore this document will refer to these paths as *refund* and *redeem* respectively.
 

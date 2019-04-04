@@ -22,8 +22,10 @@ What is the motivation behind the change/addition?
 
 ## Content
 
-This is where the actual content of the RFC goes. You are free to structure this in the way you best see fit.
+This is where the actual content of the RFC goes.
+You are free to structure this in the way you best see fit.
 
 ## Registry extension
 
-A list of changes to the registry described in this RFC. For example, new protocols, hash functions etc.
+A list of changes to the registry described in this RFC.
+For example, new protocols, hash functions etc.
