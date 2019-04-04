@@ -1,6 +1,6 @@
 # Registry
 
-** Table of contents **
+**Table of Contents**
 
 - [Registry](#registry)
   * [Description](#description)
