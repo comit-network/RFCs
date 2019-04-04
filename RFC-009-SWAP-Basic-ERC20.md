@@ -5,9 +5,7 @@
 - Discussion-issue: [#46](https://github.com/comit-network/RFCs/issues/46)
 - Created on: 2019-03-12
 
-## Table of Contents
-<!-- markdown-toc start -->
-
+**Table of Contents**
 - [Description](#description)
 - [Hash Time Lock Contract](#hash-time-lock-contract)
     - [Hash Functions](#hash-functions)
@@ -18,12 +16,9 @@
     - [Funding](#funding)
     - [Redeem](#redeem)
     - [Refund](#refund)
-- [Examples/Test vectors](#examplestest-vectors)
-    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
-    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
-    - [HTLC](#htlc)
-
-<!-- markdown-toc end -->
+- [RFC003 SWAP REQUEST](#rfc003-swap-request)
+- [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+- [HTLC](#htlc)
 
 ## Description
 

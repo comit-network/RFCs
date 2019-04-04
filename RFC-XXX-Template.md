@@ -5,8 +5,7 @@
 - Discussion-issue: -
 - Created on: 25 Jan. 2019
 
-# Table of contents
-
+**Table of Contents**
 - [Description](#description)
 - [Motivation](#motivation)
 - [Content](#content)
