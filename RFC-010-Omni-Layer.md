@@ -49,7 +49,7 @@ The `quantity` parameter is mandatory.
 A given Omni asset is defined as *divisible* or *indivisible* at creation.
 To cater for these two types of assets, the following behaviour is defined in the Omni Layer protocol field [Number of coins field](https://github.com/OmniLayer/spec#field-number-of-coins):
 - If the asset is **indivisible**, then the `quantity` value is the exact number of tokens, i.e. `1` represents one token.
-- If the asset is **divisible** then the `quantity` value represents a hundred millionth of an asset: `100,000,000` represents one asset.
+- If the asset is **divisible**, then the `quantity` value represents a hundred millionth of a token, i.e. `100,000,000` represents one token.
 
 The `quantity` value will be inserted in the appropriate Omni Layer transactions, hence the same behaviour is adopted.
 
