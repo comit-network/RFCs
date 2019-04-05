@@ -5,9 +5,21 @@
 - Discussion-issue: -
 - Created on: 27 Mar. 2019
 
-# Table of Contents
+**Table of Contents**
 
-<!-- toc -->
+- [Description](#description)
+- [Limitations](#limitations)
+- [Ownership](#ownership)
+- [Inputs & Outputs format](#inputs--outputs-format)
+  * [Omni Layer data](#omni-layer-data)
+  * [Dust](#dust)
+  * [Deployment transaction](#deployment-transaction)
+  * [Redeem transaction](#redeem-transaction)
+  * [Refund transaction](#refund-transaction)
+- [Examples/Test vectors](#examplestest-vectors)
+  * [RFC003 SWAP REQUEST](#rfc003-swap-request)
+  * [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+  * [HTLC](#htlc)
 
 ## Description
 
@@ -56,11 +68,25 @@ An *address owning Omni Layer token* is an address constructed from a public key
 
 ### Omni Layer data
 
-<!-- TODO: describes what to put in the OP_RETURN transaction -->
+The Omni Layer data to be included in `OP_RETURN` is as per the Omni Layer protocol for a 
+
+Such data MAY be constructed manually or the implementer MAY decide to relay on an existing Omni Layer implementation to generate it.
+
+For example, the following omnicore API MAY be used:
+- `property_id`: the property id of the Omni Layer Asset
+- `amount`: the quantity of Omni Layer Assets to transfer
+- `payload`: the hex-encoded Omni Layer Data
+```
+$ [...] omni_createpayload_simplesend <property_id> <amount>
+<payload>
+```
+
+To then embed the Omni Layer Data received from omnicore in an `OP_RETURN` output, it MUST be prefixed it with the Omni Layer header: `6f6d6e69`.
+
 
 ### Dust
 
-The reference implementation of the Bitcoin consensus, `bitcoind` enforces that spendable UTXO MUST enough value to be spent.
+The reference implementation of the Bitcoin consensus, _bitcoind_ enforces that spendable UTXO MUST own enough value to be spent.
 If the value owned by a UTXO is less than the minimum spendable then it is what we commonly call dust and such transaction would be considered as *non-standard* and rejected.
 
 For `bitcoind`, it is currently defined in term of `dustRelayFee` and it is set by default to `3000 satoshis-per-kilobytes`.
@@ -76,42 +102,43 @@ The only requirement is that spendable output MUST have at least `min_sat` Satos
 
 ### Deployment transaction
 
-To construct the deployment transaction, the following information is needed:
+The deployment transaction MUST be a simple send of the correct amount and kind of Omni Assets to the HTLC address.
 
-| Variable         | Description                                                                                                                |
-|:---              |:---                                                                                                                        |
-| `funder_address` | Address owning the Omni Layer tokens that will fund the HTLC                                                               |
-| `funder_utxo`    | UTXO locked by `funder_address` that owns some Bitcoin asset to allow the transaction to be valid as per Bitcoin consensus |
-| `funder_sat `    | The amount of Satoshis initially owned by `funder_utxo`                                                                    |
-| `mining_sat`     | The amount of Satoshi the funder wishes to spend on mining fees                                                            |
-| `htlc_address`   | Address of the HTLC as described in [RFC-005](./RFC-005-SWAP-Bitcoin-basic.md)                                             |
-| `omni_data`      | The Omni Layer data that transfers the Omni Layer token asset as described in [Omni Layer data](#omni-layer-data)          |
+The HTLC address MUST either be:
+1. the P2WSH address of the HTLC, as described in [RFC-005](./RFC-005-SWAP-Bitcoin-basic.md)
+2. the P2SH of the P2WSH above
 
-The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
-The order of the inputs and outputs MUST be as described.
-The *assigned Bitcoin value* on the inputs SHOULD be as described:
+(1) is preferred however, not all Omni Layer wallets implementation support bech32 addresses, hence, (2) can be used as a fallback.
 
-| Inputs (assigned Bitcoin value)  | Outputs (assigned Bitcoin value)                           |
-|:---                              |:---                                                        |
-| 1. `funder_utxo` (`funder_sat`)  | 1. `htlc_address` (`min_sat`)                              |
-|                                  | 2. `funder_address` (`funder_sat - min_sat - mining_sat`)  |
-|                                  | 3. `OP_RETURN omni_data` (`0`)                             |
+The simple send MUST NOT be done to the direct P2SH address of the HTLC.
 
-If `funder_sat < min_sat + mining_sat` then the funder MAY add another input to complement the total Bitcoin input.
+The party watching for the deployment transaction MUST consider both (1) and (2) addresses.
+Such party MUST check the validity of the transaction against Omni Layer Spec. Not all valid Bitcoin transactions containing Omni Data are valid Omni Layer transactions.
 
+For example, the following RPC call to omnicore can be used to verify the validity of a Omni Layer transaction:
+- `txid`: the transaction id of the transaction
+ ```
+$ [...] omni_gettransation <txid>
+{
+  [...]
+  "valid" : true
+  [...]
+}
+```
+ 
 ### Redeem transaction
  
 To construct the redeem transaction, the following information is needed:
  
-| Variable           | Description                                                                                                                | 
-|:---                |:---                                                                                                                        |
-| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                                           |
-| `redeemer_address` | Address to which the Omni Layer token will be sent upon redeeming                                                          |
-| `change_address`   | Address to which the Bitcoin change will be sent upon redeeming; MUST be different than `redeemer_address`                 |      
-| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                                     |
-| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the redeem                                                                |
-| `mining_sat`       | The amount of Satoshi the redeemer wishes to spend on mining fees                                                          |
-| `omni_data`        | The Omni Layer data that transfers the Omni Layer token asset as described in [Omni Layer data](#omni-layer-data)          |
+| Variable           | Description                                                                                                 | 
+|:---                |:---                                                                                                         |
+| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                            |
+| `redeem_address`   | Address to which the Omni Layer token will be sent upon redeeming                                           |
+| `change_address`   | Address to which the Bitcoin change will be sent upon redeeming; MUST be different than `redeem_address`    |      
+| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                      |
+| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the redeem                                                 |
+| `mining_sat`       | The amount of Satoshi the redeemer wishes to spend on mining fees                                           |
+| `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
  
  The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
  The order of the inputs and outputs MUST be as described.
@@ -119,22 +146,125 @@ To construct the redeem transaction, the following information is needed:
  
  | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
  |:---                                  |:---                                                  |
- | 1. `htlc_utxo` (`min_sat`)           | 1. `redeemer_address` (`min_sat`)                    |
+ | 1. `htlc_utxo` (`min_sat`)           | 1. `redeem_address` (`min_sat`)                      |
  | 2. `change_utxo` (`init_change_sat`) | 2. `change_address` (`init_change_sat - mining_sat`) |
  |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
  
-The redeemer MAY include output `2. change_address` or MAY decide to omit it and transfer the Bitcoin change to `redeemer_address`. 
+The redeemer MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `redeem_address`.
+if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `redeem_address`. 
  
 ### Refund transaction
 
-<!-- TODO -->
+To construct the refund transaction, the following information is needed:
+ 
+| Variable           | Description                                                                                                 | 
+|:---                |:---                                                                                                         |
+| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                            |
+| `refund_address`   | Address to which the Omni Layer token will be sent upon refunding                                           |
+| `change_address`   | Address to which the Bitcoin change will be sent upon refunding; MUST be different than `refund_address`  |      
+| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                      |
+| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the refund                                                 |
+| `mining_sat`       | The amount of Satoshi the refunder wishes to spend on mining fees                                           |
+| `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
+ 
+ The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
+ The order of the inputs and outputs MUST be as described.
+ The *assigned Bitcoin value* on the inputs SHOULD be as described:
+ 
+ | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
+ |:---                                  |:---                                                  |
+ | 1. `htlc_utxo` (`min_sat`)           | 1. `refund_address` (`min_sat`)                      |
+ | 2. `change_utxo` (`init_change_sat`) | 2. `change_address` (`init_change_sat - mining_sat`) |
+ |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
+ 
+The redeemer MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `refund_address`.
+if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `refund_address`.
 
-# Examples/Test vectors
+## Examples/Test vectors
 
-## RFC003 SWAP REQUEST
+### RFC003 SWAP REQUEST
 
-<!-- TODO -->
+The following shows an [RFC003](RFC-003-SWAP-basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Omni Layer Asset TetherUS (with `...` being used where the value is only relevant for the `beta_ledger`).
 
-## RFC003 SWAP RESPONSE
+``` json
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {...},
+    "alpha_asset": {
+      "value": "omni",
+      "parameters": {
+        "quantity": "100000000",
+        "property_id": 31,
+      }
+    },
+    "beta_asset": {...},
+    "protocol": {
+        "value" : "comit-rfc-003",
+        "parameters" : { "hash_function" : "SHA-256" }
+    }
+  },
+  "body": {
+    "alpha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
+    "alpha_expiry": 1552263040,
+    "secret_hash" : "1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e",
+    "beta_ledger_redeem_identity" : "...",
+    "beta_expiry" : ...
+  },
+}
+```
 
-<!-- TODO -->
+Note, the property id of TetherUS is `31` and TetherUS is divisible;
+the secret for the `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
+
+### RFC003 SWAP RESPONSE
+A valid `RESPONSE` to the above `REQUEST` could look like:
+
+``` json
+{
+  "status" : "OK00",
+  "body": {
+     "alpha_ledger_redeem_identity": "c021f17be99c6adfbcba5d38ee0d292c0399d2f5",
+     "beta_ledger_refund_identity": "..."
+  }
+}
+```
+
+
+### HTLC
+
+The above `REQUEST` and `RESPONSE` results in the following parameters to the HTLC:
+
+| Parameter       | value                                                              |
+|:----------------|--------------------------------------------------------------------|
+| redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
+| refund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
+| secret_hash     | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
+| expiry          | 1552263040                                                         |
+
+
+Which compiles into the following Bitcoin script bytes:
+
+```
+6382012088a8201f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
+```
+
+Which results in the following P2WSH address by network:
+
+| Network   | Address                                                            |
+|:----------|--------------------------------------------------------------------|
+| `regtest` | `bcrt1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90ws9hj4q3` |
+| `testnet` | `tb1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wsgwcn4t`   |
+| `mainnet` | `bc1q4vft3swvhm5zvytlsx0puwsge7pnsj4zmvwp9gcyvwhnuthn90wslxwu0y`   |
+
+and the following P2SH(P2WSH) address by network:
+
+| Network   | Address                               |
+|:----------|---------------------------------------|
+| `regtest` | `2NEzrgyqU2AB6tHZqeCNnkmHKEDRGpGkDfk` |
+| `testnet` | `2NEzrgyqU2AB6tHZqeCNnkmHKEDRGpGkDfk` |
+| `mainnet` | `3PSedEuSQhfkgVwHy4kv8pJ41sD6wE8Hc5`  |

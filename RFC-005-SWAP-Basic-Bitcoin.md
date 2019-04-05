@@ -162,8 +162,8 @@ To be notified of the refund event, both parties MAY watch the blockchain for tr
 
 This RFC extends the [registry](./registry.md#identities) with an identity definition for the Bitcoin ledger:
 
-| Ledger  | Identity Name | JSON Encoding            | Description                                                                           |
-|:--------|:--------------|:-------------------------|---------------------------------------------------------------------------------------|
+| Ledger  | Identity Name | JSON Encoding            | Description                                                                             |
+|:--------|:--------------|:-------------------------|-----------------------------------------------------------------------------------------|
 | Bitcoin | `pubkeyhash`  | `hex-encoded-bytes (20)` | The result of applying SHA-256 and then RIPEMD-160 to a SECP256k1 compressed public key |
 
 # Examples/Test vectors
@@ -192,7 +192,7 @@ The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `a
     }
   },
   "body": {
-    "aplha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
+    "alpha_ledger_refund_identity": "1925a274ac004373bb5429553bdb55c40e57b124",
     "alpha_expiry": 1552263040,
     "secret_hash" : "1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e",
     "beta_ledger_redeem_identity" : "...",
@@ -224,7 +224,7 @@ The above `REQUEST` and `RESPONSE` results in the following parameters to the HT
 | Parameter       | value                                                              |
 |:----------------|--------------------------------------------------------------------|
 | redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
-| redund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
+| refund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
 | secret_hash     | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
 | expiry          | 1552263040                                                         |
 
