@@ -36,7 +36,7 @@ While *Omni* or *OmniCoin* holds a special place among the assets as being prede
 Each Omni asset defines its name.
 Omni assets are uniquely identified by a *property id*.
 
-For a full list of pre-defined Omni assets refer to [Omni Layer Specs](https://github.com/OmniLayer/spec#field-currency-identifier).
+For a list of pre-defined Omni assets refer to [Omni Layer Specs](https://github.com/OmniLayer/spec#field-currency-identifier).
 
 To describe an Omni asset in an Asset type header specify `omni_layer` as the value along with the following paramters:
 
