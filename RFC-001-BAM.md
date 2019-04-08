@@ -1,5 +1,10 @@
 # BAM! - Bidirectional Application Messaging
 
+- RFC-Number: 001
+- Status: Draft
+- Discussion-issue: [#17](https://github.com/comit-network/RFCs/issues/17)
+- Created on: 04 Sep. 2018
+
 **Table of contents**
 - [Description](#description)
 - [Motivation & Requirements](#motivation--requirements)

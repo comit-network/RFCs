@@ -1,5 +1,10 @@
 # SWAP Message Types
 
+- RFC-Number: 002
+- Status: Draft
+- Discussion issue: [#18](https://github.com/comit-network/RFCs/issues/18)
+- Created on: 28 Dec. 2018
+
 **Table of contents**
 - [Introduction](#introduction)
 - [Terminology](#terminology)
