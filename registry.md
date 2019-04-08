@@ -104,7 +104,7 @@ And the possible parameters they each may have:
 
 | Parameter        | Value Type | Description                                            |
 |:-----------------|------------|--------------------------------------------------------|
-| `quantity`       | `u64`      | The amount of Omni Layer assets to be transferred |
+| `quantity`       | `u64`      | The amount of Omni Layer assets to be transferred      |
 | `property_id`    | number     | The property id of the Omni Layer asset                |
 
 ## Identities
