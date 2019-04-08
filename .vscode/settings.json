@@ -3,5 +3,13 @@
     "editor.detectIndentation": false,
     "editor.tabSize": 4,
     "markdown.extension.list.indentationSize": "inherit",
+    "spellright.language": [
+        "en_US"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ],
     "markdown.extension.toc.githubCompatibility": true
 }
