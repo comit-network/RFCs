@@ -5,8 +5,7 @@
 - Discussion-issue: [#48](https://github.com/comit-network/RFCs/issues/48)
 - Created on: 2019-03-12
 
-## Table of Contents
-<!-- toc -->
+**Table of Contents**
 - [Description](#description)
 - [The Ethereum Identity](#the-ethereum-identity)
 - [Hash Time Lock Contract](#hash-time-lock-contract)
@@ -18,12 +17,9 @@
     - [Redeem](#redeem)
     - [Refund](#refund)
 - [Registry extension](#registry-extension)
-- [Examples](#examples)
-    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
-    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
-    - [HTLC](#htlc)
-
-<!-- tocstop -->
+- [RFC003 SWAP REQUEST](#rfc003-swap-request)
+- [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+- [HTLC](#htlc)
 
 ## Description
 

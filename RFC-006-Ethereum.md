@@ -5,9 +5,7 @@
 - Discussion-issue: [#47](https://github.com/comit-network/RFCs/issues/47)
 - Created on: 2019-03-12
 
-
-## Table of Contents
-<!-- toc -->
+**Table of Contents**
 - [Description](#description)
 - [The Ethereum Ledger](#the-ethereum-ledger)
     - [`network`](#network)
@@ -17,9 +15,6 @@
     - [The Ethereum Ledger](#the-ethereum-ledger-1)
         - [Ethereum Networks](#ethereum-networks)
 - [Assets](#assets)
-- [Examples](#examples)
-
-<!-- tocstop -->
 
 ## Description
 

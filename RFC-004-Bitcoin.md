@@ -5,9 +5,7 @@
 - Discussion-issue: [#41](https://github.com/comit-network/RFCs/issues/41)
 - Created on: 1 Mar. 2019
 
-# Table of Contents
-<!-- markdown-toc start -->
-
+**Table of Contents**
 - [Description](#description)
 - [The Bitcoin Ledger](#the-bitcoin-ledger)
     - [`network`](#network)
@@ -17,9 +15,7 @@
     - [The Bitcoin Ledger](#the-bitcoin-ledger-1)
         - [Bitcoin Networks](#bitcoin-networks)
     - [The Bitcoin Asset](#the-bitcoin-asset-1)
-- [Examples](#examples)
-    - [SWAP Request](#swap-request)
-<!-- markdown-toc end -->
+- [SWAP Request](#swap-request)
 
 ## Description
 

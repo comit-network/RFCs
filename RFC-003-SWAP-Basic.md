@@ -1,43 +1,30 @@
 # Basic HTLC Atomic Swap
 
-- RFC-Number: 003
-- Status: Draft
-- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
-- Created on: 15 Jan. 2019
-
-# Table of Contents
-
-<!-- markdown-toc start  -->
-- [Basic HTLC Atomic Swap](#basic-htlc-atomic-swap)
-    - [Description](#description)
-    - [Status](#status)
-    - [Concepts](#concepts)
-        - [Identity](#identity)
-        - [Hash Time Lock Contract (HTLC)](#hash-time-lock-contract-htlc)
-    - [Setup Phase](#setup-phase)
-        - [SWAP Request Header](#swap-request-header)
-            - [`hash_function`](#hashfunction)
-        - [SWAP Request Body](#swap-request-body)
-        - [Swap Response (Accept)](#swap-response-accept)
-        - [Swap Response (Decline)](#swap-response-decline)
-            - [`timeouts-too-tight`](#timeouts-too-tight)
-    - [Execution Phase](#execution-phase)
-        - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
-        - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
-        - [3. Alice redeems](#3-alice-redeems)
-        - [4. Bob redeems](#4-bob-redeems)
-    - [Application Considerations](#application-considerations)
-    - [Security Considerations](#security-considerations)
-    - [Registry Extensions](#registry-extensions)
-    - [References](#references)
-- [Examples](#examples)
-    - [Bitcoin to Ethereum](#bitcoin-to-ethereum)
-        - [SWAP REQUEST](#swap-request)
-        - [SWAP RESPONSE (accept)](#swap-response-accept)
-        - [SWAP RESPONSE (reject: `timeouts-too-tight`)](#swap-response-reject-timeouts-too-tight)
-
-<!-- markdown-toc end -->
-
+**Table of Contents**
+- [Description](#description)
+- [Concepts](#concepts)
+    - [Identity](#identity)
+    - [Hash Time Lock Contract (HTLC)](#hash-time-lock-contract-htlc)
+- [Setup Phase](#setup-phase)
+    - [SWAP Request Header](#swap-request-header)
+        - [`hash_function`](#hash_function)
+    - [SWAP Request Body](#swap-request-body)
+    - [Swap Response (Accept)](#swap-response-accept)
+    - [Swap Response (Decline)](#swap-response-decline)
+        - [`timeouts-too-tight`](#timeouts-too-tight)
+- [Execution Phase](#execution-phase)
+    - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
+    - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
+    - [3. Alice redeems](#3-alice-redeems)
+    - [4. Bob redeems](#4-bob-redeems)
+- [Application Considerations](#application-considerations)
+- [Security Considerations](#security-considerations)
+- [Registry Extensions](#registry-extensions)
+- [References](#references)
+- [Bitcoin to Ethereum](#bitcoin-to-ethereum)
+    - [SWAP REQUEST](#swap-request)
+    - [SWAP RESPONSE (accept)](#swap-response-accept)
+    - [SWAP RESPONSE (reject: `timeouts-too-tight`)](#swap-response-reject-timeouts-too-tight)
 
 ## Description
 
@@ -65,7 +52,8 @@ A HTLC locks an asset until someone activates one of two possible paths:
 - **Activation with secret**: The contract is activated with a *secret* whose hash matches the hash in the contract.
 - **Activation after expiry**: The contract is activated after an expiry time specified in the contract.
 
-Each activation path transfers the asset to a different party. The parties are decided at the time of contract creation.
+Each activation path transfers the asset to a different party.
+The parties are decided at the time of contract creation.
 In this RFC, the expiry activation returns the asset to the original owner while a secret activation transfers it to the other party.
 Therefore this document will refer to these paths as *refund* and *redeem* respectively.
 

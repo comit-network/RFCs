@@ -5,9 +5,7 @@
 - Discussion-issue: [#42](https://github.com/comit-network/RFCs/issues/42)
 - Created on: 01 Mar. 2019
 
-# Table of Contents
-
-<!-- markdown-toc start -->
+**Table of Contents**
 - [Description](#description)
 - [The Bitcoin Identity](#the-bitcoin-identity)
 - [Hash Time Lock Contract](#hash-time-lock-contract)
@@ -19,12 +17,9 @@
     - [Redeem](#redeem)
     - [Refund](#refund)
 - [Registry extension](#registry-extension)
-- [Examples/Test vectors](#examplestest-vectors)
-    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
-    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
-    - [HTLC](#htlc)
-
-<!-- markdown-toc end -->
+- [RFC003 SWAP REQUEST](#rfc003-swap-request)
+- [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+- [HTLC](#htlc)
 
 ## Description
 

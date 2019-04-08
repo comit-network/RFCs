@@ -1,44 +1,37 @@
 # SWAP Message Types
 
-- RFC-Number: 002
-- Status: Draft
-- Discussion issue: [#18](https://github.com/comit-network/RFCs/issues/18)
-- Created on: 28 Dec. 2018
-
-# Table of Contents
-
-<!-- toc -->
-
-  * [Introduction](#introduction)
-  * [Status](#status)
-  * [Terminology](#terminology)
-    + [Ledger](#ledger)
-    + [Asset](#asset)
-  * [SWAP REQUEST](#swap-request)
-    + [Definition](#definition)
-    + [`headers`](#headers)
-      - [`alpha_ledger`](#alpha_ledger)
-      - [`beta_ledger`](#beta_ledger)
-      - [`alpha_asset`](#alpha_asset)
-      - [`beta_asset`](#beta_asset)
-      - [`protocol`](#protocol)
-    + [`body`](#body)
-  * [SWAP RESPONSE](#swap-response)
-    + [Definition](#definition-1)
-    + [`status`](#status)
-    + [`headers`](#headers-1)
-      - [`reason` (optional)](#reason-optional)
-    + [`body`](#body-1)
-- [Examples](#examples)
-  * [SWAP REQUEST](#swap-request-1)
-    + [1 Bitcoin for 21 Ether on testnet using RFC-003](#1-bitcoin-for-21-ether-on-testnet-using-rfc-003)
-    + [42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003](#42-erc20-pay-tokens-for-10000-satoshis-on-mainnnet-using-rfc-003)
-  * [SWAP RESPONSE](#swap-response-1)
-    + [Request accepted](#request-accepted)
-    + [Request declined due to non-beneficial rate with hints](#request-declined-due-to-non-beneficial-rate-with-hints)
-    + [Request rejected without a reason](#request-rejected-without-a-reason)
-
-<!-- tocstop -->
+**Table of contents**
+- [Introduction](#introduction)
+- [Terminology](#terminology)
+    - [Ledger](#ledger)
+    - [Asset](#asset)
+- [SWAP REQUEST](#swap-request)
+    - [Definition](#definition)
+    - [`headers`](#headers)
+        - [`alpha_ledger`](#alpha_ledger)
+        - [`beta_ledger`](#beta_ledger)
+        - [`alpha_asset`](#alpha_asset)
+        - [`beta_asset`](#beta_asset)
+        - [`protocol`](#protocol)
+    - [`body`](#body)
+- [SWAP RESPONSE](#swap-response)
+    - [Definition](#definition-1)
+    - [`status`](#status)
+    - [`headers`](#headers-1)
+        - [`reason` (optional)](#reason-optional)
+            - [`value`](#value)
+                - [Decline reasons](#decline-reasons)
+                - [Reject reasons](#reject-reasons)
+    - [`body`](#body-1)
+- [SWAP REQUEST](#swap-request-1)
+    - [1 Bitcoin for 21 Ether on testnet using RFC-003](#1-bitcoin-for-21-ether-on-testnet-using-rfc-003)
+    - [42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003](#42-erc20-pay-tokens-for-10000-satoshis-on-mainnnet-using-rfc-003)
+- [SWAP RESPONSE](#swap-response-1)
+    - [Request accepted](#request-accepted)
+    - [Request declined due to non-beneficial rate with hints](#request-declined-due-to-non-beneficial-rate-with-hints)
+    - [Request rejected without a reason](#request-rejected-without-a-reason)
+                - [¹ trustless: as in no one (counterpart or third party) has to be trusted.](#¹-trustless-as-in-no-one-counterpart-or-third-party-has-to-be-trusted)
+                - [² In case of RFC-003, alpha ledger is the first ledger on which an action is needed, hence the name.](#²-in-case-of-rfc-003-alpha-ledger-is-the-first-ledger-on-which-an-action-is-needed-hence-the-name)
 
 ## Introduction
 

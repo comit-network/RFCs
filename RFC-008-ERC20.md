@@ -5,16 +5,12 @@
 - Discussion-issue: [#45](https://github.com/comit-network/RFCs/issues/45)
 - Created on: 2019-03-12
 
-## Table of Contents
-<!-- markdown-toc start -->
+**Table of Contents**
 - [Description](#description)
-- [The ERC20 Asset](#the-erc20-asset-1)
+- [The ERC20 Asset](#the-erc20-asset)
     - [`quantity`](#quantity)
-    - [`address`](#address)
+    - [`token_contract`](#token_contract)
 - [Registry extension](#registry-extension)
-- [Examples](#examples)
-<!-- markdown-toc end -->
-
 
 ## Description
 
