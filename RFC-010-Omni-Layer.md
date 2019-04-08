@@ -37,7 +37,7 @@ Omni assets are uniquely identified by a *property id*.
 
 For a list of pre-defined Omni assets refer to [Omni Layer Specs](https://github.com/OmniLayer/spec#field-currency-identifier).
 
-To describe an Omni asset in an Asset type header specify `omni_layer` as the value along with the following paramters:
+To describe an Omni asset in an Asset type header specify `omni` as the value along with the following paramters:
 
 ### `quantity`
 
