@@ -21,7 +21,6 @@ Omni Layer refers specifically to the [Omni Layer Protocol](https://github.com/O
 
 The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
 
-This in combination with subsequent RFCs that define concrete execution steps for particular SWAP protocols enables users to negotiate and execute Omni Layer asset swaps.
 
 ## The Omni Layer Assets
 
