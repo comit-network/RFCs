@@ -66,7 +66,7 @@ The property id MUST be of an existing asset on the target Bitcoin ledger.
 
 ## Registry extension
 
-This RFC extends the registry's [Assets table](./registry.md#assets) with the `omni_layer` Asset:
+This RFC extends the registry's [Assets table](./registry.md#assets) with the `omni` Asset:
 
 | Value        | Description      |
 :---           |---               |
