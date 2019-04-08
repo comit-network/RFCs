@@ -1,5 +1,10 @@
 # Basic HTLC Atomic Swap
 
+- RFC-Number: 003
+- Status: Draft
+- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
+- Created on: 15 Jan. 2019
+
 **Table of Contents**
 - [Description](#description)
 - [Concepts](#concepts)
