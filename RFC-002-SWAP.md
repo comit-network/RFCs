@@ -249,7 +249,7 @@ In the following section, each heading is a `reason`.
 
 #### `unsatisfactory-rate`
 
-If the receiving party doesn't not agree with the proposed rate, they can use the `unsatisfactory_rate` error to communicate this to the other party.
+The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.
 
 ##### `details`
 
@@ -257,7 +257,7 @@ TBD
 
 #### `protocol-unsupported`
 
-If the swap protocol specified in the `protocol` header is not known to the receiving party, they can use the `protocol-unsupported` error to communicate this to the other party.
+The protocol specified in the `protocol` header is not known to the receiving party.
 
 ##### `details`
 
@@ -265,7 +265,9 @@ TBD <!-- List known protocols in details -->
 
 #### `unknown-ledger`
 
-If any of the given ledgers (alpha or beta) are unknown to the receiving party, they can use the `unknown-ledger` error to communicate this.
+A ledger referenced by the sending party is unknown to the receiving party.
+Note that different networks of the same blockchain are different ledger!
+Bitcoin Testnet is a different ledger than Bitcoin Mainnet.
 
 ##### `details`
 
@@ -273,7 +275,7 @@ TBD <!-- List known ledgers in details -->
 
 #### `unknown-asset`
 
-If any of the given assets (alpha or beta) are unknown to the receiving party, they can use the `unknown-asset` error to communicate this.
+An asset referenced by the sending party is unknown to the receiving party.
 
 ##### `details`
 

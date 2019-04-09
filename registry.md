@@ -13,6 +13,7 @@
     - [`erc20` Parameters](#erc20-parameters)
 - [Protocols](#protocols)
 - [Negotiation Errors](#negotiation-errors)
+    - [Details of the `timeouts-too-tight` error](#details-of-the-timeouts-too-tight-error)
 - [Identities](#identities)
 - [Hash Functions](#hash-functions)
 - [Headers](#headers)
@@ -99,17 +100,30 @@ And the possible parameters they each may have:
 
 ## Protocols
 
-<!-- TODO: Use same table format here -->
-
 The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
 
-| Name                   | Reference                       |
-|:----------------------- |:-------------------------------- |
-| Basic HTLC Atomic Swap | [RFC-003](./RFC-003-SWAP-Basic) |
+| Value      | Reference                            | Description                            |
+|:-----------|--------------------------------------|----------------------------------------|
+| `comit-rfc-003` | [RFC-003](./RFC-003-SWAP-Basic.md) | Basic HTLC Atomic Swap |
 
 ## Negotiation Errors
 
-<!-- TODO: Add negotiation errors here -->
+The following is a list of errors that receivers of a SWAP REQUEST may choose to send back to the sender.
+In order to send a negotiation error, the value of the `negotiation_result` header MUST be set to "failed".
+
+| `reason`      | Reference                            | Description                            | `details`
+|:-----------|--------------------------------------|----------------------------------------|---|
+| `unsatisfactory-rate` | [RFC-002](./RFC-002-SWAP.md) | The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver. | None |
+| `protocol-unsupported` | [RFC-002](./RFC-002-SWAP.md) | The protocol specified in the `protocol` header is not known to the receiving party. | None |
+| `unknown-ledger` | [RFC-002](./RFC-002-SWAP.md) | A ledger referenced by the sending party is unknown to the receiving party. | None |
+| `unknown-asset` | [RFC-002](./RFC-002-SWAP.md) | An asset referenced by the sending party is unknown to the receiving party. | None |
+| `timeouts-too-tight` | [RFC-003](./RFC-003-SWAP-Basic.md) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. | [Details](#details-of-the-timeouts-too-tight-error) |
+
+### Details of the `timeouts-too-tight` error
+
+|property name|type|description|
+|:---|:---|:---|
+|min_time|number|The minimum time difference between the HLTCs in seconds that the receiver requires|
 
 ## Identities
 
