@@ -11,5 +11,7 @@
         "latex",
         "plaintext"
     ],
-    "markdown.extension.toc.githubCompatibility": true
+    "markdown.extension.toc.githubCompatibility": true,
+    "tableformatter.markdown.tableEdgesType": "Normal",
+    "tableformatter.common.centerAlignedHeader": false
 }

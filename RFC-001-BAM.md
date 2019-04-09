@@ -341,9 +341,9 @@ Example:
 
 ```json
 {
-    "type": "REQUEST",
-    "id": 10,
-    "payload": {}
+  "type": "REQUEST",
+  "id": 10,
+  "payload": {}
 }
 ```
 
@@ -358,9 +358,9 @@ For the `REQUEST` frame, the `payload` looks like this:
 
 ```json
 {
-    "type": "...",
-    "headers": {},
-    "body": {},
+  "type": "...",
+  "headers": {},
+  "body": {},
 }
 ```
 
@@ -371,8 +371,8 @@ As noted above, responses don't have a `type`.
 
 ```json
 {
-    "headers": {},
-    "body": {},
+  "headers": {},
+  "body": {},
 }
 ```
 
@@ -386,10 +386,10 @@ Let's start off with an example:
 
 ```json
 "_alpha_ledger" : {
-    "value": "Bitcoin",
-    "parameters": {
-        "network": "mainnet"
-    }
+  "value": "Bitcoin",
+  "parameters": {
+    "network": "mainnet"
+  }
 }
 ```
 
@@ -415,15 +415,15 @@ Sometimes, headers only carry one particular value.
 For example:
 
 ```json
-"swap_protocol": {
-    "value": "COMIT-RFC-003"
+"protocol": {
+  "value": "my-protocol"
 }
 ```
 
 In cases like these, where there are no parameters, implementations can choose to use the compact representation which looks like this:
 
 ```json
-"swap_protocol": "COMIT-RFC-003"
+"protocol": "my-protocol"
 ```
 
 Implementations MUST be able to process compact representations.
@@ -435,7 +435,7 @@ The following is therefore invalid:
 
 ```json
 "invalid_header": {
-    "some_key": "foobar"
+  "some_key": "foobar"
 }
 ```
 
@@ -443,9 +443,9 @@ If a header needs an `object` to express its value, you should resort to the def
 
 ```json
 "valid_header": {
-    "value": {
-        "some_key": "foobar"
-    }
+  "value": {
+    "some_key": "foobar"
+  }
 }
 ```
 

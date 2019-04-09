@@ -148,31 +148,31 @@ Elements not relevant for this RFC or which are subject to later definition are 
 
 ```json
 {
-    "type": "REQUEST",
-    "id": 0,
-    "payload": {
-        "type": "SWAP",
-        "headers": {
-            "alpha_ledger": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "beta_ledger": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "alpha_asset": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "beta_asset": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "protocol": "...",
-        },
-        "body": { ... },
-    } 
+  "type": "REQUEST",
+  "id": 0,
+  "payload": {
+    "type": "SWAP",
+    "headers": {
+      "alpha_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "alpha_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "protocol": "...",
+    },
+    "body": { ... },
+  } 
 }
 ```
 
@@ -182,14 +182,14 @@ Elements not relevant for this RFC or which are subject to later definition are 
 
 ```json
 {
-    "type": "RESPONSE",
-    "id": 0,
-    "payload": {
-        "headers": {
-            "negotiation_result": "successful"
-        },
-        "body": { ... },
-    }
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "negotiation_result": "successful"
+    },
+    "body": { ... },
+  }
 }
 ```
 
@@ -197,14 +197,14 @@ Elements not relevant for this RFC or which are subject to later definition are 
 
 ```json
 {
-    "type": "RESPONSE",
-    "id": 0,
-    "payload": {
-        "headers": {
-            "negotiation_result": "failed"
-        },
-        "body": { ... },
-    }
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "negotiation_result": "failed"
+    },
+    "body": { ... },
+  }
 }
 ```
 
@@ -235,13 +235,13 @@ A section "Negotiation Errors" is added to the registry which tracks all current
 ### Headers
 
 | Header name          | Value                      |
-|----------------------|----------------------------|
+| -------------------- | -------------------------- |
 | `alpha_ledger`       | `Ledger`                   |
 | `betaledger`         | `Ledger`                   |
 | `alpha_asset`        | `Asset`                    |
 | `beta_asset`         | `Asset`                    |
 | `protocol`           | `SwapProtocol`             |
-| `negotiation_result` | `"successful" | "failed"`  |
+| `negotiation_result` | `"successful" OR "failed"` |
 
 ### The following `NegotiationError`s
 

@@ -212,9 +212,9 @@ This indicates to the sender that the difference between `alpha_expiry` and `bet
 
 #### `details`
 
-|property name|type|description|
-|:---|:---|:---|
-|min_time|number|The minimum time difference between the HLTCs in seconds that the receiver requires|
+| property name | type   | description                                                                         |
+| :------------ | :----- | :---------------------------------------------------------------------------------- |
+| min_time      | number | The minimum time difference between the HLTCs in seconds that the receiver requires |
 
 ### Section for hash functions
 
@@ -230,42 +230,42 @@ The section is bootstrapped with the `SHA-256` hash function.
 ### SWAP REQUEST frame
 ``` json
 {
-    "type": "REQUEST",
-    "id": 0,
-    "payload": {
-        "type": "SWAP",
-        "headers": {
-            "alpha_ledger": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "beta_ledger": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "alpha_asset": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "beta_asset": {
-                "value": "...",
-                "parameters": { ... }
-            },
-            "protocol": {
-                "value": "comit-rfc-003",
-                "parameters": {
-                    "hash_function": "SHA-256"
-                }
-            }
-        },
-        "body": {
-            "alpha_expiry": ...,
-            "beta_expiry": ...,
-            "alpha_refund_identity": "...",
-            "beta_redeem_identity": "...",
-            "secret_hash": "..."
+  "type": "REQUEST",
+  "id": 0,
+  "payload": {
+    "type": "SWAP",
+    "headers": {
+      "alpha_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "alpha_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "protocol": {
+        "value": "comit-rfc-003",
+        "parameters": {
+          "hash_function": "SHA-256"
         }
-    } 
+      }
+    },
+    "body": {
+      "alpha_expiry": ...,
+      "beta_expiry": ...,
+      "alpha_refund_identity": "...",
+      "beta_redeem_identity": "...",
+      "secret_hash": "..."
+    }
+  } 
 }
 ```
 
@@ -273,17 +273,17 @@ The section is bootstrapped with the `SHA-256` hash function.
 
 ``` json
 {
-    "type": "RESPONSE",
-    "id": 0,
-    "payload": {
-        "headers": {
-            "negotiation_result": "successful"
-        },
-        "body": { 
-            "alpha_redeem_identity": "...",
-            "beta_redeem_identity": "..."
-        },
-    }
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "negotiation_result": "successful"
+    },
+    "body": { 
+      "alpha_redeem_identity": "...",
+      "beta_redeem_identity": "..."
+    },
+  }
 }
 ```
 
@@ -291,16 +291,16 @@ The section is bootstrapped with the `SHA-256` hash function.
 
 ``` json
 {
-    "type": "RESPONSE",
-    "id": 0,
-    "payload": {
-        "headers": {
-            "negotiation_result": "failed"
-        },
-        "body": { 
-            "reason": "timeouts-too-tight",
-            "details": {}
-        },
-    }
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "negotiation_result": "failed"
+    },
+    "body": { 
+      "reason": "timeouts-too-tight",
+      "details": {}
+    },
+  }
 }
 ```
