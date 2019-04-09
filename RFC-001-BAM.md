@@ -21,12 +21,14 @@
         - [Notification](#notification)
         - [Error](#error)
             - [Structure](#structure)
+                - [type](#type)
+                - [message](#message)
             - [Possible error types](#possible-error-types)
         - [Request / Response](#request--response)
             - [Structure](#structure-1)
-            - [Optional fields](#optional-fields)
-            - [Type](#type-1)
-            - [Headers](#headers)
+                - [Type](#type-1)
+                - [Headers](#headers)
+                - [Body](#body)
     - [Headers](#headers-1)
     - [JSON Encoding](#json-encoding)
         - [Frames](#frames-1)
@@ -178,11 +180,11 @@ It's `id` MUST refer to a previously received frame, like a `REQUEST` frame.
 
 `ERROR` frames carry the following payload:
 
-- type
+###### type
 
 A machine-friendly identifier for this type of error
 
-- message
+###### message
 
 A human-readable message giving more details about the error.
 Implementations MAY use this for logging purposes.
@@ -215,21 +217,18 @@ whereas a frame of type `RESPONSE` looks like this:
 - headers
 - body
 
-##### Optional fields
-
 With the exception of `type`, all of these are optional and MAY be omitted if they are empty and the underlying encoding allows this without introducing ambiguity.
 For example, the JSON encoding can easily handle that whereas a binary encoding may have a difficult time to omit certain fields.
 
-##### Type
+###### Type
 
 The field `type` in a request defines the semantics of the given request.
 Defining a particular request type usually comes with defining the headers which are usable within this request.
 
-##### Headers
+###### Headers
 
-`Headers` and `Body` are supposed to be used by an application protocol defined on top of `BAM`.
-Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
-Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
+`Headers` are supposed to be used by an application protocol defined on top of `BAM`.
+Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers of a `REQUEST`.
 
 In addition, headers also encode compatibility information.
 Each header is available in two variants:
@@ -246,6 +245,16 @@ Thus, there is no way of signaling to the sender of a `RESPONSE` whether or not 
 Therefore, careful thought should be put into the design of and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
 In particular, nodes should never send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
 Usually, this can be derived from the `REQUEST` that is sent by a node.
+
+###### Body
+
+The structure of the `body` of a REQUEST is entirely up to the application protocol that is defined through the REQUEST `type`.
+Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
+When designing an application protocol, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
+The rule of thumb here is that implementations should be able to parse all headers orthogonally.
+Hence, the structure/possible values of one header SHOULD NOT depend on those of other headers.
+All data that cannot be represented in that way can be put into the `body`.
+Implementations can then first parse the set of headers and from there determine, what the expected shape of the `body` is in order to continue parsing.
 
 ### Headers
 
