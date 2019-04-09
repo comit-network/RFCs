@@ -394,16 +394,17 @@ This section defines how headers are encoded in the JSON-based text encoding.
 Let's start off with an example:
 
 ```json
-"_alpha_ledger" : {
-  "value": "Bitcoin",
+"_payment_method" : {
+  "value": "credit-card",
   "parameters": {
-    "network": "mainnet"
+    "provider": "visa",
+    "number": "0000-0000-0000-0000"
   }
 }
 ```
 
 In the above example:
-- `alpha_ledger` is the header-key.
+- `payment_method` is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood.
 Respectively, if the key does_not start with an underscore, the header is mandatory and MUST be understood by the node.
 - `value` is the header-value (see [Headers - Requirement 2](#headers))
@@ -424,15 +425,15 @@ Sometimes, headers only carry one particular value.
 For example:
 
 ```json
-"protocol": {
-  "value": "my-protocol"
+"payment_method": {
+  "value": "cash"
 }
 ```
 
 In cases like these, where there are no parameters, implementations can choose to use the compact representation which looks like this:
 
 ```json
-"protocol": "my-protocol"
+"payment_method": "cash"
 ```
 
 Implementations MUST be able to process compact representations.
@@ -463,9 +464,9 @@ If a header needs an `object` to express its value, you should resort to the def
 - Frame types should use all caps convention.
 For example, `REQUEST`.
 - Headers should use snake case convention.
-For example, `alpha_ledger`.
+For example, `payment_method`.
 - `REQUEST` types should use all caps convention as well.
-For example: `SWAP`.
+For example: `BUY`.
 
 ### Connection errors / failure cases
 
