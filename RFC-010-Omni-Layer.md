@@ -56,6 +56,15 @@ The ownership is transferred to the one output which:
 - is not already present in the inputs (in term of public key)
 - is not an `OP_RETURN` output
 
+
+### Dust
+
+The reference implementation of the Bitcoin Core consensus, _bitcoind_ [enforces](https://github.com/bitcoin/bitcoin/blob/c536dfbcb00fb15963bf5d507b7017c241718bf6/src/policy/policy.cpp#L129) that spendable UTXO MUST own enough value to be spent.
+If the value owned by a UTXO is less than the minimum fee for a typical transaction then it is what we commonly call [dust](https://github.com/bitcoin/bitcoin/blob/c536dfbcb00fb15963bf5d507b7017c241718bf6/src/policy/policy.cpp#L20). A transaction that creates such output is considered as *non-standard* by bitcoind and rejected under normal configuration.
+
+For `bitcoind`, it is currently defined in term of `dustRelayFee` and it is set by default to `3000 satoshis-per-kilobytes`.
+The minimum value is 546 satoshis for a normal transaction and 294 satoshis for SegWit transactions.
+
 ### Header encoding
 
 To describe an Omni asset in an Asset type header specify `omni` as the value along with the following parameters:
