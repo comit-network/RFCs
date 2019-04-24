@@ -35,112 +35,131 @@ To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines
 - How to construct Omni layer transactions transferring Omni Layer tokens to a HTLC address
 - how to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md)
 
-## Limitations
+## Constructing an Omni Layer Transaction
 
-This RFC only supports the [simple send](https://github.com/OmniLayer/spec#transfer-coins-simple-send) Omni Layer transaction type.
-<!--  If you didn't use simple send to fund the contract then what would go wrong? If you add the How to construct omni layer transaction section maybe you can remove this sentence -->
+This sections describes how to build Omni Layer transactions for the purpose of a basic swap.
+Information from the [Omni Layer Spec](https://github.com/OmniLayer/spec) has been transcribed here to facilitate the description of a Omni Layer Basic HTLC Atomic Swap.
 
-This RFC only supports Omni Layer [Class C](https://github.com/OmniLayer/spec#embedding-omni-protocol-data-in-the-block-chain) transactions.
+This RFC only supports the [simple send](https://github.com/OmniLayer/spec#transfer-coins-simple-send) Omni Layer transaction type, encoded using Class C format.
 Class C transactions uses Bitcoin `OP_RETURN` instruction to store the Omni Layer data.
 
-## Ownership
-
-In Omni Layer, tokens are not owned by a specific UTXO but by a specific public key.
-<!-- Mention "account model"? -->
-<!-- We should re-word this around addresses I think +-->
-<!-- I would like to remove this explanation to the other RFC +-->
-
-The *ownership* of Omni Layer tokens is the ability to make a valid Bitcoin transaction in which a spent input was unlocked by a public key that owns tokens.
-<!-- Can we just say owning Omni Layer tokens is being able to spend from an output that owns omin layer tokens? -->
-
-Because of that not all Omni Layer tokens owned by a given public key have to be spent in one transaction.
-The Bitcoin concept of *change address* does not apply to Omni Layer.
-
-If a transaction spends only part of the Omni Layer tokens available, then the remainder is still owned by the original public key.
-
-Thus, Bitcoin transactions that deal with Omni Layer often *re-use* addresses by locking the Bitcoin change against the same public key than the input, instead of using a brand new public key using [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki).
-<!-- What is an implementor meant to do with this information? If nothing delete.  (Maybe move to other RFC) -->
-
-Finally, using simple send, it seems that only the ownership of tokens of the **first input** are transferred.
-The ownership is transferred to the one output which:
-- is not already present in the inputs (in term of public key)
-- is not an `OP_RETURN` output
-
-<!-- ^ This seems to be the important part for motivating the transaction design-->
-
-## Inputs & Outputs format
-<!-- I think put all this useful omni info under a heading with a strong motivation: Constructing Omni Layer Transactions -->
-<!-- Include the table from the redeem and refund sections in there and show how to construct the transaction -->
-
-This RFC introduces specific restrictions on the inputs and output of the Bitcoin transactions to allow the swap of Omni Layer tokens.
-<!-- I don't think this RFC introduces restrictions on things. It just defines how to send tokens to an HTLC and how to redeem/refund them-->
-
-For clarity purpose, an *input, output owning an Omni Layer token* refers to the fact that such input or output is unlocked by a public key that owns such token.
-An *address owning Omni Layer token* is an address constructed from a public key that owns such token.
+For clarity purpose, an *input, output owning an Omni Layer token* refers to the fact that such input or output matches an address that owns such token.
+See [RFC-010](TODO#ownership) for more details.
 
 ### Omni Layer data
 
-The Omni Layer data to be included in `OP_RETURN` is as per the Omni Layer protocol for a
-<!-- Unfinished sentence  -->
+The Omni Layer data to be included in `OP_RETURN` is as per the Omni Layer protocol a simple send transaction type.
 
 Such data MAY be constructed manually or the implementer MAY decide to relay on an existing Omni Layer implementation to generate it.
-<!-- Link to specification of how to construct it -->
+Reference to construct manually:
+- [Simple Send Payload](https://github.com/OmniLayer/spec#transfer-coins-simple-send)
+- [Encode Class C payload](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/encoding.cpp#L83)
+- [Omni prefix for Class C](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/omnicore.cpp#L2040)
+
 
 For example, the following omnicore API MAY be used:
-- `property_id`: the property id of the Omni Layer Asset
-- `amount`: the quantity of Omni Layer Assets to transfer
-- `payload`: the hex-encoded Omni Layer Data
-```
-$ [...] omni_createpayload_simplesend <property_id> <amount>
-<payload>
-```
-<!-- Refer to omni layer spec for simple send instead of this -->
+- `property_id`: the property id of the Omni Layer Asset (e.g. `31`)
+- `amount`: the quantity of Omni Layer Assets to transfer (e.g. `20`)
+- `payload`: the hex-encoded Omni Layer Data (e.g. `000000000000001f0000000077359400`)
 
+#### Example
+```
+$ omnicore-cli "omni_createpayload_simplesend" 31 "20"
+000000000000001f0000000077359400
+```
 To then embed the Omni Layer Data received from omnicore in an `OP_RETURN` output, it MUST be prefixed it with the Omni Layer header: `6f6d6e69`.
 
 ### Dust
 
-<!-- Dust actually refers to UTXOs that are not profitable to spend: https://eprint.iacr.org/2018/513 -->
-The reference implementation of the Bitcoin consensus, _bitcoind_ enforces that spendable UTXO MUST own enough value to be spent.
-<!-- Is this true? Link please.  -->
-If the value owned by a UTXO is less than the minimum spendable then it is what we commonly call dust and such transaction would be considered as *non-standard* and rejected.
-<!-- Yeah this I think is true. But if a non-standard transaction gets in I think it can be spent? -->
+Bitcoin Core has limitations on minimum amounts owned by a UTXO. The minimum value is 546 satoshis for a normal transaction and 294 satoshis for SegWit transactions.
+See [RFC-010](TODO#Dust) for details.
 
-For `bitcoind`, it is currently defined in term of `dustRelayFee` and it is set by default to `3000 satoshis-per-kilobytes`.
-The minimum value is 546 satoshis for a normal transaction and 294 satoshis for SegWit transactions.
+The values above will be referred as `min_sat` from now on.
 
-As [RFC-005](./RFC-005-SWAP-Bitcoin-basic.md) only defines SegWit HTLC then the former value is to be considered and will be referred as `min_sat` (294 Satoshis).
-<!-- ^I think this sentence isn't true if you use P2SH(P2WSH) but not sure -->
+`OP_RETURN` outputs are not spendable and hence SHOULD not be assigned any Bitcoin value. Only spendable outputs MUST have at least `min_sat` Satoshis assigned.
 
-`OP_RETURN` outputs are not spendable and hence SHOULD not be assigned any Bitcoin value.
-
-The only requirement is that spendable output MUST have at least `min_sat` Satoshis assigned.
-<!-- Is this really true? If you're a miner you can mine txs less than min_sat right? So it's a SHOULD I guess -->
-
-### Deployment transaction
-<!-- Put this under a section called Execution phase. See the other RFCs. -->
-<!-- Each section should start with how to execute the action and then how both parties can tell if the action has been executed -->
-
-The deployment transaction MUST be a simple send of the correct amount and kind of Omni Assets to the HTLC address.
+### HTLC Address
 
 The HTLC address MUST either be:
 1. the P2WSH address of the HTLC, as described in [RFC-005](./RFC-005-SWAP-Bitcoin-basic.md)
-2. the P2SH of the P2WSH above <!-- Need to link to the BIP describing this -->
+2. the P2SH of the P2WSH above, as descriped in [BIP-0141 Segregated Witness](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
 
-(1) is preferred however, not all Omni Layer wallets implementation support bech32 addresses, hence, (2) can be used as a fallback.
+(1) is preferred.
+However, not all Omni Layer wallets implementation support bech32 addresses.
+Hence, (2) can be used as a fallback.
 
 The simple send MUST NOT be done to the direct P2SH address of the HTLC.
-<!-- Maybe give a reason for this -->
 
-The party watching for the deployment transaction MUST consider both (1) and (2) addresses.
+This choice has been made to:
+- limit the number of addresses to watch, facilitating implementation
+- avoid defining the basic HTLC twice (once, in P2SH format, once in P2WSH format)
+- follow the common strategy for segwit backward compatibility (nesting in P2SH)
+
+### Inputs & Outputs format to spend the HTLC
+
+This section describes specific inputs & outputs to construct an Omni Layer transaction for the *redeeming* and *refunding* of an HTLC.
+This is to facilitate the constructions and filtering of such transactions for the purpose of a basic swap.
+
+To construct a transaction to spend from the HTLC, the following information is needed:
+
+| Variable           | Description                                                                                                 |
+|:---                |:---                                                                                                         |
+| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                            |
+| `to_address`       | Address to which the Omni Layer token is sent out of the HTLC                                               |
+| `change_address`   | Address to which the Bitcoin change will be sent upon redeeming; MUST be different than `to_address`        |
+| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                      |
+| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the redeem                                                 |
+| `mining_sat`       | The amount of Satoshi to be spent on mining fees                                                            |
+| `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
+
+ The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
+ The order of the inputs and outputs MUST be as described.
+ The *assigned Bitcoin value* on the inputs SHOULD be as described.
+
+ | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
+ |:---                                  |:---                                                  |
+ | 1. `htlc_utxo` (`min_sat`)           | 1. `to_address` (`min_sat`)                          |
+ | 2. `change_utxo` (`init_change_sat`) | 2. `change_address` (`init_change_sat - mining_sat`) |
+ |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
+
+The implementor MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `to_address`.
+if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `to_address`.
+
+
+## Execution Phase
+
+The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-basic.md#execution-phase).
+
+
+### Deployment transaction
+
+At the start of the deployment stage, both parties compile the contract as described in the previous section.
+We will call this value `contract_script`.
+
+To deploy the Bitcoin HTLC, the *funder* must confirm an Omni Layer transaction on the relevant Bitcoin blockchain.
+The transaction must have the following properties:
+
+- It MUST be a `valid` Omni Layer transaction.
+- It MUST be simple send Omni Layer transaction Class C.
+- The simple send `amount` MUST be equal to the `quantity` parameter in the Omni Layer asset header.
+- It MUST have an output locked with either
+  - a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification) for how to construct the `scriptPubkey` from the `contract_script`).
+  - OR a Pay-To-Witness-Script-Hash nested in Pay-To-Script-Hash (P2WSH(P2SH)) `scriptPubKey` derived from `contract_script` (See [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh-nested-in-bip16-p2sh) for how to construct the `scriptPubkey` from the `contract_script`).
+- The simple send `recipient` MUST be confirmed as a correct HTLC address, as defined in [HTLC Address](#htlc-address).
+
+
+Both parties MAY watch the blockchain for the deployment transaction, they MUST consider both (1) and (2) addresses.
 
 Such party MUST check the validity of the transaction against Omni Layer Spec.
 Not all valid Bitcoin transactions containing Omni Data are valid Omni Layer transactions.
 
 For example, the following RPC call to omnicore can be used to verify the validity of a Omni Layer transaction:
-- `txid`: the transaction id of the transaction
+- `txid`: the transaction id of the transaction (e.g. `1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d`)
+
+<!-- TODO: fix this example, include recipient & amount info -->
  ```
-$ [...] omni_gettransation <txid>
+$ omnicore-cli "omni_gettransaction" "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"  
+
 {
   [...]
   "valid" : true
@@ -148,75 +167,23 @@ $ [...] omni_gettransation <txid>
 }
 ```
 
-<!-- we have to check the value that was transferred as well -->
-
 ### Redeem transaction
 
-<!-- There is some repeating of yourself between these two sections. -->
-<!-- As mentioned above, I think there should be seperate section before this that explains how to transfer omni tokens to and from HTLC -->
-<!-- Put these table in there and then refer to it in the deployment, redeem and refund sections -->
+To redeem the HTLC, the redeemer MUST submit a valid Omni Layer transaction transferring all the omni tokens from the HTLC address to their desired address using simple send.
+The transaction should be constructed according to the [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction) section.
+To construct the witness data for the P2WSH output, the redeemer MUST use the procedure described in the [Redeem section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#redeem).
 
-<!-- BEIGN HOW LLOYD WOULD WRITE IT -->
-To redeem the omni HTLC, the redeemer MUST submit a valid Omni Layer transaction transferring the all the omni tokens from the HTLC address to their desired address.
-The transaction should be constructed according to the [Constructing Omni Transactions](..) section.
-To construct the witness data for the P2WSH utxo, the redeemer MUST use the procedure described [Redeem section of RFC005](..).
-
-To be notified of the redeem event, both parties SHOULD.... <!-- I don't yet fully get how to do this -->
-<!-- END HOW LLOYD WOULD WRITE IT -->
-
-<!-- I think the above is enough for this section -->
-
-to construct the redeem transaction, the following information is needed:
-
-| Variable           | Description                                                                                                 |
-|:---                |:---                                                                                                         |
-| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                            |
-| `redeem_address`   | Address to which the Omni Layer token will be sent upon redeeming                                           |
-| `change_address`   | Address to which the Bitcoin change will be sent upon redeeming; MUST be different than `redeem_address`    |
-| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                      |
-| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the redeem                                                 |
-| `mining_sat`       | The amount of Satoshi the redeemer wishes to spend on mining fees                                           |
-| `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
-
- The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
- The order of the inputs and outputs MUST be as described.
- The *assigned Bitcoin value* on the inputs SHOULD be the following:
-
- | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
- |:---                                  |:---                                                  |
- | 1. `htlc_utxo` (`min_sat`)           | 1. `redeem_address` (`min_sat`)                      |
- | 2. `change_utxo` (`init_change_sat`) | 2. `change_address` (`init_change_sat - mining_sat`) |
- |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
-
-The redeemer MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `redeem_address`.
-if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `redeem_address`.
+Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spends the HTLC output and is a valid Omni Layer transaction.
+Note that the redeemer MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
 
 ### Refund transaction
 
-To construct the refund transaction, the following information is needed:
+To refund1 the HTLC, the funder MUST submit a valid Omni Layer transaction transferring all the omni tokens from the HTLC address to their desired address using simple send.
+The transaction should be constructed according to the [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction) section.
+To construct the witness data for the P2WSH output, the funder MUST use the procedure described in the [Redeem section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#redeem).
 
-| Variable           | Description                                                                                                 |
-|:---                |:---                                                                                                         |
-| `htlc_utxo`        | UTXO locked by the HTLC, created with the deployment transaction                                            |
-| `refund_address`   | Address to which the Omni Layer token will be sent upon refunding                                           |
-| `change_address`   | Address to which the Bitcoin change will be sent upon refunding; MUST be different than `refund_address`  |
-| `change_utxo`      | UTXO locked by `change_address` that owns some Bitcoin asset to pay for the mining fee                      |
-| `init_change_sat`  | Amount of Satoshis owned by `change_utxo` before the refund                                                 |
-| `mining_sat`       | The amount of Satoshi the refunder wishes to spend on mining fees                                           |
-| `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
-
- The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
- The order of the inputs and outputs MUST be as described.
- The *assigned Bitcoin value* on the inputs SHOULD be as described:
-
- | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
- |:---                                  |:---                                                  |
- | 1. `htlc_utxo` (`min_sat`)           | 1. `refund_address` (`min_sat`)                      |
- | 2. `change_utxo` (`init_change_sat`) | 2. `change_address` (`init_change_sat - mining_sat`) |
- |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
-
-The redeemer MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `refund_address`.
-if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `refund_address`.
+Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spends the HTLC output and is a valid Omni Layer transaction.
+Note that the funder MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
 
 ## Examples/Test vectors
 
