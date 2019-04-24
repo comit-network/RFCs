@@ -153,17 +153,32 @@ Both parties MAY watch the blockchain for the deployment transaction, they MUST 
 Such party MUST check the validity of the transaction against Omni Layer Spec.
 Not all valid Bitcoin transactions containing Omni Data are valid Omni Layer transactions.
 
-For example, the following RPC call to omnicore can be used to verify the validity of a Omni Layer transaction:
-- `txid`: the transaction id of the transaction (e.g. `1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d`)
+For example, the following RPC call to omnicore can be used to verify the validity of a deployment transaction:
+- `txid`: the transaction id of the transaction (e.g. `72abc494e877d7e2491ffa6fea3694648aa75e6166e42d6381b04d41ca933fb5`)
+- `referenceaddress`: the HTLC address (e.g. `2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ`)
+- `valid`: MUST be `true`
+- `amount`: the quantity of asset (e.g. `5300`)
 
-<!-- TODO: fix this example, include recipient & amount info -->
  ```
-$ omnicore-cli "omni_gettransaction" "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"  
-
+$ omnicore-cli "omni_gettransaction" "72abc494e877d7e2491ffa6fea3694648aa75e6166e42d6381b04d41ca933fb5"  
 {
-  [...]
-  "valid" : true
-  [...]
+  "txid": "72abc494e877d7e2491ffa6fea3694648aa75e6166e42d6381b04d41ca933fb5",
+  "fee": "0.00003046",
+  "sendingaddress": "mxuetdW3Yq8KEsvB4L37Z5jmMQMTxZF9Be",
+  "referenceaddress": "2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ",
+  "ismine": false,
+  "version": 0,
+  "type_int": 0,
+  "type": "Simple Send",
+  "propertyid": 2147483652,
+  "divisible": false,
+  "amount": "5300",
+  "valid": true,
+  "blockhash": "6e9976c5d6c2b4be2928972c93564a0fc0ccdabe4ac581378fad65753559d0b0",
+  "blocktime": 1556091362,
+  "positioninblock": 1,
+  "block": 441,
+  "confirmations": 6
 }
 ```
 
@@ -175,6 +190,36 @@ To construct the witness data for the P2WSH output, the redeemer MUST use the pr
 
 Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spends the HTLC output and is a valid Omni Layer transaction.
 Note that the redeemer MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
+
+For example, the following RPC call to omnicore can be used to verify the validity of a redeem transaction:
+- `txid`: the transaction id of the transaction (e.g. `ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2`)
+- `referenceaddress`: the redeemer address (e.g. `mh9g3jCJxkc4tzV88THmQHGNGiCzUZ1zg6`)
+- `sendingaddress`: the HTLC address (e.g. `2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ`)
+- `valid`: MUST be `true`
+- `amount`: the quantity of asset (e.g. `5300`)
+
+```
+$ omnicore-cli "omni_gettransaction" "ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2"  
+{
+  "txid": "ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2",
+  "fee": "0.00002500",
+  "sendingaddress": "2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ",
+  "referenceaddress": "mh9g3jCJxkc4tzV88THmQHGNGiCzUZ1zg6",
+  "ismine": false,
+  "version": 0,
+  "type_int": 0,
+  "type": "Simple Send",
+  "propertyid": 2147483652,
+  "divisible": false,
+  "amount": "5300",
+  "valid": true,
+  "blockhash": "7e94a2a8eb188f2e08020ecea4aa30959525de2040fb75bc7911b3988f2ad7df",
+  "blocktime": 1556091006,
+  "positioninblock": 1,
+  "block": 442,
+  "confirmations": 5
+}
+```
 
 ### Refund transaction
 
