@@ -37,9 +37,30 @@ Omni assets are uniquely identified by a *property id*.
 
 For a list of pre-defined Omni assets refer to [Omni Layer Specs](https://github.com/OmniLayer/spec#field-currency-identifier).
 
-To describe an Omni asset in an Asset type header specify `omni` as the value along with the following paramters:
+### Ownership
 
-### `quantity`
+In Omni Layer, tokens are not owned by a specific UTXO but by a specific address.
+This can referred as an *account model*.
+
+The *ownership* of Omni Layer tokens is the ability to spend an output that owns omni layer tokens.
+
+Because of that not all Omni Layer tokens owned by a given public key have to be spent in one transaction.
+The Bitcoin concept of *change address* does not apply to Omni Layer.
+
+If a transaction spends only part of the Omni Layer tokens available, then the remainder is still owned by the original address.
+
+Thus, Bitcoin transactions that deal with Omni Layer often *re-use* addresses by locking the Bitcoin change against the same public key than the input, instead of using a brand new public key using [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki).
+
+Finally, using simple send, it seems that only the ownership of tokens of the **first input** are transferred.
+The ownership is transferred to the one output which:
+- is not already present in the inputs (in term of public key)
+- is not an `OP_RETURN` output
+
+### Header encoding
+
+To describe an Omni asset in an Asset type header specify `omni` as the value along with the following parameters:
+
+#### `quantity`
 
 The parameter `quantity` describes the asset's amount.
 The `quantity` parameter is mandatory.
@@ -54,7 +75,7 @@ The `quantity` value will be inserted in the appropriate Omni Layer transactions
 
 Its value MUST be a `u64` (note that in JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
 
-### `property_id`
+#### `property_id`
 
 The `property_id` parameter specifies which property id and therefore which specific asset the asset header is referring to.
 The `property_id` parameter is mandatory.
