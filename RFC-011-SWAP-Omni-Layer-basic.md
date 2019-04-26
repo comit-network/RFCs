@@ -40,7 +40,7 @@ To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines
 ## Constructing an Omni Layer Transaction
 
 This sections describes how to build Omni Layer transactions for the purpose of a basic swap.
-Information from the [Omni Layer Spec](https://github.com/OmniLayer/spec) has been transcribed here to facilitate the description of a Omni Layer Basic HTLC Atomic Swap.
+Information from the [Omni Layer Spec](https://github.com/OmniLayer/spec) has been transcribed here to facilitate the description of an Omni Layer Basic HTLC Atomic Swap.
 
 This RFC only supports the [simple send](https://github.com/OmniLayer/spec#transfer-coins-simple-send) Omni Layer transaction type, encoded using Class C format.
 Class C transactions uses Bitcoin `OP_RETURN` instruction to store the Omni Layer data.
