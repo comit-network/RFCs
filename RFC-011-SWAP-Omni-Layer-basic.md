@@ -125,7 +125,7 @@ To construct a transaction to spend from the HTLC, the following information is 
  |                                      | 3. `OP_RETURN omni_data` (`0`)                       |
 
 The implementor MAY include output (2) `change_address` or MAY decide to omit it and transfer the Bitcoin change to `to_address`.
-if output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `to_address`.
+If output (2) `change_address` is present then input (2) `change_utxo` MUST be included to ensure the Omni Layer Assets are sent to output (1) `to_address`.
 
 
 ## Execution Phase
