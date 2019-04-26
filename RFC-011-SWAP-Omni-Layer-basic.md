@@ -190,8 +190,13 @@ To redeem the HTLC, the redeemer MUST submit a valid Omni Layer transaction tran
 The transaction should be constructed according to the [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction) section.
 To construct the witness data for the P2WSH output, the redeemer MUST use the procedure described in the [Redeem section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#redeem).
 
-Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spends the HTLC output and is a valid Omni Layer transaction.
-Note that the redeemer MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
+Both parties SHOULD watch the blockchain for the bitcoin transaction that spends the HTLC output.
+Such transaction may not be a valid Omni Layer transaction but will contain the secret if it is able to spend the UTXO.
+
+If a party wishes to learn whether the Omni Layer asset were transferred, it MUST check whether the transaction was a valid Omni Layer transaction. 
+Note that the redeemer MUST NOT use another type of Omni Layer transaction than simple send to transfer the asset.
+However, nothing can be done to prevent this.
+The implementor MAY consider this scenario and check the balance of the HTLC if the transaction that spends the output is not a simple send.  
 
 For example, the following RPC call to omnicore can be used to verify the validity of a redeem transaction:
 - `txid`: the transaction id (e.g. `ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2`)
@@ -229,8 +234,10 @@ To refund1 the HTLC, the funder MUST submit a valid Omni Layer transaction trans
 The transaction should be constructed according to the [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction) section.
 To construct the witness data for the P2WSH output, the funder MUST use the procedure described in the [Redeem section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#redeem).
 
-Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spends the HTLC output and is a valid Omni Layer transaction.
-Note that the funder MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
+If a party wishes to learn whether the Omni Layer asset were transferred, it MUST check whether the transaction was a valid Omni Layer transaction. 
+Note that the funder MUST NOT use another type of Omni Layer transaction than simple send to transfer the asset.
+However, nothing can be done to prevent this.
+The implementor MAY consider this scenario and check the balance of the HTLC if the transaction that spends the output is not a simple send.
 
 ## Examples/Test vectors
 
