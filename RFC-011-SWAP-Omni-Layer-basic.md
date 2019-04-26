@@ -156,7 +156,7 @@ Such party MUST check the validity of the transaction against Omni Layer Spec.
 Not all valid Bitcoin transactions containing Omni Data are valid Omni Layer transactions.
 
 For example, the following RPC call to omnicore can be used to verify the validity of a deployment transaction:
-- `txid`: the transaction id of the transaction (e.g. `72abc494e877d7e2491ffa6fea3694648aa75e6166e42d6381b04d41ca933fb5`)
+- `txid`: the transaction id (e.g. `72abc494e877d7e2491ffa6fea3694648aa75e6166e42d6381b04d41ca933fb5`)
 - `referenceaddress`: the HTLC address (e.g. `2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ`)
 - `valid`: MUST be `true`
 - `amount`: the quantity of asset (e.g. `5300`)
