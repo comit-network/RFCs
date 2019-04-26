@@ -60,7 +60,7 @@ Reference to construct manually:
 
 
 For example, the following omnicore API MAY be used:
-- `property_id`: the property id of the Omni Layer Asset (e.g. `31`)
+- `property_id`: the property id of the Omni Layer Asset (e.g. `31` for TetherUS)
 - `amount`: the quantity of Omni Layer Assets to transfer (e.g. `20`)
 - `payload`: the hex-encoded Omni Layer Data (e.g. `000000000000001f0000000077359400`)
 
