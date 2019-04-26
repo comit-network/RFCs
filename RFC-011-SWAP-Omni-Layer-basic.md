@@ -35,7 +35,7 @@ This RFC re-purposes the Hash Time Locked Contract (HTLC) Bitcoin script from [R
 To fulfil the requirements of [RFC003](./RFC-003-SWAP-basic.md) this RFC defines:
 
 - How to construct Omni layer transactions transferring Omni Layer tokens to a HTLC address
-- how to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md)
+- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-basic.md)
 
 ## Constructing an Omni Layer Transaction
 
