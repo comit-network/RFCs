@@ -194,7 +194,7 @@ Both parties SHOULD watch the blockchain for the a bitcoin transaction, that spe
 Note that the redeemer MAY (but should not) use another type of Omni Layer transaction than simple send, hence monitoring MUST NOT be exclusive to simple send.
 
 For example, the following RPC call to omnicore can be used to verify the validity of a redeem transaction:
-- `txid`: the transaction id of the transaction (e.g. `ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2`)
+- `txid`: the transaction id (e.g. `ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2`)
 - `referenceaddress`: the redeemer address (e.g. `mh9g3jCJxkc4tzV88THmQHGNGiCzUZ1zg6`)
 - `sendingaddress`: the HTLC address (e.g. `2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ`)
 - `valid`: MUST be `true`
