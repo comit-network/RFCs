@@ -8,11 +8,13 @@
 **Table of Contents**
 
 - [Description](#description)
-- [Limitations](#limitations)
-- [Ownership](#ownership)
-- [Inputs & Outputs format](#inputs--outputs-format)
+- [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction)
   * [Omni Layer data](#omni-layer-data)
+    + [Example](#example)
   * [Dust](#dust)
+  * [HTLC Address](#htlc-address)
+  * [Inputs & Outputs format to spend the HTLC](#inputs--outputs-format-to-spend-the-htlc)
+- [Execution Phase](#execution-phase)
   * [Deployment transaction](#deployment-transaction)
   * [Redeem transaction](#redeem-transaction)
   * [Refund transaction](#refund-transaction)
@@ -26,7 +28,7 @@
 This RFC defines how to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is an Omni Layer token asset.
 
 For the definition of the Bitcoin ledger see [RFC004](./RFC-004-SWAP-Bitcoin.md).
-For the definition of the Omni Layer token asset see [RFC010](./TODO).
+For the definition of the Omni Layer token asset see [RFC010](./RFC-010-Omni-Layer.md).
 
 This RFC re-purposes the Hash Time Locked Contract (HTLC) Bitcoin script from [RFC005](./RFC-005-SWAP-Bitcoin-basic.md) to lock Omni Layer tokens instead of Bitcoin.
 
@@ -44,7 +46,7 @@ This RFC only supports the [simple send](https://github.com/OmniLayer/spec#trans
 Class C transactions uses Bitcoin `OP_RETURN` instruction to store the Omni Layer data.
 
 For clarity purpose, an *input, output owning an Omni Layer token* refers to the fact that such input or output matches an address that owns such token.
-See [RFC-010](TODO#ownership) for more details.
+See [RFC-010](./RFC-010-Omni-Layer.md#ownership) for more details.
 
 ### Omni Layer data
 
@@ -72,7 +74,7 @@ To then embed the Omni Layer Data received from omnicore in an `OP_RETURN` outpu
 ### Dust
 
 Bitcoin Core has limitations on minimum amounts owned by a UTXO. The minimum value is 546 satoshis for a normal transaction and 294 satoshis for SegWit transactions.
-See [RFC-010](TODO#Dust) for details.
+See [RFC-010](./RFC-010-Omni-Layer.md#dust) for details.
 
 The values above will be referred as `min_sat` from now on.
 
