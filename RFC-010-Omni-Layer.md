@@ -2,7 +2,7 @@
 
 - RFC-Number: 010
 - Status: Draft
-- Discussion-issue: -
+- Discussion-issue: [#63](https://github.com/comit-network/RFCs/issues/63)
 - Created on: 27 Mar. 2019
 
 **Table of Contents**
