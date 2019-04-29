@@ -103,7 +103,6 @@ To construct a transaction to spend from the HTLC, the following information is 
 | `omni_data`        | The Omni Layer data that transfers the Omni Layer Asset as described in [Omni Layer data](#omni-layer-data) |
 
  The Bitcoin transaction MUST be constructed with the following inputs, outputs and values.
- The order of the inputs and outputs MUST be as described.
  The *assigned Bitcoin value* on the inputs SHOULD be as described.
 
  | Inputs (assigned Bitcoin value)      | Outputs (assigned Bitcoin value)                     |
