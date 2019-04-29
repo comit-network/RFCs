@@ -175,42 +175,6 @@ To construct the witness data for the P2WSH output, the redeemer MUST use the pr
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the form specified in the [Redeem section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#redeem).
 Note that The witness for the `htlc_utxo` input will contain the secret if it is able to spend from it even if the transaction is not a valid Omni Layer transaction.
 
-<!-- I'd delete this whole bit -->
-If a party wishes to learn whether the Omni Layer asset were transferred, it MUST check whether the transaction was a valid Omni Layer transaction.
-Note that the redeemer MUST NOT use another type of Omni Layer transaction than simple send to transfer the asset.
-However, nothing can be done to prevent this.
-The implementor MAY consider this scenario and check the balance of the HTLC if the transaction that spends the output is not a simple send.
-
-For example, the following RPC call to omnicore can be used to verify the validity of a redeem transaction:
-- `txid`: the transaction id (e.g. `ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2`)
-- `referenceaddress`: the redeemer address (e.g. `mh9g3jCJxkc4tzV88THmQHGNGiCzUZ1zg6`)
-- `sendingaddress`: the HTLC address (e.g. `2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ`)
-- `valid`: MUST be `true`
-- `amount`: the quantity of asset (e.g. `5300`)
-
-```
-$ omnicore-cli "omni_gettransaction" "ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2"
-{
-  "txid": "ca30ac83bee95ea6191e74b96a8eae11d88eca8abbb55d688e0617a0b84f18d2",
-  "fee": "0.00002500",
-  "sendingaddress": "2N4CHfBpitHNXj9nBcJCFs7BXUaoNVTegBZ",
-  "referenceaddress": "mh9g3jCJxkc4tzV88THmQHGNGiCzUZ1zg6",
-  "ismine": false,
-  "version": 0,
-  "type_int": 0,
-  "type": "Simple Send",
-  "propertyid": 2147483652,
-  "divisible": false,
-  "amount": "5300",
-  "valid": true,
-  "blockhash": "7e94a2a8eb188f2e08020ecea4aa30959525de2040fb75bc7911b3988f2ad7df",
-  "blocktime": 1556091006,
-  "positioninblock": 1,
-  "block": 442,
-  "confirmations": 5
-}
-```
-
 ### Refund transaction
 
 To refund the HTLC, the funder MUST submit a valid Omni Layer transaction transferring all the omni tokens from the HTLC address to their desired address using simple send.
@@ -218,12 +182,6 @@ The transaction should be constructed according to the [Constructing an Omni Lay
 To construct the witness data for the P2WSH output, the funder MUST use the procedure described in the [Refund section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#refund).
 
 To be notified of the refund event, both parties MAY watch the blockchain for a transactions that spends from the output and check that the witness data is in form specified in the [Refund section of RFC005](./RFC-005-SWAP-Bitcoin-basic.md#refund).
-
-<!-- I'd delete this too -->
-If a party wishes to learn whether the Omni Layer asset were transferred, it MUST check whether the transaction was a valid Omni Layer transaction.
-Note that the funder MUST NOT use another type of Omni Layer transaction than simple send to transfer the asset.
-However, nothing can be done to prevent this.
-The implementor MAY consider this scenario and check the balance of the HTLC if the transaction that spends the output is not a simple send.
 
 ## Examples/Test vectors
 
