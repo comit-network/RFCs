@@ -82,7 +82,7 @@ However, not all Omni Layer wallets implementation support bech32 addresses so (
 The simple send MUST NOT be done to the old-style P2SH address of the HTLC.
 
 This choice has been made to:
-- Limit the number of addresses to watch make implementation less cumbersome.
+- Limit the number of addresses to watch, making implementation less cumbersome.
 - Avoid defining the basic HTLC twice (once, in P2SH format, once in P2WSH format).
 - Follow the common strategy for segwit backward compatibility (nesting in P2SH).
 
