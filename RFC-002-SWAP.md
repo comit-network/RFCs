@@ -268,7 +268,7 @@ TBD <!-- List known assets in details -->
 
 ### Headers
 
-| Header name          | Value                      |
+| Header name          | Value type                 |
 | -------------------- | -------------------------- |
 | `alpha_ledger`       | `Ledger`                   |
 | `betaledger`         | `Ledger`                   |
