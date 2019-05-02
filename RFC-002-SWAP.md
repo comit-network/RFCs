@@ -127,7 +127,7 @@ The `negotiation_result` header is defined as follows:
 Together with the the value of the `protocol` header, the `negotiation_result` header determines the `body` of a SWAP RESPONSE.
 
 In the case of a `successful` negotiation, the `body` of the response will contain the necessary information for the swap to start.
-This entirely depends on the chosen `protocol` and is thereby subject to the `protocol`s RFC to define the `body`.
+This entirely depends on the chosen `protocol` and is thereby subject to the `protocol`'s RFC to define the `body`.
 In the case of a `failed` negotiation, the `body` of the response MAY contain an object of type `NegotiationError`.
 A `NegotiationError` is an object with a two properties:
 
