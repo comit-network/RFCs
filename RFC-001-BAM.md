@@ -158,7 +158,7 @@ This means the maximum allowed value is `4294967295`.
 Ids MUST NOT be reused for subsequent frames.
 
 A node should only assign `id`s to frames that are out-going and self-initiated, for example `REQUEST` frames.
-All frames that act as a reply to another frame MUST use the appriopriate `id` to establish the necessary context.
+All frames that act as a reply to another frame MUST use the `id` of the message they are replying to.
 For example, a `RESPONSE` frame MUST use the `id` of the `REQUEST` frame it refers to.
 
 Ids MAY be skipped but MUST be ascending.
@@ -171,10 +171,10 @@ Ids MAY be skipped but MUST be ascending.
 
 #### Error
 
-The `ERROR` frame is used to communicate failures between nodes on the lowest level of this protocol.
-It is purely informational and is meant to fascilitate debugging.
-An `ERROR` frame can not be sent pro-actively.
-It's `id` MUST refer to a previously received frame, like a `REQUEST` frame.
+The `ERROR` frame is used to communicate failures between nodes at the lowest level of this protocol.
+It is purely informational and is meant to facilitate debugging.
+An `ERROR` frame cannot be sent pro-actively.
+Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
 
 ##### Structure
 
@@ -182,7 +182,7 @@ It's `id` MUST refer to a previously received frame, like a `REQUEST` frame.
 
 ###### type
 
-A machine-friendly identifier for this type of error
+A machine-friendly identifier for this type of error.
 
 ###### message
 
@@ -202,7 +202,7 @@ The following types of `ERROR` frames are defined:
 
 A request is a type of message that implies an answer.
 Nodes MUST be prepared to receive a frame of type `RESPONSE` with the id used in the `REQUEST` frame.
-Alternatively to a `RESPONSE` frame, the other party MAY also send an `ERROR` frame.
+Alternatively to a `RESPONSE` frame, the other party MAY instead send an `ERROR` frame.
 
 ##### Structure
 
@@ -212,13 +212,13 @@ A frame of type `REQUEST` carries the following payload:
 - headers
 - body
 
-whereas a frame of type `RESPONSE` looks like this:
+Conversely, a frame of type `RESPONSE` looks like this:
 
 - headers
 - body
 
 With the exception of `type`, all of these are optional and MAY be omitted if they are empty and the underlying encoding allows this without introducing ambiguity.
-For example, the JSON encoding can easily handle that whereas a binary encoding may have a difficult time to omit certain fields.
+For example, the JSON encoding can easily handle that whereas a binary encoding may have a difficult time omitting certain fields.
 
 ###### Type
 
@@ -228,7 +228,7 @@ Defining a particular request type usually comes with defining the headers which
 ###### Headers
 
 `Headers` are supposed to be used by an application protocol defined on top of `BAM`.
-Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers of a `REQUEST`.
+Application protocols can be described by defining `REQUEST` types and, with them, the semantics of certain headers of a `REQUEST`.
 
 In addition, headers also encode compatibility information.
 Each header is available in two variants:
@@ -240,21 +240,22 @@ If a node receives a header in the `MUST understand` variant in a `REQUEST` and 
 Headers encoded as `MAY ignore` are ok to be not understood.
 Nodes may simply ignore them as if they were not there.
 
-To avoid more complexity through additional messages, the spec doesn't define a concept of acknowledging successful processing of a `RESPONSE` to the sender.
+To avoid more complexity through additional messages, the spec doesn't define a concept for acknowledging successful processing of a `RESPONSE` to the sender.
 Thus, there is no way of signaling to the sender of a `RESPONSE` whether or not it was properly understood.
-Therefore, careful thought should be put into the design of and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
-In particular, nodes should never send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
+Therefore, careful thought should be put into the design and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
+In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
 Usually, this can be derived from the `REQUEST` that is sent by a node.
 
 ###### Body
 
-The structure of the `body` of a REQUEST is entirely up to the application protocol that is defined through the REQUEST `type`.
+The structure of the `body` of a REQUEST is entirely up to the application protocol.
 Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
+
 When designing an application protocol, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
 The rule of thumb here is that implementations should be able to parse all headers orthogonally.
-Hence, the structure/possible values of one header SHOULD NOT depend on those of other headers.
+Hence, the structure of one header SHOULD NOT depend on those of other headers.
 All data that cannot be represented in that way can be put into the `body`.
-Implementations can then first parse the set of headers and from there determine, what the expected shape of the `body` is in order to continue parsing.
+Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
 
 ### Headers
 
@@ -397,7 +398,7 @@ Let's start off with an example:
 "_payment_method" : {
   "value": "credit-card",
   "parameters": {
-    "provider": "visa",
+    "provider": "tenx",
     "number": "0000-0000-0000-0000"
   }
 }
@@ -449,7 +450,7 @@ The following is therefore invalid:
 }
 ```
 
-If a header needs an `object` to express its value, you should resort to the default representation to make it unambigous:
+If a header needs an `object` to express its value, you should resort to the default representation to make it unambiguous:
 
 ```json
 "valid_header": {

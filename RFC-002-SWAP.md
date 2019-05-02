@@ -43,14 +43,14 @@
 
 ## Introduction
 
-This RFC introduces defines two things:
+This RFC serves two purposes:
 
-1. A terminology for describing the exchange of assets
-2. A REQUEST/RESPONSE pair of messages for `BAM!` to negotiate such an exchange between two parties
+1. Introduce terminology used to describe the exchange of assets.
+2. Define a REQUEST/RESPONSE message pair for two parties to negotiate such an exchange via `BAM!`.
 
 ## Terminology
 
-To describe the elements of an exchange, we are using the terms `Ledger`, `Asset` and `Alpha/Beta`.
+To describe the elements of an exchange, we use the terms `Ledger`, `Asset`, `Alpha` and `Beta`.
 
 ### Ledger
 
@@ -60,21 +60,21 @@ A ledger is anything that records ownership and allows transferal of that owners
 
 An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
-### Alpha/Beta
+### Alpha and Beta
 
-The terminology of **alpha** and **beta** is used to unambiguously refer to the assets and ledgers in an exchange.
-Such an exchange can thus be described as
-- transferring the ownership of the **alpha-asset** on the **alpha-ledger** from party A to party B
-- transferring the ownership of the **beta-asset** on the **beta-ledger** from party B to party A
+The terms **alpha** and **beta** are used to unambiguously identify assets and ledgers in an exchange.
+Such an exchange can thus be described as:
+- Transferring the ownership of the **alpha-asset** on the **alpha-ledger** from party A to party B.
+- Transferring the ownership of the **beta-asset** on the **beta-ledger** from party B to party A.
 
 This terminology has several advantages:
 
-1. it does not imply an order (compared to a terminology like **first**/**second**)
-2. it is not subjective to any of the parties (compared to a terminology like **source**/**target**, **incoming**/**outgoing** or **local**/**remote**)
+1. It does not imply an order (compared to a terminology like **first**/**second**).
+2. It is not subjective to any of the parties (compared to terminology like **source**/**target**, **incoming**/**outgoing** or **local**/**remote**).
 
 ## BAM! messages
 
-The messages to negotiate such an exchange consist of a `REQUEST` frame and an according `RESPONSE` frame.
+The messages to negotiate such an exchange consist of a `REQUEST` frame and a corresponding `RESPONSE` frame.
 
 ### SWAP REQUEST frame
 
@@ -90,8 +90,8 @@ To express all the information for an exchange, a SWAP REQUEST MUST include the 
 
 - `alpha_ledger`: describes the ledger the alpha-asset is tracked on
 - `beta_ledger`: describes the ledger the beta-asset is tracked on
-- `alpha_asset`: describes the asset who's ownership is transferred on the alpha-ledger
-- `beta_asset`: describes the asset who's ownership is transferred on the beta-ledger
+- `alpha_asset`: describes the asset whose ownership will be transferred on the `alpha_ledger`
+- `beta_asset`: describes the asset whose ownership will be transferred on the `beta_ledger`
 - `protocol`: describes the protocol that is used to transfer the ownership of the assets
 
 This RFC only defines these headers.
@@ -100,14 +100,14 @@ The actual definition of ledgers, assets and protocols is not subject to this RF
 #### Body
 
 The body of a SWAP REQUEST depends on the chosen `protocol`.
-It is therefore subject to RFCs which define such protocols to also define, which information is contained in the `body` of a SWAP REQUEST/RESPONSE frame.
+It is therefore subject to RFCs which define such protocols to also define which information is contained in the `body` of a SWAP REQUEST/RESPONSE frame.
 
 ### SWAP RESPONSE frame
 
 #### Definition
 
 A frame of type `REQUEST` implies a `RESPONSE`.
-We will refer to the response of a `SWAP REQUEST` as SWAP RESPONSE.
+We will refer to the response of a SWAP REQUEST as SWAP RESPONSE.
 
 The SWAP RESPONSE serves two purposes:
 
@@ -134,8 +134,8 @@ This entirely depends on the chosen `protocol` and is thereby subject to the `pr
 In the case of a `failed` negotiation, the `body` of the response MAY contain an object of type `NegotiationError`.
 A `NegotiationError` is an object with a two properties:
 
-- `reason`: A string, acting as the identifier for this `NegotiationError`.
-- `details`: An object containing more information about the error, depending on the given `reason`.
+- `reason`: a string acting as the identifier for the `NegotiationError`.
+- `details`: an object containing more information about the error, depending on the given `reason`.
 
 See the [Registry extensions](#registry-extensions)-section for examples of `NegotiationError`s.
 
@@ -215,12 +215,12 @@ This RFC extends the registry with the following elements:
 ### The type `Ledger`
 
 Subsequent RFCs can refer to this type if they want to define a particular ledger.
-A section "Ledgers" is added to the registry which tracks all currently defined ledgers.
+A section "Ledgers" is added to the registry which tracks all currently defined ledger types.
 
 ### The type `Asset`
 
 Subsequent RFCs can refer to this type if they want to define a particular asset.
-A section "Assets" is added to the registry which tracks all currently defined assets.
+A section "Assets" is added to the registry which tracks all currently defined asset types.
 
 ### The type `SwapProtocol`
 
@@ -266,7 +266,7 @@ TBD <!-- List known protocols in details -->
 #### `unknown-ledger`
 
 A ledger referenced by the sending party is unknown to the receiving party.
-Note that different networks of the same blockchain are different ledger!
+Note that different networks of the same blockchain are different ledgers!
 Bitcoin Testnet is a different ledger than Bitcoin Mainnet.
 
 ##### `details`

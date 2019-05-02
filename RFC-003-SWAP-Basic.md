@@ -117,7 +117,7 @@ If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consi
 
 ### SWAP Response
 
-If responding with "successful" for the `negotiation_result` header, the responder MUST include the following fields in the response body:
+If responding with `successful` for the `negotiation_result` header, the responder MUST include the following fields in the response body:
 
 | Name                    | JSON Encoding | Description                                                                                              |
 | ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
@@ -212,20 +212,22 @@ This indicates to the sender that the difference between `alpha_expiry` and `bet
 
 #### `details`
 
-| property name | type   | description                                                                         |
+| detail | type   | description                                                                         |
 | :------------ | :----- | :---------------------------------------------------------------------------------- |
 | min_time      | number | The minimum time difference between the HLTCs in seconds that the receiver requires |
 
 ### Section for hash functions
 
 A new section for listing hash functions is added.
-The section is bootstrapped with the `SHA-256` hash function.
+`SHA-256` is added as an initial value.
 
 ## References
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
 
 ## Examples
+
+Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
 ### SWAP REQUEST frame
 ``` json
