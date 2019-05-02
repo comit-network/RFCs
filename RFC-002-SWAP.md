@@ -29,9 +29,7 @@
     - [The type `Ledger`](#the-type-ledger)
     - [The type `Asset`](#the-type-asset)
     - [The type `SwapProtocol`](#the-type-swapprotocol)
-    - [The type `NegotiationError`](#the-type-negotiationerror)
-    - [Headers](#headers-2)
-    - [The following `NegotiationError`s](#the-following-negotiationerrors)
+    - [The type `NegotiationError` and the initial set of possible errors](#the-type-negotiationerror-and-the-initial-set-of-possible-errors)
         - [`unsatisfactory-rate`](#unsatisfactory-rate)
             - [`details`](#details)
         - [`protocol-unsupported`](#protocol-unsupported)
@@ -40,6 +38,7 @@
             - [`details`](#details-2)
         - [`unknown-asset`](#unknown-asset)
             - [`details`](#details-3)
+    - [Headers](#headers-2)
 
 ## Introduction
 
@@ -211,38 +210,26 @@ This RFC extends the registry with the following elements:
 
 ### The type `Ledger`
 
-Subsequent RFCs can refer to this type if they want to define a particular ledger.
 A section "Ledgers" is added to the registry which tracks all currently defined ledger types.
+Subsequent RFCs can refer to this type if they want to define a particular ledger.
 
 ### The type `Asset`
 
-Subsequent RFCs can refer to this type if they want to define a particular asset.
 A section "Assets" is added to the registry which tracks all currently defined asset types.
+Subsequent RFCs can refer to this type if they want to define a particular asset.
 
 ### The type `SwapProtocol`
 
-Subsequent RFCs can refer to this type if they want to define a particular swap protocol.
 A section "Protocols" is added to the registry which tracks all currently defined protocols.
+Subsequent RFCs can refer to this type if they want to define a particular swap protocol.
 
-### The type `NegotiationError`
+### The type `NegotiationError` and the initial set of possible errors
 
-Subsequent RFCs can refer to this type if they want to define a particular negotiation error.
 A section "Negotiation Errors" is added to the registry which tracks all currently defined errors.
+Subsequent RFCs can refer to this type if they want to define a particular negotiation error.
 
-### Headers
-
-| Header name          | Value                      |
-| -------------------- | -------------------------- |
-| `alpha_ledger`       | `Ledger`                   |
-| `betaledger`         | `Ledger`                   |
-| `alpha_asset`        | `Asset`                    |
-| `beta_asset`         | `Asset`                    |
-| `protocol`           | `SwapProtocol`             |
-| `negotiation_result` | `"successful" OR "failed"` |
-
-### The following `NegotiationError`s
-
-In the following section, each heading is a `reason`.
+The following `NegotiationError`s are added to the list.
+Each heading represents the `reason` of the `NegotiationError`
 
 #### `unsatisfactory-rate`
 
@@ -277,3 +264,15 @@ An asset referenced by the sending party is unknown to the receiving party.
 ##### `details`
 
 TBD <!-- List known assets in details -->
+
+
+### Headers
+
+| Header name          | Value                      |
+| -------------------- | -------------------------- |
+| `alpha_ledger`       | `Ledger`                   |
+| `betaledger`         | `Ledger`                   |
+| `alpha_asset`        | `Asset`                    |
+| `beta_asset`         | `Asset`                    |
+| `protocol`           | `SwapProtocol`             |
+| `negotiation_result` | `"successful" OR "failed"` |
