@@ -123,15 +123,34 @@ The `negotiation_result` header is defined as follows:
 
 #### Body
 
-Together with the the value of the `protocol` header, the `negotiation_result` header determines the `body` of a SWAP RESPONSE.
+The content of the `body` depends on the values of the headers.
+The following diagram illustrates the process:
 
-In the case of a `successful` negotiation, the `body` of the response will contain the necessary information for the swap to start.
-This entirely depends on the chosen `protocol` and is thereby subject to the `protocol`'s RFC to define the `body`.
-In the case of a `failed` negotiation, the `body` of the response MAY contain an object of type `NegotiationError`.
+<!--
+@startuml
+
+title Parse SWAP RESPONSE body
+
+start
+
+:inspect `negotiation_result` header;
+
+if (negotiation_result) then (successful)
+  :inspect `protocol` header;
+  :parse body according to RFC of protocol;
+else (failed)
+  :parse body as `NegotiationError`;
+endif
+
+stop
+
+@enduml
+-->
+![](https://www.plantuml.com/plantuml/img/PP0nRiCm34LtdkAFzXMI9KNWZAaH3nrhLQ8I0QfeKFJGsqS9K1X8HeBlVppoKCsfhR-Po99bnkYqCgQlZn6NOHe_pzE07mb_H4-IQ9TANTWRvi9NiUGiIVbMhcks6JTsWNLFb2AwTw27tRYWgwltN6jSSq_0Lhcec7Z9Mr7RBa-bXmISzw8XbIjCS3aT8H7_cJrnRbmNNSeS-jTanNpUV0PLqRb5IaZnSPiiH8SsjLVS0G00)
+
 A `NegotiationError` is an object with a two properties:
-
-- `reason`: a string acting as the identifier for the `NegotiationError`.
-- `details`: an object containing more information about the error, depending on the given `reason`.
+  - `reason`: a string acting as the identifier for the `NegotiationError`.
+  - `details`: an object containing more information about the error, depending on the given `reason`.
 
 See the [Registry extensions](#registry-extensions)-section for examples of `NegotiationError`s.
 
