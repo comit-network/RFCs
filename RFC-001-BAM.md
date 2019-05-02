@@ -22,8 +22,10 @@
         - [Error](#error)
             - [Structure](#structure)
                 - [type](#type)
-                - [message](#message)
+                - [details](#details)
             - [Possible error types](#possible-error-types)
+            - [Error details](#error-details)
+                - [Details for `unknown-mandatory-header`](#details-for-unknown-mandatory-header)
         - [Request / Response](#request--response)
             - [Structure](#structure-1)
                 - [Type](#type-1)
@@ -184,19 +186,34 @@ Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
 
 A machine-friendly identifier for this type of error.
 
-###### message
+###### details
 
-A human-readable message giving more details about the error.
-Implementations MAY use this for logging purposes.
+An object which further describes this error.
+The shape depends on the `type` of the `ERROR` frame.
 
 ##### Possible error types
 
-The following types of `ERROR` frames are defined:
+| type | details |
+|---|---|
+| `unknown-frame-type` | None |
+| `malformed-frame` | None |
+| `unknown-request-type` | None |
+| `unknown-mandatory-header` | [See below](#details-for-unknown-mandatory-header) |
 
-- `unknown-frame-type`
-- `malformed-frame`
-- `unknown-request-type`
-- `unknown-mandatory-header`
+##### Error details
+
+###### Details for `unknown-mandatory-header`
+
+The details object for the `unknown-mandatory-header` error is an object with a single key `header`.
+Its value is the key of the header that was marked as mandatory by the sender but was not understood by the receiver.
+
+For example:
+
+```json
+{
+  "header": "payment_method"
+}
+```
 
 #### Request / Response
 
