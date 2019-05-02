@@ -10,7 +10,7 @@
 - [Terminology](#terminology)
     - [Ledger](#ledger)
     - [Asset](#asset)
-    - [Alpha/Beta](#alphabeta)
+    - [Alpha and Beta](#alpha-and-beta)
 - [BAM! messages](#bam-messages)
     - [SWAP REQUEST frame](#swap-request-frame)
         - [Definition](#definition)
@@ -109,10 +109,7 @@ It is therefore subject to RFCs which define such protocols to also define which
 A frame of type `REQUEST` implies a `RESPONSE`.
 We will refer to the response of a SWAP REQUEST as SWAP RESPONSE.
 
-The SWAP RESPONSE serves two purposes:
-
-1. It contains the result of the negotiation initiated through the SWAP REQUEST
-2. It allows the receiving party to communicate information 
+A SWAP RESPONSE contains the result of the negotiation initiated through the SWAP REQUEST.
 
 #### Headers
 
