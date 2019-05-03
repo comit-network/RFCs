@@ -3,20 +3,20 @@
 **Table of contents**
 - [Description](#description)
 - [Ledgers](#ledgers)
-  - [`bitcoin` Parameters](#bitcoin-parameters)
-    - [Bitcoin Networks](#bitcoin-networks)
-  - [`ethereum` Parameters](#ethereum-parameters)
-    - [Ethereum Networks](#ethereum-networks)
+    - [`bitcoin` Parameters](#bitcoin-parameters)
+        - [Bitcoin Networks](#bitcoin-networks)
+    - [`ethereum` Parameters](#ethereum-parameters)
+        - [Ethereum Networks](#ethereum-networks)
 - [Assets](#assets)
-  - [`bitcoin` Parameters](#bitcoin-parameters-1)
-  - [`ether` Parameters](#ether-parameters)
-  - [`erc20` Parameters](#erc20-parameters)
+    - [`bitcoin` Parameters](#bitcoin-parameters-1)
+    - [`ether` Parameters](#ether-parameters)
+    - [`erc20` Parameters](#erc20-parameters)
 - [Protocols](#protocols)
 - [Negotiation Errors](#negotiation-errors)
-  - [Details of the `timeouts-too-tight` error](#details-of-the-timeouts-too-tight-error)
 - [Identities](#identities)
 - [Hash Functions](#hash-functions)
-- [Headers](#headers)
+- [Request types](#request-types)
+    - [SWAP](#swap)
 
 ## Description
 
@@ -104,19 +104,13 @@ The following is a list of protocols defined in COMIT RFCs for use in the `proto
 
 The following is a list of errors that receivers of a SWAP REQUEST may choose to send back to the sender. In order to send a negotiation error, the value of the `negotiation_result` header MUST be set to "failed".
 
-| `reason`               | Reference                          | Description                                                                                                                                                              | `details`                                           |
-| :--------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
-| `unsatisfactory-rate`  | [RFC-002](./RFC-002-SWAP.md)       | The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.                                                                                           | None                                                |
-| `protocol-unsupported` | [RFC-002](./RFC-002-SWAP.md)       | The protocol specified in the `protocol` header is not known to the receiving party.                                                                                     | None                                                |
-| `unknown-ledger`       | [RFC-002](./RFC-002-SWAP.md)       | A ledger referenced by the sending party is unknown to the receiving party.                                                                                              | None                                                |
-| `unknown-asset`        | [RFC-002](./RFC-002-SWAP.md)       | An asset referenced by the sending party is unknown to the receiving party.                                                                                              | None                                                |
-| `timeouts-too-tight`   | [RFC-003](./RFC-003-SWAP-Basic.md) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. | [Details](#details-of-the-timeouts-too-tight-error) |
-
-### Details of the `timeouts-too-tight` error
-
-| property name | type   | description                                                                         |
-| :------------ | :----- | :---------------------------------------------------------------------------------- |
-| min_time      | number | The minimum time difference between the HLTCs in seconds that the receiver requires |
+| `reason`               | Reference                          | Description                                                                                                                                                              |
+| :--------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `unsatisfactory-rate`  | [RFC-002](./RFC-002-SWAP.md)       | The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.                                                                                           |
+| `protocol-unsupported` | [RFC-002](./RFC-002-SWAP.md)       | The protocol specified in the `protocol` header is not known to the receiving party.                                                                                     |
+| `unknown-ledger`       | [RFC-002](./RFC-002-SWAP.md)       | A ledger referenced by the sending party is unknown to the receiving party.                                                                                              |
+| `unknown-asset`        | [RFC-002](./RFC-002-SWAP.md)       | An asset referenced by the sending party is unknown to the receiving party.                                                                                              |
+| `timeouts-too-tight`   | [RFC-003](./RFC-003-SWAP-Basic.md) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. |
 
 ## Identities
 
@@ -135,13 +129,19 @@ The following is a list of cryptographic hash functions for use within COMIT pro
 | :-------- | :------------------------------------------------------------- |
 | `SHA-256` | [IETF RFC463](https://tools.ietf.org/html/rfc4634#section-4.1) |
 
-## Headers
+## Request types
 
-| Name                 | Reference                    | `value`                     |
-| :------------------- | :--------------------------- | :-------------------------- |
-| `alpha_ledger`       | [RFC-002](./RFC-002-SWAP.md) | See [Ledgers](#ledgers)     |
-| `beta_ledger`        | [RFC-002](./RFC-002-SWAP.md) | See [Ledgers](#ledgers)     |
-| `alpha_asset`        | [RFC-002](./RFC-002-SWAP.md) | See [Assets](#assets)       |
-| `beta_asset`         | [RFC-002](./RFC-002-SWAP.md) | See [Assets](#assets)       |
-| `protocol`           | [RFC-002](./RFC-002-SWAP.md) | See [Protocols](#protocols) |
-| `negotiation_result` | [RFC-002](./RFC-002-SWAP.md) | `"successful" OR "failed"`  |
+### SWAP
+
+Introduced in [RFC-002](./RFC-002-SWAP.md).
+
+A SWAP request and the accroding response allow for the following headers to appear:
+
+- `alpha_ledger`
+- `beta_ledger`
+- `alpha_asset`
+- `beta_asset`
+- `protocol`
+- `negotiation_result`
+
+Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
