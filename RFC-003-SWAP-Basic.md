@@ -212,9 +212,9 @@ This indicates to the sender that the difference between `alpha_expiry` and `bet
 
 #### `details`
 
-| detail | type   | description                                                                         |
-| :------------ | :----- | :---------------------------------------------------------------------------------- |
-| min_time      | number | The minimum time difference between the HLTCs in seconds that the receiver requires |
+| detail   | type   | required | description                                                                         |
+| :------- | :----- | :------- | :---------------------------------------------------------------------------------- |
+| min_time | number | no       | The minimum time difference between the HLTCs in seconds that the receiver requires |
 
 ### Section for hash functions
 
@@ -301,7 +301,9 @@ Elements not relevant for this RFC or which are subject to later definition are 
     },
     "body": { 
       "reason": "timeouts-too-tight",
-      "details": {}
+      "details": {
+          "min_time": 7200
+      }
     },
   }
 }
