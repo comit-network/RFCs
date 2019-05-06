@@ -2,6 +2,9 @@
 
 **Table of contents**
 - [Description](#description)
+- [Request types](#request-types)
+    - [SWAP](#swap)
+- [ERROR frame types](#error-frame-types)
 - [Ledgers](#ledgers)
     - [`bitcoin` Parameters](#bitcoin-parameters)
         - [Bitcoin Networks](#bitcoin-networks)
@@ -15,12 +18,40 @@
 - [SWAP decline reasons](#swap-decline-reasons)
 - [Identities](#identities)
 - [Hash Functions](#hash-functions)
-- [Request types](#request-types)
-    - [SWAP](#swap)
 
 ## Description
 
-This registry defines all types used across COMIT RFCs. This registry may be expanded with new RFCs.
+This registry defines all types used across COMIT RFCs.
+This registry may be expanded with new RFCs.
+
+## Request types
+
+### SWAP
+
+Introduced in [RFC-002](./RFC-002-SWAP.md).
+
+A SWAP request and the accroding response allow for the following headers to appear:
+
+- `alpha_ledger`
+- `beta_ledger`
+- `alpha_asset`
+- `beta_asset`
+- `protocol`
+- `negotiation_result`
+
+Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
+
+## ERROR frame types
+
+Implementations SHOULD be aware of the following list of ERROR frame types.
+This list can be extended by RFCs, so implementations SHOULD be prepared to receive an ERROR frame that is not listed here.
+
+| Type                       | Reference                   |
+| -------------------------- | --------------------------- |
+| `unknown-frame-type`       | [RFC-001](./RFC-001-BAM.md) |
+| `malformed-frame`          | [RFC-001](./RFC-001-BAM.md) |
+| `unknown-request-type`     | [RFC-001](./RFC-001-BAM.md) |
+| `unknown-mandatory-header` | [RFC-001](./RFC-001-BAM.md) |
 
 ## Ledgers
 
@@ -129,20 +160,3 @@ The following is a list of cryptographic hash functions for use within COMIT pro
 | Name      | Reference                                                      |
 | :-------- | :------------------------------------------------------------- |
 | `SHA-256` | [IETF RFC463](https://tools.ietf.org/html/rfc4634#section-4.1) |
-
-## Request types
-
-### SWAP
-
-Introduced in [RFC-002](./RFC-002-SWAP.md).
-
-A SWAP request and the accroding response allow for the following headers to appear:
-
-- `alpha_ledger`
-- `beta_ledger`
-- `alpha_asset`
-- `beta_asset`
-- `protocol`
-- `negotiation_result`
-
-Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.

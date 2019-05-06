@@ -45,6 +45,9 @@
         - [Naming conventions](#naming-conventions)
     - [Connection errors / failure cases](#connection-errors--failure-cases)
         - [Malformed response](#malformed-response)
+- [Registry extensions](#registry-extensions)
+    - [List of request types](#list-of-request-types)
+    - [The section `ERROR frame types`](#the-section-error-frame-types)
 - [References](#references)
 
 ## Description
@@ -497,6 +500,17 @@ For requests, an `ERROR` frame with type `malformed-frame` can be sent back to t
 However, there are no response messages for responses.
 In this case, implementations should treat this as a *temporary* failure by logging the incident and ignoring the malformed response.
 Implementations should be able to receive further messages on the connection.
+
+## Registry extensions
+
+### List of request types
+
+This RFC adds a section "Request types" to track the list of available `type`s to be used for `REQUEST` frames.
+
+### The section `ERROR frame types`
+
+This RFC adds a section "ERROR frame types" to track the possbile types of ERROR frames.
+The types defined in section [ERROR frame](#possible-error-types) are added to this list.
 
 ## References
 
