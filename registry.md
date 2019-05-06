@@ -46,7 +46,7 @@ A SWAP request and the accroding response allow for the following headers to app
 - `alpha_asset`
 - `beta_asset`
 - `protocol`
-- `negotiation_result`
+- `decision`
 
 Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
 
