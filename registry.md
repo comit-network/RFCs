@@ -14,6 +14,7 @@
     - [`bitcoin` Parameters](#bitcoin-parameters-1)
     - [`ether` Parameters](#ether-parameters)
     - [`erc20` Parameters](#erc20-parameters)
+    - [`omni` Parameters](#omni-parameters)
 - [SWAP Protocols](#swap-protocols)
 - [SWAP decline reasons](#swap-decline-reasons)
 - [Identities](#identities)
@@ -96,11 +97,12 @@ And the possible parameters they each may have:
 
 The following is a list of possible values an `Asset` type header can take:
 
-| Value     | Reference                        | Description                   |
-| :-------- | -------------------------------- | ----------------------------- |
-| `bitcoin` | [RFC-004](./RFC-004-Bitcoin.md)  | Native Bitcoin network asset  |
-| `ether`   | [RFC-006](./RFC-006-Ethereum.md) | Native Ethereum network asset |
-| `erc20`   | [RFC-008](./RFC-008-ERC20.md)    | ERC20 token                   |
+| Value     | Reference                               | Description                   |
+| :-------- | --------------------------------------- | ----------------------------- |
+| `bitcoin` | [RFC-004](./RFC-004-Bitcoin.md)         | Native Bitcoin network asset  |
+| `ether`   | [RFC-006](./RFC-006-Ethereum.md)        | Native Ethereum network asset |
+| `erc20`   | [RFC-008](./RFC-008-ERC20.md)           | ERC20 token                   |
+| `omni`    | [RFC-010](./RFC-010-SWAP-Omni-Layer.md) | Omni Layer token              |
 
 And the possible parameters they each may have:
 
@@ -122,6 +124,13 @@ And the possible parameters they each may have:
 | :--------- | --------------------- | --------------------------------------------------------------------------- |
 | `quantity` | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
 | `address`  | `0x` prefixed address | The address of the ERC20 contract                                           |
+
+### `omni` Parameters
+
+| Parameter     | Value Type | Description                                       |
+| :------------ | ---------- | ------------------------------------------------- |
+| `quantity`    | `u64`      | The amount of Omni Layer assets to be transferred |
+| `property_id` | number     | The property id of the Omni Layer asset           |
 
 ## SWAP Protocols
 
