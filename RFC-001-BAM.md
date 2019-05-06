@@ -46,8 +46,7 @@
     - [Connection errors / failure cases](#connection-errors--failure-cases)
         - [Malformed response](#malformed-response)
 - [Registry extensions](#registry-extensions)
-    - [List of request types](#list-of-request-types)
-    - [The section `ERROR frame types`](#the-section-error-frame-types)
+    - [List of frame types](#list-of-frame-types)
 - [References](#references)
 
 ## Description
@@ -503,14 +502,21 @@ Implementations should be able to receive further messages on the connection.
 
 ## Registry extensions
 
-### List of request types
+### List of frame types
 
-This RFC adds a section "Request types" to track the list of available `type`s to be used for `REQUEST` frames.
+This RFC adds a section "FRAME types" to track the list of available `type`s to be used for `FRAME`s.
+The following types are added to this list:
 
-### The section `ERROR frame types`
+- REQUEST/RESPONSE
+- ERROR
 
-This RFC adds a section "ERROR frame types" to track the possbile types of ERROR frames.
-The types defined in section [ERROR frame](#possible-error-types) are added to this list.
+For the `REQUEST` frame, the following `type`s are defined:
+
+- SWAP
+
+Each of the defined REQUEST `type`s should list the headers that can be used with this REQUEST.
+
+For the `ERROR` frame, the `type`s listed in the [ERROR frame](#possible-error-types) section are added as valid types.
 
 ## References
 

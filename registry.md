@@ -2,9 +2,10 @@
 
 **Table of contents**
 - [Description](#description)
-- [Request types](#request-types)
-    - [SWAP](#swap)
-- [ERROR frame types](#error-frame-types)
+- [FRAME types](#frame-types)
+    - [REQUEST / RESPONSE](#request--response)
+        - [SWAP](#swap)
+    - [ERROR](#error)
 - [Ledgers](#ledgers)
     - [`bitcoin` Parameters](#bitcoin-parameters)
         - [Bitcoin Networks](#bitcoin-networks)
@@ -25,9 +26,16 @@
 This registry defines all types used across COMIT RFCs.
 This registry may be expanded with new RFCs.
 
-## Request types
+## FRAME types
 
-### SWAP
+This section explains all possible FRAME `type`s.
+
+### REQUEST / RESPONSE
+
+Frames of type `REQUEST` have a `type` field.
+The following `type`s are defined:
+
+#### SWAP
 
 Introduced in [RFC-002](./RFC-002-SWAP.md).
 
@@ -42,7 +50,7 @@ A SWAP request and the accroding response allow for the following headers to app
 
 Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
 
-## ERROR frame types
+### ERROR
 
 Implementations SHOULD be aware of the following list of ERROR frame types.
 This list can be extended by RFCs, so implementations SHOULD be prepared to receive an ERROR frame that is not listed here.
