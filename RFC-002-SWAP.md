@@ -86,11 +86,13 @@ For the SWAP REQUEST message, this type is `SWAP`.
 
 To express all the information for an exchange, a SWAP REQUEST MUST include the following headers:
 
-- `alpha_ledger`: describes the ledger the alpha-asset is tracked on
-- `beta_ledger`: describes the ledger the beta-asset is tracked on
-- `alpha_asset`: describes the asset whose ownership will be transferred on the `alpha_ledger`
-- `beta_asset`: describes the asset whose ownership will be transferred on the `beta_ledger`
-- `protocol`: describes the protocol that is used to transfer the ownership of the assets
+| Header         | Value (Link to registry section)                                                         | Description                                                          |
+| -------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `alpha_ledger` | [Ledger](https://github.com/comit-network/RFCs/blob/master/registry.md#ledgers)          | The ledger the alpha-asset is tracked on.                            |
+| `beta_ledger`  | [Ledger](https://github.com/comit-network/RFCs/blob/master/registry.md#ledgers)          | The ledger the beta-asset is tracked on.                             |
+| `alpha_asset`  | [Asset](https://github.com/comit-network/RFCs/blob/master/registry.md#assets)            | The asset whose ownership will be transferred on the `alpha_ledger`. |
+| `beta_asset`   | [Asset](https://github.com/comit-network/RFCs/blob/master/registry.md#assets)            | The asset whose ownership will be transferred on the `beta_ledger`.  |
+| `protocol`     | [SWAP Protocol](https://github.com/comit-network/RFCs/blob/master/registry.md#protocols) | The protocol that is used to transfer the ownership of the assets.   |
 
 This RFC only defines these headers.
 The actual definition of ledgers, assets and protocols is not subject to this RFC.
