@@ -175,8 +175,9 @@ Ids MAY be skipped but MUST be ascending.
 
 #### Error
 
-The `ERROR` frame is used to communicate failures between nodes at the lowest level of this protocol.
-It is purely informational and is meant to facilitate debugging.
+The `ERROR` frame is used to communicate failures between nodes at the communication level.
+They MUST NOT be used to communicate errors on the application level.
+Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
 An `ERROR` frame cannot be sent pro-actively.
 Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
 
@@ -194,6 +195,9 @@ An object which further describes this error.
 The shape depends on the `type` of the `ERROR` frame.
 
 ##### Possible error types
+
+This RFC introduces the following ERROR frame types.
+Future RFCs MAY extend this list with new error types.
 
 | type | details |
 |---|---|
