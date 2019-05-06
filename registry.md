@@ -11,8 +11,8 @@
     - [`bitcoin` Parameters](#bitcoin-parameters-1)
     - [`ether` Parameters](#ether-parameters)
     - [`erc20` Parameters](#erc20-parameters)
-- [Protocols](#protocols)
-- [Negotiation Errors](#negotiation-errors)
+- [SWAP Protocols](#swap-protocols)
+- [SWAP decline reasons](#swap-decline-reasons)
 - [Identities](#identities)
 - [Hash Functions](#hash-functions)
 - [Request types](#request-types)
@@ -92,7 +92,7 @@ And the possible parameters they each may have:
 | `quantity` | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
 | `address`  | `0x` prefixed address | The address of the ERC20 contract                                           |
 
-## Protocols
+## SWAP Protocols
 
 The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
 
@@ -100,9 +100,10 @@ The following is a list of protocols defined in COMIT RFCs for use in the `proto
 | :-------------- | ---------------------------------- | ---------------------- |
 | `comit-rfc-003` | [RFC-003](./RFC-003-SWAP-Basic.md) | Basic HTLC Atomic Swap |
 
-## Negotiation Errors
+## SWAP decline reasons
 
-The following is a list of errors that receivers of a SWAP REQUEST may choose to send back to the sender. In order to send a negotiation error, the value of the `negotiation_result` header MUST be set to "failed".
+The following is a list of response bodies that receivers of a SWAP REQUEST may choose to send back to the sender.
+The value of the `decision` header MUST be set to `declined`.
 
 | `reason`               | Reference                          | Description                                                                                                                                                              |
 | :--------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

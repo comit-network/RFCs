@@ -24,14 +24,14 @@
 - [Security Considerations](#security-considerations)
 - [Registry Extensions](#registry-extensions)
     - [Ledgers have identities](#ledgers-have-identities)
-    - [Negotiation error for tight timeouts](#negotiation-error-for-tight-timeouts)
+    - [Decline reason for tight timeouts](#decline-reason-for-tight-timeouts)
         - [`details`](#details)
     - [Section for hash functions](#section-for-hash-functions)
 - [References](#references)
 - [Examples](#examples)
     - [SWAP REQUEST frame](#swap-request-frame)
-    - [SWAP RESPONSE (successful negotiation)](#swap-response-successful-negotiation)
-    - [SWAP RESPONSE (failed negotiation due to tight timeouts)](#swap-response-failed-negotiation-due-to-tight-timeouts)
+    - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
+    - [Response to declined SWAP RESPONSE (declined because too tight timeouts)](#response-to-declined-swap-response-declined-because-too-tight-timeouts)
 
 ## Description
 
@@ -205,10 +205,10 @@ This RFC extends the [registry](./registry.md) in the following ways:
 
 The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
 
-### Negotiation error for tight timeouts
+### Decline reason for tight timeouts
 
-A `NegotiationError` with the reason `timeouts-too-tight` is added.
-This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time.
+The decline reason `timeouts-too-tight` is added.
+This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver MAY accept the swap if they are given more time.
 
 #### `details`
 
@@ -271,7 +271,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
 }
 ```
 
-### SWAP RESPONSE (successful negotiation)
+### Response to Accepted SWAP REQUEST
 
 ``` json
 {
@@ -279,7 +279,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
   "id": 0,
   "payload": {
     "headers": {
-      "negotiation_result": "successful"
+      "decision": "accepted"
     },
     "body": { 
       "alpha_redeem_identity": "...",
@@ -289,7 +289,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
 }
 ```
 
-### SWAP RESPONSE (failed negotiation due to tight timeouts)
+### Response to declined SWAP RESPONSE (declined because too tight timeouts)
 
 ``` json
 {
@@ -297,7 +297,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
   "id": 0,
   "payload": {
     "headers": {
-      "negotiation_result": "failed"
+      "decision": "declined"
     },
     "body": { 
       "reason": "timeouts-too-tight",

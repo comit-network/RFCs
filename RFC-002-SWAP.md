@@ -23,13 +23,13 @@
 - [Examples](#examples)
     - [SWAP REQUEST frame](#swap-request-frame-1)
     - [SWAP RESPONSE frame](#swap-response-frame-1)
-        - [Successful negotiation](#successful-negotiation)
-        - [Failed negotiation](#failed-negotiation)
+        - [Accepted SWAP REQUEST](#accepted-swap-request)
+        - [Declined SWAP REQUEST](#declined-swap-request)
 - [Registry extensions](#registry-extensions)
     - [The type `Ledger`](#the-type-ledger)
     - [The type `Asset`](#the-type-asset)
     - [The type `SwapProtocol`](#the-type-swapprotocol)
-    - [The type `NegotiationError` and the initial set of possible errors](#the-type-negotiationerror-and-the-initial-set-of-possible-errors)
+    - [The type `DeclineBody` and the initial set of possible values](#the-type-declinebody-and-the-initial-set-of-possible-values)
         - [`unsatisfactory-rate`](#unsatisfactory-rate)
             - [`details`](#details)
         - [`protocol-unsupported`](#protocol-unsupported)
@@ -38,7 +38,6 @@
             - [`details`](#details-2)
         - [`unknown-asset`](#unknown-asset)
             - [`details`](#details-3)
-    - [Headers](#headers-2)
 
 ## Introduction
 
@@ -108,17 +107,15 @@ It is therefore subject to RFCs which define such protocols to also define which
 A frame of type `REQUEST` implies a `RESPONSE`.
 We will refer to the response of a SWAP REQUEST as SWAP RESPONSE.
 
-A SWAP RESPONSE contains the result of the negotiation initiated through the SWAP REQUEST.
+A SWAP RESPONSE contains the decision made by the other peer.
 
 #### Headers
 
-The response MUST contain the following header:
+The response MUST contain the `decision` header.
 
-- `negotiation_result`
+The `decision` header is defined as follows:
 
-The `negotiation_result` header is defined as follows:
-
-- `value`: `successful` OR `failed`.
+- `value`: `accepted` OR `declined`.
 - `parameters`: None
 
 #### Body
@@ -126,33 +123,13 @@ The `negotiation_result` header is defined as follows:
 The content of the `body` depends on the values of the headers.
 The following diagram illustrates the process:
 
-<!--
-@startuml
+![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://github.com/comit-network/RFCs/blob/master/assets/RFC002-parse-response-body.puml&cache=no)
 
-title Parse SWAP RESPONSE body
+The `DeclineBody` is an object with two properties:
+  - `reason`: An identifying string that briefly describes why the request was declined.
+  - `details`: An object containing further, relevant details. The object-shape depends on the given `reason`.
 
-start
-
-:inspect `negotiation_result` header;
-
-if (negotiation_result) then (successful)
-  :inspect `protocol` header;
-  :parse body according to RFC of protocol;
-else (failed)
-  :parse body as `NegotiationError`;
-endif
-
-stop
-
-@enduml
--->
-![](https://www.plantuml.com/plantuml/img/PP0nRiCm34LtdkAFzXMI9KNWZAaH3nrhLQ8I0QfeKFJGsqS9K1X8HeBlVppoKCsfhR-Po99bnkYqCgQlZn6NOHe_pzE07mb_H4-IQ9TANTWRvi9NiUGiIVbMhcks6JTsWNLFb2AwTw27tRYWgwltN6jSSq_0Lhcec7Z9Mr7RBa-bXmISzw8XbIjCS3aT8H7_cJrnRbmNNSeS-jTanNpUV0PLqRb5IaZnSPiiH8SsjLVS0G00)
-
-A `NegotiationError` is an object with a two properties:
-  - `reason`: a string acting as the identifier for the `NegotiationError`.
-  - `details`: an object containing more information about the error, depending on the given `reason`.
-
-See the [Registry extensions](#registry-extensions)-section for examples of `NegotiationError`s.
+See the [Registry extensions](#registry-extensions)-section for examples of a `DeclineBody`.
 
 ## Examples
 
@@ -193,7 +170,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
 
 ### SWAP RESPONSE frame
 
-#### Successful negotiation
+#### Accepted SWAP REQUEST
 
 ```json
 {
@@ -201,14 +178,14 @@ Elements not relevant for this RFC or which are subject to later definition are 
   "id": 0,
   "payload": {
     "headers": {
-      "negotiation_result": "successful"
+      "decision": "accepted"
     },
     "body": { ... },
   }
 }
 ```
 
-#### Failed negotiation
+#### Declined SWAP REQUEST
 
 ```json
 {
@@ -216,7 +193,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
   "id": 0,
   "payload": {
     "headers": {
-      "negotiation_result": "failed"
+      "decision": "declined"
     },
     "body": { ... },
   }
@@ -242,13 +219,13 @@ Subsequent RFCs can refer to this type if they want to define a particular asset
 A section "Protocols" is added to the registry which tracks all currently defined protocols.
 Subsequent RFCs can refer to this type if they want to define a particular swap protocol.
 
-### The type `NegotiationError` and the initial set of possible errors
+### The type `DeclineBody` and the initial set of possible values
 
-A section "Negotiation Errors" is added to the registry which tracks all currently defined errors.
-Subsequent RFCs can refer to this type if they want to define a particular negotiation error.
+A section "DeclineBodys" is added to the registry which tracks all currently defined reasons.
+Subsequent RFCs can refer to this type if they want to define new reasons for declining SWAP REQUESTs.
 
-The following `NegotiationError`s are added to the list.
-Each heading represents the `reason` of the `NegotiationError`
+The following `DeclineBody`s are added to the list.
+Each heading represents a `reason`.
 
 #### `unsatisfactory-rate`
 
@@ -283,15 +260,3 @@ An asset referenced by the sending party is unknown to the receiving party.
 ##### `details`
 
 TBD <!-- List known assets in details -->
-
-
-### Headers
-
-| Header name          | Value type                 |
-| -------------------- | -------------------------- |
-| `alpha_ledger`       | `Ledger`                   |
-| `betaledger`         | `Ledger`                   |
-| `alpha_asset`        | `Asset`                    |
-| `beta_asset`         | `Asset`                    |
-| `protocol`           | `SwapProtocol`             |
-| `negotiation_result` | `"successful" OR "failed"` |
