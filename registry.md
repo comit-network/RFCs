@@ -39,7 +39,7 @@ The following `type`s are defined:
 
 Introduced in [RFC-002](./RFC-002-SWAP.md).
 
-A SWAP request and the accroding response allow for the following headers to appear:
+A SWAP request and the according response allow for the following headers to appear:
 
 - `alpha_ledger`
 - `beta_ledger`
