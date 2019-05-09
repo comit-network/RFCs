@@ -429,7 +429,7 @@ Let's start off with an example:
 In the above example:
 - `payment_method` is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood.
-Respectively, if the key does_not start with an underscore, the header is mandatory and MUST be understood by the node.
+Respectively, if the key does not start with an underscore, the header is mandatory and MUST be understood by the node.
 - `value` is the header-value (see [Headers - Requirement 2](#headers))
 - `parameters` encode the parameters of the header.
 
