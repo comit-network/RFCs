@@ -47,7 +47,6 @@
         - [Malformed response](#malformed-response)
 - [Registry extensions](#registry-extensions)
     - [List of frame types](#list-of-frame-types)
-- [References](#references)
 
 ## Description
 
@@ -521,7 +520,3 @@ For the `REQUEST` frame, the following `type`s are defined:
 Each of the defined REQUEST `type`s should list the headers that can be used with this REQUEST.
 
 For the `ERROR` frame, the `type`s listed in the [ERROR frame](#possible-error-types) section are added as valid types.
-
-## References
-
-- [1] : https://tools.ietf.org/html/rfc3117#section-3.3
