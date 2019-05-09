@@ -228,7 +228,7 @@ Application protocols MAY include one or more headers indicating how the body sh
 When designing an application protocol, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
 The rule of thumb here is that implementations should be able to parse all headers orthogonally.
 Hence, the structure of one header SHOULD NOT depend on those of other headers.
-All data that cannot be represented in that way can be put into the `body`.
+All data that cannot be represented in that way SHOULD be put into the `body`.
 Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
 
 #### Error
