@@ -19,18 +19,18 @@
         - [Id](#id)
     - [Different frame types](#different-frame-types)
         - [Notification](#notification)
-        - [Error](#error)
+        - [Request / Response](#request--response)
             - [Structure](#structure)
+                - [Type](#type-1)
+                - [Headers](#headers)
+                - [Body](#body)
+        - [Error](#error)
+            - [Structure](#structure-1)
                 - [type](#type)
                 - [details](#details)
             - [Possible error types](#possible-error-types)
             - [Error details](#error-details)
                 - [Details for `unknown-mandatory-header`](#details-for-unknown-mandatory-header)
-        - [Request / Response](#request--response)
-            - [Structure](#structure-1)
-                - [Type](#type-1)
-                - [Headers](#headers)
-                - [Body](#body)
     - [Headers](#headers-1)
     - [JSON Encoding](#json-encoding)
         - [Frames](#frames-1)
@@ -173,54 +173,6 @@ Ids MAY be skipped but MUST be ascending.
 
 > `NOTIFICATION` is a reserved type and may be specified at a later point.
 
-#### Error
-
-The `ERROR` frame is used to communicate failures between nodes at the communication level.
-They MUST NOT be used to communicate errors on the application level.
-Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
-An `ERROR` frame cannot be sent pro-actively.
-Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
-
-##### Structure
-
-`ERROR` frames carry the following payload:
-
-###### type
-
-A machine-friendly identifier for this type of error.
-
-###### details
-
-An object which further describes this error.
-The shape depends on the `type` of the `ERROR` frame.
-
-##### Possible error types
-
-This RFC introduces the following ERROR frame types.
-Future RFCs MAY extend this list with new error types.
-
-| type | details |
-|---|---|
-| `unknown-frame-type` | None |
-| `malformed-frame` | None |
-| `unknown-request-type` | None |
-| `unknown-mandatory-header` | [See below](#details-for-unknown-mandatory-header) |
-
-##### Error details
-
-###### Details for `unknown-mandatory-header`
-
-The details object for the `unknown-mandatory-header` error is an object with a single key `header`.
-Its value is the key of the header that was marked as mandatory by the sender but was not understood by the receiver.
-
-For example:
-
-```json
-{
-  "header": "payment_method"
-}
-```
-
 #### Request / Response
 
 A request is a type of message that implies an answer.
@@ -279,6 +231,54 @@ The rule of thumb here is that implementations should be able to parse all heade
 Hence, the structure of one header SHOULD NOT depend on those of other headers.
 All data that cannot be represented in that way can be put into the `body`.
 Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
+
+#### Error
+
+The `ERROR` frame is used to communicate failures between nodes at the communication level.
+They MUST NOT be used to communicate errors on the application level.
+Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
+An `ERROR` frame cannot be sent pro-actively.
+Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
+
+##### Structure
+
+`ERROR` frames carry the following payload:
+
+###### type
+
+A machine-friendly identifier for this type of error.
+
+###### details
+
+An object which further describes this error.
+The shape depends on the `type` of the `ERROR` frame.
+
+##### Possible error types
+
+This RFC introduces the following ERROR frame types.
+Future RFCs MAY extend this list with new error types.
+
+| type | details |
+|---|---|
+| `unknown-frame-type` | None |
+| `malformed-frame` | None |
+| `unknown-request-type` | None |
+| `unknown-mandatory-header` | [See below](#details-for-unknown-mandatory-header) |
+
+##### Error details
+
+###### Details for `unknown-mandatory-header`
+
+The details object for the `unknown-mandatory-header` error is an object with a single key `header`.
+Its value is the key of the header that was marked as mandatory by the sender but was not understood by the receiver.
+
+For example:
+
+```json
+{
+  "header": "payment_method"
+}
+```
 
 ### Headers
 
