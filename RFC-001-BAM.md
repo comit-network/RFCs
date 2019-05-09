@@ -223,7 +223,7 @@ Usually, this can be derived from the `REQUEST` that is sent by a node.
 ###### Body
 
 The structure of the `body` of a REQUEST is entirely up to the application protocol.
-Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
+Application protocols MAY include one or more headers indicating how the body should be parsed (similar to HTTP's `Content-Type` header).
 
 When designing an application protocol, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
 The rule of thumb here is that implementations should be able to parse all headers orthogonally.
