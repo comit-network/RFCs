@@ -17,7 +17,7 @@
     - [Frames](#frames)
         - [Type](#type)
         - [Id](#id)
-    - [Different frame types](#different-frame-types)
+    - [Frame types](#frame-types)
         - [Notification](#notification)
         - [Request / Response](#request--response)
             - [Structure](#structure)
@@ -166,7 +166,7 @@ For example, a `RESPONSE` frame MUST use the `id` of the `REQUEST` frame it refe
 
 Ids MAY be skipped but MUST be ascending.
 
-### Different frame types
+### Frame types
 
 #### Notification
 
