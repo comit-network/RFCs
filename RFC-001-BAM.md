@@ -237,7 +237,7 @@ Implementations can then first parse the set of headers to determine the expecte
 The `ERROR` frame is used to communicate failures between nodes at the communication level.
 They MUST NOT be used to communicate errors on the application level.
 Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
-An `ERROR` frame cannot be sent pro-actively.
+An `ERROR` frame can only be sent instead of reply message (e.g. `RESPONSE`).
 Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
 
 ##### Structure
