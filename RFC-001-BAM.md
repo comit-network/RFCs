@@ -214,7 +214,7 @@ If a node receives a header in the `MUST understand` variant in a `REQUEST` and 
 Headers encoded as `MAY ignore` are ok to be not understood.
 Nodes may simply ignore them as if they were not there.
 
-To avoid more complexity through additional messages, the spec doesn't define a concept for acknowledging successful processing of a `RESPONSE` to the sender.
+To avoid more complexity through additional messages, the spec doesn't define a concept for acknowledging processing of a `RESPONSE` to the sender.
 Thus, there is no way of signaling to the sender of a `RESPONSE` whether or not it was properly understood.
 Therefore, careful thought should be put into the design and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
 In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
