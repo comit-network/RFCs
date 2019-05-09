@@ -223,7 +223,7 @@ Subsequent RFCs can refer to this type if they want to define a particular swap 
 
 ### The type `DeclineBody` and the initial set of possible values
 
-A section "DeclineBodys" is added to the registry which tracks all currently defined reasons.
+A section "DeclineBody" is added to the registry which tracks all currently defined reasons.
 Subsequent RFCs can refer to this type if they want to define new reasons for declining SWAP REQUESTs.
 
 The following `DeclineBody`s are added to the list.
