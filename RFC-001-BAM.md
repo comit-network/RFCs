@@ -513,10 +513,6 @@ The following types are added to this list:
 - REQUEST/RESPONSE
 - ERROR
 
-For the `REQUEST` frame, the following `type`s are defined:
-
-- SWAP
-
 Each of the defined REQUEST `type`s should list the headers that can be used with this REQUEST.
 
 For the `ERROR` frame, the `type`s listed in the [ERROR frame](#possible-error-types) section are added as valid types.
