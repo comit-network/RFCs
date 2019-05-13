@@ -3,5 +3,15 @@
     "editor.detectIndentation": false,
     "editor.tabSize": 4,
     "markdown.extension.list.indentationSize": "inherit",
+    "spellright.language": [
+        "en_AU"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ],
     "markdown.extension.toc.githubCompatibility": true,
+    "tableformatter.markdown.tableEdgesType": "Normal",
+    "tableformatter.common.centerAlignedHeader": false
 }

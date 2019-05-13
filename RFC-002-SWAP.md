@@ -10,267 +10,255 @@
 - [Terminology](#terminology)
     - [Ledger](#ledger)
     - [Asset](#asset)
-- [SWAP REQUEST](#swap-request)
-    - [Definition](#definition)
-    - [`headers`](#headers)
-        - [`alpha_ledger`](#alpha_ledger)
-        - [`beta_ledger`](#beta_ledger)
-        - [`alpha_asset`](#alpha_asset)
-        - [`beta_asset`](#beta_asset)
-        - [`protocol`](#protocol)
-    - [`body`](#body)
-- [SWAP RESPONSE](#swap-response)
-    - [Definition](#definition-1)
-    - [`status`](#status)
-    - [`headers`](#headers-1)
-        - [`reason` (optional)](#reason-optional)
-            - [`value`](#value)
-                - [Decline reasons](#decline-reasons)
-                - [Reject reasons](#reject-reasons)
-    - [`body`](#body-1)
-- [SWAP REQUEST](#swap-request-1)
-    - [1 Bitcoin for 21 Ether on testnet using RFC-003](#1-bitcoin-for-21-ether-on-testnet-using-rfc-003)
-    - [42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003](#42-erc20-pay-tokens-for-10000-satoshis-on-mainnnet-using-rfc-003)
-- [SWAP RESPONSE](#swap-response-1)
-    - [Request accepted](#request-accepted)
-    - [Request declined due to non-beneficial rate with hints](#request-declined-due-to-non-beneficial-rate-with-hints)
-    - [Request rejected without a reason](#request-rejected-without-a-reason)
-                - [¹ trustless: as in no one (counterpart or third party) has to be trusted.](#¹-trustless-as-in-no-one-counterpart-or-third-party-has-to-be-trusted)
-                - [² In case of RFC-003, alpha ledger is the first ledger on which an action is needed, hence the name.](#²-in-case-of-rfc-003-alpha-ledger-is-the-first-ledger-on-which-an-action-is-needed-hence-the-name)
+    - [Alpha and Beta](#alpha-and-beta)
+- [BAM! messages](#bam-messages)
+    - [SWAP REQUEST frame](#swap-request-frame)
+        - [Definition](#definition)
+        - [Headers](#headers)
+        - [Body](#body)
+    - [SWAP RESPONSE frame](#swap-response-frame)
+        - [Definition](#definition-1)
+        - [Headers](#headers-1)
+        - [Body](#body-1)
+- [Examples](#examples)
+    - [SWAP REQUEST frame](#swap-request-frame-1)
+    - [SWAP RESPONSE frame](#swap-response-frame-1)
+        - [Accepted SWAP REQUEST](#accepted-swap-request)
+        - [Declined SWAP REQUEST](#declined-swap-request)
+- [Registry extensions](#registry-extensions)
+    - [The type `Ledger`](#the-type-ledger)
+    - [The type `Asset`](#the-type-asset)
+    - [The type `SwapProtocol`](#the-type-swapprotocol)
+    - [The type `DeclineBody` and the initial set of possible values](#the-type-declinebody-and-the-initial-set-of-possible-values)
+        - [`unsatisfactory-rate`](#unsatisfactory-rate)
+            - [`details`](#details)
+        - [`protocol-unsupported`](#protocol-unsupported)
+            - [`details`](#details-1)
+        - [`unknown-ledger`](#unknown-ledger)
+            - [`details`](#details-2)
+        - [`unknown-asset`](#unknown-asset)
+            - [`details`](#details-3)
 
 ## Introduction
 
-This RFC defines the `SWAP` message types for `BAM!` (see [RFC-001](./RFC-001-BAM.md)), using JSON encoding.
-This set of message types facilitates the negotiation of an exchange of assets and the protocol parameters to execute it.
+This RFC serves two purposes:
 
-The SWAP REQUEST contains an asset exchange proposal and the Sender information to realise the exchange.
-
-The SWAP RESPONSE allows the rejection or acceptance of the exchange and may contains the Receiver information to realise the exchange. 
-
-This RFC is part of COMIT, an open protocol facilitating trustless[¹] cross-blockchain applications.
-
-This RFC contains the definition of the following `BAM!` headers:
-- [`alpha_asset`](#alpha_asset)
-- [`alpha_ledger`](#alpha_ledger)
-- [`beta_asset`](#beta_asset)
-- [`beta_ledger`](#beta_ledger)
-- [`protocol`](#protocol)
+1. Introduce terminology used to describe the exchange of assets.
+2. Define a REQUEST/RESPONSE message pair for two parties to negotiate such an exchange via `BAM!`.
 
 ## Terminology
+
+To describe the elements of an exchange, we use the terms `Ledger`, `Asset`, `Alpha` and `Beta`.
 
 ### Ledger
 
 A ledger is anything that records ownership and allows transferal of that ownership.
 
-Refer to the [registry](./registry.md#ledgers) for the definition of supported ledgers.
-
 ### Asset
 
 An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
-Refer to the [registry](./registry.md#assets) for the definition of supported assets.
+### Alpha and Beta
 
-## SWAP REQUEST
+The terms **alpha** and **beta** are used to unambiguously identify assets and ledgers in an exchange.
+Such an exchange can thus be described as:
+- Transferring the ownership of the **alpha-asset** on the **alpha-ledger** from party A to party B.
+- Transferring the ownership of the **beta-asset** on the **beta-ledger** from party B to party A.
 
-### Definition
-The SWAP REQUEST message is a `FRAME` of type `REQUEST`.
+This terminology has several advantages:
+
+1. It does not imply an order (compared to a terminology like **first**/**second**).
+2. It is not subjective to any of the parties (compared to terminology like **source**/**target**, **incoming**/**outgoing** or **local**/**remote**).
+
+## BAM! messages
+
+The messages to negotiate such an exchange consist of a `REQUEST` frame and a corresponding `RESPONSE` frame.
+
+### SWAP REQUEST frame
+
+#### Definition
+
+A SWAP REQUEST message is a `FRAME` of type `REQUEST`.
 [As per definition](./RFC-001-BAM.md#type-1) in `BAM!`, a `REQUEST` `FRAME` has a `type` that defines its semantics.
 For the SWAP REQUEST message, this type is `SWAP`.
 
-### `headers`
+#### Headers
 
-#### `alpha_ledger`
-```
-Type: Ledger 
-```
+To express all the information for an exchange, a SWAP REQUEST MUST include the following headers:
 
-The ledger on which the Sender sells and the Receiver buys[²].
+| Header         | Value (Link to registry section)                                                         | Description                                                          |
+| -------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `alpha_ledger` | [Ledger](https://github.com/comit-network/RFCs/blob/master/registry.md#ledgers)          | The ledger the alpha-asset is tracked on.                            |
+| `beta_ledger`  | [Ledger](https://github.com/comit-network/RFCs/blob/master/registry.md#ledgers)          | The ledger the beta-asset is tracked on.                             |
+| `alpha_asset`  | [Asset](https://github.com/comit-network/RFCs/blob/master/registry.md#assets)            | The asset whose ownership will be transferred on the `alpha_ledger`. |
+| `beta_asset`   | [Asset](https://github.com/comit-network/RFCs/blob/master/registry.md#assets)            | The asset whose ownership will be transferred on the `beta_ledger`.  |
+| `protocol`     | [SWAP Protocol](https://github.com/comit-network/RFCs/blob/master/registry.md#protocols) | The protocol that is used to transfer the ownership of the assets.   |
 
-#### `beta_ledger`
-```
-Type: Ledger
-```
-The ledger on which the Sender buys and the Receiver sells.
+This RFC only defines these headers.
+The actual definition of ledgers, assets and protocols is not subject to this RFC.
 
-#### `alpha_asset`
-```
-Type: Asset
-```
+#### Body
 
-The asset that the Sender sells and the Receiver buys.
+The body of a SWAP REQUEST depends on the chosen `protocol`.
+It is therefore subject to RFCs which define such protocols to also define which information is contained in the `body` of a SWAP REQUEST/RESPONSE frame.
 
-#### `beta_asset`
+### SWAP RESPONSE frame
 
-The asset that the Sender buys and the Receiver sells.
+#### Definition
 
-#### `protocol`
-A protocol that defines the steps, transactions and communications needed to proceed with an asset exchange.
+A frame of type `REQUEST` implies a `RESPONSE`.
+We will refer to the response of a SWAP REQUEST as SWAP RESPONSE.
 
-The exact value of this header will be defined in subsequent swap protocol RFCs.
+A SWAP RESPONSE contains the decision made by the other peer.
 
-### `body`
-Refer to the RFC of the given swap protocol.
+#### Headers
 
-## SWAP RESPONSE
+The response MUST contain the `decision` header.
 
-### Definition
-The SWAP RESPONSE message is a `FRAME` of type `RESPONSE`.
+The `decision` header is defined as follows:
 
-### `status`
+- `value`: `accepted` OR `declined`.
+- `parameters`: None
 
-See [RFC-001](./RFC-001-BAM.md#status-code-families) for more details, including the definition of statuses `XX00-19`.
+#### Body
 
-RFC-002 reserves statuses 20 to 39 across all families.
-Protocols may define the meaning of statuses 40 and above.
+The content of the `body` depends on the values of the headers.
+The following diagram illustrates the process:
 
-* `OK20`: Accepted
-* `RE20`: Declined - the Receiver voluntarily turned down the swap request
-* `RE21`: Rejected - the Receiver is not able to proceed with the swap request
+![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://github.com/comit-network/RFCs/blob/master/assets/RFC002-parse-response-body.puml&cache=no)
 
-### `headers`
-#### `reason` (optional)
-The reason why the Receiver Declined or Rejected the swap request.
+The `DeclineBody` is an object with two properties:
+  - `reason`: An identifying string that briefly describes why the request was declined.
+  - `details`: An object containing further, relevant details. The object-shape depends on the given `reason`.
 
-Reason's `parameters` are hints on which request headers, if changed, may lead a subsequent request to be accepted.
+See the [Registry extensions](#registry-extensions)-section for examples of a `DeclineBody`.
 
-##### `value`
+## Examples
 
-###### Decline reasons
-The following reasons must be accompanied with a `RE20` status.
+This section contains examples of SWAP REQUEST/RESPONSE frames.
+Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
-| Value                     | Description     | Hints Conditions | Supported Parameters |
-|:----                      |:---             |:---              |:---                  |
-| `unsatisfactory-rate`     | The Receiver rejects the exchange rate and may accept a swap request with a different rate.                             | optional, both or none | `alpha_asset`, `beta_asset` |
-| `unsatisfactory-quantity` | The Receiver declines the offered asset quantity and may accept the request if a different asset quantity is requested. | optional, both or none | `alpha_asset`, `beta_asset` | 
-
-###### Reject reasons
-The following reasons must be accompanied with a `RE21` status.
-
-| Value                  | Description | Hints Conditions | Supported Parameters |
-|:---                    |:---         |:----             |:---                  |
-| `protocol-unsupported` | The Receiver does not support the requested protocol.                             | optional | `protocol` |
-| `unsupported-ledger`   | The Receiver does not support the requested ledger combination.                   | none | |
-| `unavailable-asset`    | The Receiver does not have the given asset or enough of the given asset quantity. | optional, both or none | `alpha_asset`, `beta_asset` |
-
-### `body`
-
-Refer to the RFC of the given swap protocol.
-
-# Examples
-
-## SWAP REQUEST
-
-### 1 Bitcoin for 21 Ether on testnet using RFC-003
+### SWAP REQUEST frame
 
 ```json
 {
-  "type": "SWAP",
-  "headers": {
-    "alpha_ledger": {
-      "value": "bitcoin",
-      "parameters": { "network": "regtest" }
-    },
-    "beta_ledger": {
-      "value": "ethereum",
-      "parameters": { "network": "ropsten" }
-    },
-    "alpha_asset": {
-      "value": "bitcoin",
-      "parameters": { "quantity": "100000000" }
-    },
-    "beta_asset": {
-      "value": "ether",
-      "parameters": { "quantity": "21000000000000000000" }
-    },
-    "protocol": "comit-rfc-003",
-  },
-  "body": {},
-}
-```
-
-### 42 ERC20 PAY tokens for 10,000 Satoshis on mainnnet using RFC-003
-
-```json
-{
-  "type": "SWAP",
-  "headers": {
-    "alpha_ledger": {
-      "value": "ethereum",
-      "parameters": { "network": "mainnet" }
-    },
-    "beta_ledger": {
-      "value": "bitcoin",
-      "parameters": { "network": "mainnet" }
-    },
-    "alpha_asset": {
-      "value": "erc20",
-      "parameters": {
-        "quantity": "42000000000000000000",
-        "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280"
-      }
-    },
-    "beta_asset": {
-      "value": "bitcoin",
-      "parameters": { "quantity": "10000" }
-    },
-    "protocol": "comit-rfc-003",
-  },
-  "body": {},
-}
-```
-
-## SWAP RESPONSE
-
-### Request accepted
-
-```json
-{
-  "status": "OK20",
-  "headers": {},
-  "body": {},
-}
-```
-
-### Request declined due to non-beneficial rate with hints
-
-```json
-{
-  "status": "RE20",
-  "headers": {
-    "reason": {
-      "value": "rate-declined",
-      "parameters": {
-        "alpha_asset": {
-          "value": "erc20",
-          "parameters": {
-            "quantity": "42500000000000000000",
-            "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280"
-          }
-        },
-        "beta_asset": {
-          "value": "bitcoin",
-          "parameters": { "quantity": "10000" }
-        },
+  "type": "REQUEST",
+  "id": 0,
+  "payload": {
+    "type": "SWAP",
+    "headers": {
+      "alpha_ledger": {
+        "value": "...",
+        "parameters": { ... }
       },
+      "beta_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "alpha_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "protocol": "...",
     },
-  },
-  "body": {},
+    "body": { ... },
+  } 
 }
 ```
 
-### Request rejected without a reason
+### SWAP RESPONSE frame
+
+#### Accepted SWAP REQUEST
 
 ```json
 {
-  "status": "RE21",
-  "headers": {},
-  "body": {},
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "decision": "accepted"
+    },
+    "body": { ... },
+  }
 }
 ```
 
----
+#### Declined SWAP REQUEST
 
-###### ¹ trustless: as in no one (counterpart or third party) has to be trusted.
-[¹]:#-trustless-as-in-no-one-counterpart-or-third-party-has-to-be-trusted
-###### ² In case of [RFC-003](wip), alpha ledger is the first ledger on which an action is needed, hence the name.
-[²]:#-in-case-of-rfc-003-this-the-first-ledger-on-which-an-action-is-needed-hence-the-name
+```json
+{
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "decision": "declined"
+    },
+    "body": { ... },
+  }
+}
+```
+
+## Registry extensions
+
+This RFC extends the registry with the following elements:
+
+### The type `Ledger`
+
+A section "Ledgers" is added to the registry which tracks all currently defined ledger types.
+Subsequent RFCs can refer to this type if they want to define a particular ledger.
+
+### The type `Asset`
+
+A section "Assets" is added to the registry which tracks all currently defined asset types.
+Subsequent RFCs can refer to this type if they want to define a particular asset.
+
+### The type `SwapProtocol`
+
+A section "Protocols" is added to the registry which tracks all currently defined protocols.
+Subsequent RFCs can refer to this type if they want to define a particular swap protocol.
+
+### The type `DeclineBody` and the initial set of possible values
+
+A section "DeclineBody" is added to the registry which tracks all currently defined reasons.
+Subsequent RFCs can refer to this type if they want to define new reasons for declining SWAP REQUESTs.
+
+The following `DeclineBody`s are added to the list.
+Each heading represents a `reason`.
+
+#### `unsatisfactory-rate`
+
+The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.
+
+##### `details`
+
+TBD 
+
+#### `protocol-unsupported`
+
+The protocol specified in the `protocol` header is not known to the receiving party.
+
+##### `details`
+
+TBD <!-- List known protocols in details -->
+
+#### `unknown-ledger`
+
+A ledger referenced by the sending party is unknown to the receiving party.
+Note that different networks of the same blockchain are different ledgers!
+Bitcoin Testnet is a different ledger than Bitcoin Mainnet.
+
+##### `details`
+
+TBD <!-- List known ledgers in details -->
+
+#### `unknown-asset`
+
+An asset referenced by the sending party is unknown to the receiving party.
+
+##### `details`
+
+TBD <!-- List known assets in details -->

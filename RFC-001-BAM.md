@@ -17,18 +17,20 @@
     - [Frames](#frames)
         - [Type](#type)
         - [Id](#id)
-    - [Different frame types](#different-frame-types)
+    - [Frame types](#frame-types)
         - [Notification](#notification)
         - [Request / Response](#request--response)
             - [Structure](#structure)
-            - [Optional fields](#optional-fields)
-            - [Type](#type-1)
-            - [Status](#status)
-            - [Headers](#headers)
-            - [Status code families](#status-code-families)
-                - [Successful responses (OK00-OK99)](#successful-responses-ok00-ok99)
-                - [Sender errors (SE00-SE99)](#sender-errors-se00-se99)
-                - [Receiver errors (RE00-RE99)](#receiver-errors-re00-re99)
+                - [Type](#type-1)
+                - [Headers](#headers)
+                - [Body](#body)
+        - [Error](#error)
+            - [Structure](#structure-1)
+                - [type](#type)
+                - [details](#details)
+            - [Possible error types](#possible-error-types)
+            - [Error details](#error-details)
+                - [Details for `unknown-mandatory-header`](#details-for-unknown-mandatory-header)
     - [Headers](#headers-1)
     - [JSON Encoding](#json-encoding)
         - [Frames](#frames-1)
@@ -43,7 +45,8 @@
         - [Naming conventions](#naming-conventions)
     - [Connection errors / failure cases](#connection-errors--failure-cases)
         - [Malformed response](#malformed-response)
-- [References](#references)
+- [Registry extensions](#registry-extensions)
+    - [List of frame types](#list-of-frame-types)
 
 ## Description
 
@@ -141,6 +144,7 @@ The following types are allowed:
 
 - REQUEST
 - RESPONSE
+- ERROR
 
 The following types are reserved for future use:
 
@@ -156,11 +160,13 @@ This means the maximum allowed value is `4294967295`.
 
 Ids MUST NOT be reused for subsequent frames.
 
-A node should only assign `id`s to frames that are out-going and self-initiated, for example `REQUEST` frames. `RESPONSE` frames MUST have the same `id` as the `REQUEST` frame they belong to.
+A node should only assign `id`s to frames that are out-going and self-initiated, for example `REQUEST` frames.
+All frames that act as a reply to another frame MUST use the `id` of the message they are replying to.
+For example, a `RESPONSE` frame MUST use the `id` of the `REQUEST` frame it refers to.
 
 Ids MAY be skipped but MUST be ascending.
 
-### Different frame types
+### Frame types
 
 #### Notification
 
@@ -170,42 +176,33 @@ Ids MAY be skipped but MUST be ascending.
 
 A request is a type of message that implies an answer.
 Nodes MUST be prepared to receive a frame of type `RESPONSE` with the id used in the `REQUEST` frame.
+Alternatively to a `RESPONSE` frame, the other party MAY instead send an `ERROR` frame.
 
 ##### Structure
 
 A frame of type `REQUEST` carries the following payload:
 
-- Type
-- Headers
-- Body
+- type
+- headers
+- body
 
-whereas a frame of type `RESPONSE` looks like this:
+Conversely, a frame of type `RESPONSE` looks like this:
 
-- Status
-- Headers
-- Body
+- headers
+- body
 
-##### Optional fields
+With the exception of `type`, all of these are optional and MAY be omitted if they are empty and the underlying encoding allows this without introducing ambiguity.
+For example, the JSON encoding can easily handle that whereas a binary encoding may have a difficult time omitting certain fields.
 
-With the exception of `Type` and `Status`, all of these are optional and MAY be omitted if they are empty and the underlying encoding allows this without introducing ambiguity.
-For example, the JSON encoding can easily handle that whereas a binary encoding may have a difficult time to omit certain fields.
-
-##### Type
+###### Type
 
 The field `type` in a request defines the semantics of the given request.
 Defining a particular request type usually comes with defining the headers which are usable within this request.
 
-##### Status
+###### Headers
 
-The design of the `status` field is similar to the status-code in HTTP.
-It's goal is to be easily machine-readable and assign semantics to status codes that are related to each other.
-See [[1], Section 3.3]( https://tools.ietf.org/html/rfc3117#section-3.3) for more information on the design of status codes.
-
-##### Headers
-
-`Headers` and `Body` are supposed to be used by an application protocol defined on top of `BAM`.
-Application protocols can be described by defining `REQUEST` types and with them, the semantics of certain headers and the body of a `REQUEST`.
-Similar to HTTP, application protocols MAY include some kind of 'Content-Type' in the headers in order to describe the encoding of the body.
+`Headers` are supposed to be used by an application protocol defined on top of `BAM`.
+Application protocols can be described by defining `REQUEST` types and, with them, the semantics of certain headers of a `REQUEST`.
 
 In addition, headers also encode compatibility information.
 Each header is available in two variants:
@@ -213,80 +210,74 @@ Each header is available in two variants:
 - MUST understand
 - MAY ignore
 
-If a node receives a header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with a `SE01` response.
-See section [Sender Error Responses](#sender-errors-se00-se99) for further details.
+If a node receives a header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST reject the request with an `ERROR` frame of type `unknown-mandatory-header`.
 Headers encoded as `MAY ignore` are ok to be not understood.
 Nodes may simply ignore them as if they were not there.
 
-If a node receives a `RESPONSE` frame with a header that is marked as `MUST understand` but it does not understand it, it MUST stop processing this response.
-The reason behind this is that the responding party demanded understanding of this header in order to continue.
-This is most likely due to a backwards-incompatible change in a protocol where the receiving party would act in an incompatible way if it did not take the mandatory header into account.
+To avoid more complexity through additional messages, the spec doesn't define a concept for acknowledging processing of a `RESPONSE` to the sender.
+Thus, there is no way of signaling to the sender of a `RESPONSE` whether or not it was properly understood.
+Therefore, careful thought should be put into the design and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
+In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
+Usually, this can be derived from the `REQUEST` that is sent by a node.
 
-##### Status code families
+###### Body
 
-Similar to HTTP, this protocol divides status codes into different families.
-By separating semantically different responses from each other, programs are able understand these semantics and act upon them.
-The simplest example is probably successful versus non-successful responses.
-Even within non-successful responses, one can distinguish between errors caused by the sender and errors caused by the Receiver (400 vs 500 in HTTP).
+The structure of the `body` of a REQUEST is entirely up to the application protocol.
+Application protocols MAY include one or more headers indicating how the body should be parsed (similar to HTTP's `Content-Type` header).
 
-The purpose of status codes is to allow nodes to act in pre-defined ways for certain error/success scenarios.
-For example, a node could be configured auto-retry a request for certain errors if it knows how to resolve them.
+When designing an application protocol, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
+The rule of thumb here is that implementations should be able to parse all headers orthogonally.
+Hence, the structure of one header SHOULD NOT depend on those of other headers.
+All data that cannot be represented in that way SHOULD be put into the `body`.
+Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
 
-In order to avoid confusion with HTTP, the status code families are defined as a pair of characters.
-Individual codes within the family have a particular meaning.
+#### Error
 
-- OK00 (read as OK-00)
-- SE00 (read as **S**ender**E**rror-00)
-- RE00 (read as **R**eceiver**E**rror-00)
+The `ERROR` frame is used to communicate failures between nodes at the communication level.
+They MUST NOT be used to communicate errors on the application level.
+Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
+An `ERROR` frame can only be sent instead of reply message (e.g. `RESPONSE`).
+Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
 
-This protocol reserves the status codes 00 to 19 for all of the families.
-Application protocols that build on top of this transport protocol MUST NOT redefine any status codes within this range.
-However, they are highly encouraged to define status codes started from `20` for their own purposes.
+##### Structure
 
-If a node doesn't understand a particular status code, it should treat it as the generic one for the particular family.
-For example, if the status code `OK58` is not understood, node should continue as if the status code is `OK00`.
+`ERROR` frames carry the following payload:
 
-###### Successful responses (OK00-OK99)
+###### type
 
-All kinds of successful responses go into the `OK` family. `OK00` to `OK19` are reserved for use within this transport protocol.
+A machine-friendly identifier for this type of error.
 
-1. OK00 - Successful
+###### details
 
-    A response with `OK00` indicates that the responding node understood the request and processed it successfully.
+An object which further describes this error.
+The shape depends on the `type` of the `ERROR` frame.
 
-###### Sender errors (SE00-SE99)
+##### Possible error types
 
-If a node responds with a status code from the `SE` family, this means that it was unable to process this request due to its content (similar to the HTTP 400 family). Sending nodes SHOULD NOT resend such a request without modification.
+This RFC introduces the following ERROR frame types.
+Future RFCs MAY extend this list with new error types.
 
-Looking at these responses, it might at first be confusing why they are listed in the `SE` category even though it is usually the receiving end that is unable to process the request because it doesn't meet certain requirements.
-The reason why it is still a `SenderError` is because the sender can potentially adjust the request and try again if it has this kind of error handling built in.
-The receiving end however probably needs an upgrade to a newer version so that it understands these requests.
-It is therefore the sender's "fault" that the two nodes could not successfully communicate.
+| type | details |
+|---|---|
+| `unknown-frame-type` | None |
+| `malformed-frame` | None |
+| `unknown-request-type` | None |
+| `unknown-mandatory-header` | [See below](#details-for-unknown-mandatory-header) |
 
-1. SE00 - Bad request
+##### Error details
 
-    A response with the status code `SE00` indicates that the request sent by sender was malformed and could not be processed.
-This is the most generic error that can be returned by a node.
-If no other errors code fits as to why the request was faulty, this one can be returned.
+###### Details for `unknown-mandatory-header`
 
-2. SE01 - Unsupported mandatory header
+The details object for the `unknown-mandatory-header` error is an object with a single key `header`.
+Its value is the key of the header that was marked as mandatory by the sender but was not understood by the receiver.
 
-    Whenever a node receives a header that it does not understand, it should return a response with the SE01 status code.
-Responses with the SE01 status code MUST include the header `unsupported_headers` with its value set to a list of mandatory headers it didn't understand.
-If a node does not understand multiple headers, it SHOULD list all of them.
+For example:
 
-3. SE02 - Unknown request type
-
-    A response with the status code `SE02` indicates that the sender sent a request with a `type` that was not understood.
-
-###### Receiver errors (RE00-RE99)
-
-Responses from the `RE` family indicate that the receiving node encountered an error during process of the request.
-A sending node MAY infer that the request itself was fine but the receiving end failed to process it due to an internal error which the sending end MUST NOT be held responsible for.
-
-1. RE00 - Internal error
-
-    `RE00` indicates that the node encountered an internal, unexpected error during processing of the request.
+```json
+{
+  "header": "payment_method"
+}
+```
 
 ### Headers
 
@@ -382,9 +373,9 @@ Example:
 
 ```json
 {
-    "type": "REQUEST",
-    "id": 10,
-    "payload": {}
+  "type": "REQUEST",
+  "id": 10,
+  "payload": {}
 }
 ```
 
@@ -399,22 +390,21 @@ For the `REQUEST` frame, the `payload` looks like this:
 
 ```json
 {
-    "type": "...",
-    "headers": {},
-    "body": {},
+  "type": "...",
+  "headers": {},
+  "body": {},
 }
 ```
 
 ##### Response
 
 The `payload` of a `RESPONSE` frame shares the same encoding as the `REQUEST` frame.
-As noted above, responses don't have a `type` but instead a mandatory `status` field.
+As noted above, responses don't have a `type`.
 
 ```json
 {
-    "status": "...",
-    "headers": {},
-    "body": {},
+  "headers": {},
+  "body": {},
 }
 ```
 
@@ -427,18 +417,19 @@ This section defines how headers are encoded in the JSON-based text encoding.
 Let's start off with an example:
 
 ```json
-"_source_ledger" : {
-    "value": "Bitcoin",
-    "parameters": {
-        "network": "mainnet"
-    }
+"_payment_method" : {
+  "value": "credit-card",
+  "parameters": {
+    "provider": "tenx",
+    "number": "0000-0000-0000-0000"
+  }
 }
 ```
 
 In the above example:
-- `source_ledger` is the header-key.
+- `payment_method` is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood.
-Respectively, if the key does_not start with an underscore, the header is mandatory and MUST be understood by the node.
+Respectively, if the key does not start with an underscore, the header is mandatory and MUST be understood by the node.
 - `value` is the header-value (see [Headers - Requirement 2](#headers))
 - `parameters` encode the parameters of the header.
 
@@ -457,15 +448,15 @@ Sometimes, headers only carry one particular value.
 For example:
 
 ```json
-"swap_protocol": {
-    "value": "COMIT-RFC-003"
+"payment_method": {
+  "value": "cash"
 }
 ```
 
 In cases like these, where there are no parameters, implementations can choose to use the compact representation which looks like this:
 
 ```json
-"swap_protocol": "COMIT-RFC-003"
+"payment_method": "cash"
 ```
 
 Implementations MUST be able to process compact representations.
@@ -477,17 +468,17 @@ The following is therefore invalid:
 
 ```json
 "invalid_header": {
-    "some_key": "foobar"
+  "some_key": "foobar"
 }
 ```
 
-If a header needs an `object` to express its value, you should resort to the default representation to make it unambigous:
+If a header needs an `object` to express its value, you should resort to the default representation to make it unambiguous:
 
 ```json
 "valid_header": {
-    "value": {
-        "some_key": "foobar"
-    }
+  "value": {
+    "some_key": "foobar"
+  }
 }
 ```
 
@@ -496,9 +487,9 @@ If a header needs an `object` to express its value, you should resort to the def
 - Frame types should use all caps convention.
 For example, `REQUEST`.
 - Headers should use snake case convention.
-For example, `source_ledger`.
+For example, `payment_method`.
 - `REQUEST` types should use all caps convention as well.
-For example: `SWAP`.
+For example: `BUY`.
 
 ### Connection errors / failure cases
 
@@ -507,11 +498,21 @@ The following section describes the behaviour in certain failure scenarios.
 #### Malformed response
 
 It can happen that a counterparty sends a malformed response or that the response is not deserializable due to some other cause.
-For requests, a response can be sent back to inform the other party of the problem.
+For requests, an `ERROR` frame with type `malformed-frame` can be sent back to the other party.
 However, there are no response messages for responses.
 In this case, implementations should treat this as a *temporary* failure by logging the incident and ignoring the malformed response.
 Implementations should be able to receive further messages on the connection.
 
-## References
+## Registry extensions
 
-- [1] : https://tools.ietf.org/html/rfc3117#section-3.3
+### List of frame types
+
+This RFC adds a section "FRAME types" to track the list of available `type`s to be used for `FRAME`s.
+The following types are added to this list:
+
+- REQUEST/RESPONSE
+- ERROR
+
+Each of the defined REQUEST `type`s should list the headers that can be used with this REQUEST.
+
+For the `ERROR` frame, the `type`s listed in the [ERROR frame](#possible-error-types) section are added as valid types.

@@ -14,9 +14,7 @@
     - [SWAP Request Header](#swap-request-header)
         - [`hash_function`](#hash_function)
     - [SWAP Request Body](#swap-request-body)
-    - [Swap Response (Accept)](#swap-response-accept)
-    - [Swap Response (Decline)](#swap-response-decline)
-        - [`timeouts-too-tight`](#timeouts-too-tight)
+    - [SWAP Response](#swap-response)
 - [Execution Phase](#execution-phase)
     - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
     - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
@@ -25,11 +23,15 @@
 - [Application Considerations](#application-considerations)
 - [Security Considerations](#security-considerations)
 - [Registry Extensions](#registry-extensions)
+    - [Ledgers have identities](#ledgers-have-identities)
+    - [Decline reason for tight timeouts](#decline-reason-for-tight-timeouts)
+        - [`details`](#details)
+    - [Section for hash functions](#section-for-hash-functions)
 - [References](#references)
-- [Bitcoin to Ethereum](#bitcoin-to-ethereum)
-    - [SWAP REQUEST](#swap-request)
-    - [SWAP RESPONSE (accept)](#swap-response-accept)
-    - [SWAP RESPONSE (reject: `timeouts-too-tight`)](#swap-response-reject-timeouts-too-tight)
+- [Examples](#examples)
+    - [SWAP REQUEST frame](#swap-request-frame)
+    - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
+    - [Response to declined SWAP RESPONSE (declined because too tight timeouts)](#response-to-declined-swap-response-declined-because-too-tight-timeouts)
 
 ## Description
 
@@ -103,39 +105,24 @@ How to construct HTLCs based on SHA-256 and other hash functions for particular 
 ### SWAP Request Body
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
-| Name                    | JSON Encoding       | Description                                                                                               |
-|:-------------------------|:---------------------|:-----------------------------------------------------------------------------------------------------------|
-| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                     |
-| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                      |
-| `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                   |
-| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret  |
-| `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                       |
+| Name                    | JSON Encoding       | Description                                                                                              |
+| :---------------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
+| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                    |
+| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                     |
+| `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                  |
+| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret |
+| `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                      |
 
 If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consider the request to be invalid.
 
-### Swap Response (Accept)
+### SWAP Response
 
-If responding with `OK00`, the responder MUST include the following fields in the response body:
+If responding with `successful` for the `negotiation_result` header, the responder MUST include the following fields in the response body:
 
-| Name                    | JSON Encoding | Description                                                                                               |
-|-------------------------|---------------|-----------------------------------------------------------------------------------------------------------|
-| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret  |
-| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`      |
-
-
-### Swap Response (Decline)
-
-This RFC extends the SWAP [reason header](./RFC-002-SWAP.md#reason) with the following possible values when responding with a `RE20 - Declined` status.
-
-#### `timeouts-too-tight`
-
-This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time.
-
-Parameters:
-
-| Name          | JSON Encoding | Description                                                                         |
-| ------------- | ------------- | ----------------------------------------------------------------------------------- |
-| min-time      | `u32`         | The minimum time difference between the HLTCs in seconds that the receiver requires |
+| Name                    | JSON Encoding | Description                                                                                              |
+| ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
+| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret |
+| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`     |
 
 ## Execution Phase
 
@@ -214,88 +201,110 @@ A security model of the protocol and its associated parameters will be included 
 
 This RFC extends the [registry](./registry.md) in the following ways:
 
-- **identity**: The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
-- **`reason` header**: Adds an additional possible value `timeouts-too-tight` to the `reason` header.
-- **Hash Functions**: Adds a new section for listing hash functions and how to refer to them and adds `SHA-256` to this section.
+### Ledgers have identities
+
+The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
+
+### Decline reason for tight timeouts
+
+The decline reason `timeouts-too-tight` is added.
+This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver MAY accept the swap if they are given more time.
+
+#### `details`
+
+| detail   | type   | required | description                                                                         |
+| :------- | :----- | :------- | :---------------------------------------------------------------------------------- |
+| min_time | number | no       | The minimum time difference between the HLTCs in seconds that the receiver requires |
+
+### Section for hash functions
+
+A new section for listing hash functions is added.
+`SHA-256` is added as an initial value.
 
 ## References
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
 
-# Examples
+## Examples
 
-## Bitcoin to Ethereum
+Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
-### SWAP REQUEST
+### SWAP REQUEST frame
 ``` json
 {
-  "type": "SWAP",
-  "headers": {
-    "alpha_ledger": {
-      "value": "bitcoin",
-      "parameters": {
-        "network": "regtest"
-      }
-    },
-    "beta_ledger": {
-      "value": "ethereum",
-      "parameters": {
-        "network": "ropsten"
-      }
-    },
-    "alpha_asset": {
-      "value": "bitcoin",
-      "parameters": {
-        "quantity": "100000000"
-      }
-    },
-    "beta_asset": {
-      "value": "ether",
-      "parameters": {
-        "quantity": "21000000000000000000"
-      }
-    },
-    "protocol": {
-      "value": "comit-rfc-003",
-      "parameters": {
+  "type": "REQUEST",
+  "id": 0,
+  "payload": {
+    "type": "SWAP",
+    "headers": {
+      "alpha_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_ledger": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "alpha_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "beta_asset": {
+        "value": "...",
+        "parameters": { ... }
+      },
+      "protocol": {
+        "value": "comit-rfc-003",
+        "parameters": {
           "hash_function": "SHA-256"
-      }
-    }
-  },
-  "body": {
-    "alpha_expiry": 1547697466,
-    "beta_expiry": 1547611066,
-    "alpha_refund_identity": "482d8bc0a2f6bb72f38a62bcafb85c2c04b8e9d4",
-    "beta_redeem_identity": "0xdaa74f7c9d4894f396860037ca727a2ba726819d",
-    "secret_hash": "07954accecf3a81b484b0bbb9cc63034fb6c1037f234288f5d297aa9f669a756"
-  }
-}
-```
-
-### SWAP RESPONSE (accept)
-
-``` json
-{
-  "status": "OK00",
-  "body": {
-    "alpha_redeem_identity": "3c045591864c6b52658db072e47a01f658d53e0f",
-    "beta_redeem_identity": "0xb39161874921fd329233a9134e537425bb4e72fb"
-  }
-}
-```
-
-### SWAP RESPONSE (reject: `timeouts-too-tight`)
-
-``` json
-{
-    "status": "RE20",
-    "headers" : {
-        "reason" : {
-            "value" : "timeouts-too-tight",
-            "parameters" : {
-                "min-time" : 172800,
-            }
         }
+      }
+    },
+    "body": {
+      "alpha_expiry": ...,
+      "beta_expiry": ...,
+      "alpha_refund_identity": "...",
+      "beta_redeem_identity": "...",
+      "secret_hash": "..."
     }
+  } 
+}
+```
+
+### Response to Accepted SWAP REQUEST
+
+``` json
+{
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "decision": "accepted"
+    },
+    "body": { 
+      "alpha_redeem_identity": "...",
+      "beta_redeem_identity": "..."
+    },
+  }
+}
+```
+
+### Response to declined SWAP RESPONSE (declined because too tight timeouts)
+
+``` json
+{
+  "type": "RESPONSE",
+  "id": 0,
+  "payload": {
+    "headers": {
+      "decision": "declined"
+    },
+    "body": { 
+      "reason": "timeouts-too-tight",
+      "details": {
+          "min_time": 7200
+      }
+    },
+  }
 }
 ```

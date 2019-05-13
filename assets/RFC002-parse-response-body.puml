@@ -1,0 +1,18 @@
+@startuml
+
+title Parse SWAP RESPONSE body
+
+start
+
+:inspect `decision` header;
+
+if (decision) then (accepted)
+  :inspect `protocol` header;
+  :parse body according to RFC of protocol;
+else (declined)
+  :parse body as `DeclineBody`;
+endif
+
+stop
+
+@enduml
