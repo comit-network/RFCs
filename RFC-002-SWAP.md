@@ -125,7 +125,7 @@ The `decision` header is defined as follows:
 The content of the `body` depends on the values of the headers.
 The following diagram illustrates the process:
 
-![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://github.com/comit-network/RFCs/blob/master/assets/RFC002-parse-response-body.puml&cache=no)
+![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC002-parse-response-body.puml&cache=no)
 
 The `DeclineBody` is an object with two properties:
   - `reason`: An identifying string that briefly describes why the request was declined.
