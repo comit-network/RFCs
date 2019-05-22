@@ -170,24 +170,23 @@ finishTransferTokens:
 }
 ```
 
-The following is the contract deployment code encoded template as hex which will deploy the above contract when the placeholder values (set to `00`s) are replaced with the parameters.
+The following is the contract deployment code encoded template as hex which will deploy the above contract when the placeholder values are replaced with the parameters.
 
 
 ```
-61014461000f6000396101446000f3361561005457602036141561006057602060006000376020602160206000600060026048f17f000000000000000000000000000000000000000000000000000000000000000060215114166100665760006000f35b426300000000106100a9575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17300000000000000000000000000000000000000006020526100ec565b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a17300000000000000000000000000000000000000006020526100ec565b63a9059cbb6000527f0000000000000000000000000000000000000000000000000000000000000064604052602060606044601c6000730000000000000000000000000000000000000000620186a05a03f150602051ff
+6120026110016000396120026000f3361561005457602036141561006057602060006000376020602160206000600060026048f17f100000000000000000000000000000000000000000000000000000000000000160215114166100665760006000f35b426320000002106100a9575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17330000000000000000000000000000000000000036020526100ec565b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a17340000000000000000000000000000000000000046020526100ec565b63a9059cbb6000527f5000000000000000000000000000000000000000000000000000000000000005604052602060606044601c6000736000000000000000000000000000000000000006620186a05a03f150602051ff
 ```
 
 To compile the contract code replace the placeholder values with the HTLC paramters at the following offsets:
 
-| Data              | Position of first byte | Position of last byte | Length (bytes) |
-|:------------------|:-----------------------|:----------------------|:---------------|
-| `secret_hash`     | 53                     | 84                    | 32             |
-| `expiry`          | 102                    | 105                   | 4              |
-| `redeem_identity` | 157                    | 176                   | 20             |
-| `refund_identity` | 224                    | 253                   | 20             |
-| `token_quantity`  | 261                    | 292                   | 32             |
-| `token_contract`  | 307                    | 338                   | 32             |
-
+| Name                     | Byte Range | Length (bytes) |
+| :---                     | :---       | :---           |
+| `secret_hash`            | 53..85     | 32             |
+| `refund_timestamp`       | 102..106   | 4              |
+| `redeem_address`         | 157..177   | 20             |
+| `refund_address`         | 224..244   | 20             |
+| `amount`                 | 261..293   | 32             |
+| `token_contract_address` | 307..327   | 20             |
 
 
 The contract emits two logs:

@@ -167,21 +167,21 @@ refund:
 
 ```
 
-The following is the contract deployment code template encoded as hex which will deploy the above contract when the placeholder values (set to `00`s) are replaced with the parameters.
+The following is the contract deployment code template encoded as hex which will deploy the above contract when the placeholder values are replaced with the parameters.
 
 ```
-6100dc61000f6000396100dc6000f336156051576020361415605c57602060006000376020602160206000600060026048f17f0000000000000000000000000000000000000000000000000000000000000000602151141660625760006000f35b42630000000010609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a1730000000000000000000000000000000000000000ff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1730000000000000000000000000000000000000000
+6120026110016000396120026000f336156051576020361415605c57602060006000376020602160206000600060026048f17f1000000000000000000000000000000000000000000000000000000000000001602151141660625760006000f35b42632000000210609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a1733000000000000000000000000000000000000003ff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1734000000000000000000000000000000000000004ff
 ```
 
 To compile the contract code replace the placeholder values with the HTLC parameters at the following offsets:
 
 
-| Data              | Position of first byte | Position of last byte | Length (bytes) |
-|:------------------|:-----------------------|:----------------------|:---------------|
-| `secret_hash`     | 51                     | 82                    | 32             |
-| `expiry`          | 99                     | 102                   | 4              |
-| `redeem_identity` | 153                    | 172                   | 20             |
-| `refund_identity` | 214                    | 233                   | 20             |
+| Name               | Byte Range | Length (bytes) |
+| :---               | :---       | :---           |
+| `secret_hash`      | 51..83     | 32             |
+| `refund_timestamp` | 99..103    | 4              |
+| `redeem_address`   | 153..173   | 20             |
+| `refund_address`   | 214..234   | 20             |
 
 The contract emits two logs:
 
