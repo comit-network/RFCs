@@ -170,7 +170,7 @@ finishTransferTokens:
 }
 ```
 
-The following is the contract deployment code encoded template as hex which will deploy the above contract when the placeholder values (set to `00`s) are replaced with the parameters.
+The following is the contract deployment code encoded template as hex which will deploy the above contract when the placeholder values are replaced with the parameters.
 
 
 ```
