@@ -23,44 +23,65 @@
 
 ## Description
 
-This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is the native Ether asset.
+This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where
+one of the ledgers is Ethereum and the associated asset is the native Ether
+asset.
 
-For definitions of the Ethereum ledger and Ether asset see [RFC006](./RFC-006-Ethereum.md).
+For definitions of the Ethereum ledger and Ether asset see
+[RFC006](./RFC-006-Ethereum.md).
 
-To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
+To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC
+defines:
 
-- The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a SWAP on the Ethereum ledger.
-- How to construct a Hash Time Lock Contract (HTLC) to lock the Ether asset on the Ethereum blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-Basic.md).
+- The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a
+  SWAP on the Ethereum ledger.
+- How to construct a Hash Time Lock Contract (HTLC) to lock the Ether asset on
+  the Ethereum blockchain.
+- How to deploy, redeem and refund the HTLC during the execution phase of
+  [RFC003](./RFC-003-SWAP-Basic.md).
 
 ## The Ethereum Identity
 
-[RFC003](./RFC-003-SWAP-Basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
+[RFC003](./RFC-003-SWAP-Basic.md) requires ledgers have an *identity* type
+specified to negotiate a SWAP.
 
-The identity to be used on Ethereum is the Ethereum *address* as defined in equation 284 of the [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf): the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
+The identity to be used on Ethereum is the Ethereum *address* as defined in
+equation 284 of the
+[Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf): the
+right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA
+public key.
 
-In the JSON encoding, an ethereum address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
-Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
+In the JSON encoding, an ethereum address MUST be encoded as this 20 byte hex
+string prefixed by `0x` (as is standard in the Ethereum ecosystem).
+Furthermore, implementations MUST also accept
+[EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case
+addresses and MAY verify the checksum.
 
-This RFC extends the [registry](./registry.md) with the following entry in the identity table:
+This RFC extends the [registry](./registry.md) with the following entry in the
+identity table:
 
 | Ledger   | Identity Name | JSON Encoding         | Description         |
 |:---------|:--------------|:----------------------|---------------------|
 | Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
 
-Note that since *contract* addresses and *user* addresses are indistinguishable, a contract address could be used as an identity.
-RFCs that use the Ethereum identity defined here should explain the impact (if any) this has on the protocol.
+Note that since *contract* addresses and *user* addresses are indistinguishable,
+a contract address could be used as an identity.  RFCs that use the Ethereum
+identity defined here should explain the impact (if any) this has on the
+protocol.
 
 ## Hash Time Lock Contract
 
 ### Hash Functions
 
-This RFC specifies SHA-256 as the only value the `hash_function` parameter to `comit-rfc-003` may take if Ethereum is used as a ledger.
-This may be expanded in subsequent RFCs.
+This RFC specifies SHA-256 as the only value the `hash_function` parameter to
+`comit-rfc-003` may take if Ethereum is used as a ledger.  This may be expanded
+in subsequent RFCs.
 
 ### Parameters
 
-The parameters for the Ether HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
+The parameters for the Ether HTLC follow
+[RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described
+concretely in the following table:
 
 | Variable        | Description                                                                 |
 |:----------------|:----------------------------------------------------------------------------|
@@ -72,18 +93,22 @@ The parameters for the Ether HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-t
 
 ### Contract
 
-This RFC defines a single disposable contract as the HTLC.
-It uses the `selfdestruct` EVM opcode to release the funds to the intended party.
+This RFC defines a single disposable contract as the HTLC.  It uses the
+`selfdestruct` EVM opcode to release the funds to the intended party.
 
-This approach was chosen over a stateful contract written in solidity so that the contract can be precisely defined, verified and updated.
+This approach was chosen over a stateful contract written in solidity so that
+the contract can be precisely defined, verified and updated.
 
 The `redeem_identity` and `refund_identity` are hard coded into the contract.
-If called with the correct `secret` as the calldata it will transfer all the Ether to the `redeem_identity` using `selfdestruct`.
-If called without any calldata after the `expiry` it will transfer all the Ether to the `refund_identity` using `selfdestruct`.
+If called with the correct `secret` as the calldata it will transfer all the
+Ether to the `redeem_identity` using `selfdestruct`.  If called without any
+calldata after the `expiry` it will transfer all the Ether to the
+`refund_identity` using `selfdestruct`.
 
-The contract never checks the caller so the redeem and refund transactions can be sent by anyone.
-The funds will only ever be transferred to the `redeem_identity` or the `refund_identity`.
-No special considerations need to be made when either identity is a contract address as they simply receive funds.
+The contract never checks the caller so the redeem and refund transactions can
+be sent by anyone.  The funds will only ever be transferred to the
+`redeem_identity` or the `refund_identity`.  No special considerations need to
+be made when either identity is a contract address as they simply receive funds.
 
 The contract is compiled from the following EVM assembly:
 
@@ -201,44 +226,60 @@ Implementations SHOULD use the following gas limits on the transactions related 
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
+The following section describes how both parties should interact with the
+Ethereum blockchain during the
+[RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
 
 ### Deployment
 
-At the start of the deployment stage, both parties compile the contract code as described in the previous section.
-We will call this value `contract_code`.
+At the start of the deployment stage, both parties compile the contract code as
+described in the previous section.  We will call this value `contract_code`.
 
-To deploy the Ether HTLC, the *funder* must deploy the `contract_code`.
-They SHOULD do this by sending a contract deployment transaction to the relevant Ethereum blockchain with:
+To deploy the Ether HTLC, the *funder* must deploy the `contract_code`.  They
+SHOULD do this by sending a contract deployment transaction to the relevant
+Ethereum blockchain with:
 
 - `contract_code` as the `data` of the transaction
-- The quantity of wei specified in the Ether Asset header as the `value` of the transaction
+- The quantity of wei specified in the Ether Asset header as the `value` of the
+  transaction
 
-The funder SHOULD NOT do this through another contract, i.e. by executing the `CREATE` opcode.
+The funder SHOULD NOT do this through another contract, i.e. by executing the
+`CREATE` opcode.
 
-To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with the `contract_code` as the data.
-Upon observing the deployment transaction, both parties SHOULD record the address the contract was deployed to (referred to as `contract_address` from now on).
+To be notified of the deployment event, both parties MAY watch the blockchain
+for a transaction with the `contract_code` as the data.  Upon observing the
+deployment transaction, both parties SHOULD record the address the contract was
+deployed to (referred to as `contract_address` from now on).
 
 ### Redeem
 
-Before redeeming, the redeemer SHOULD wait until the deployment transaction has enough confirmation such that they consider it permanent.
+Before redeeming, the redeemer SHOULD wait until the deployment transaction has
+enough confirmation such that they consider it permanent.
 
-To redeem the HTLC, the redeemer SHOULD send a transaction to the `contract_address` with the `data` of the transaction set to the `secret`.
+To redeem the HTLC, the redeemer SHOULD send a transaction to the
+`contract_address` with the `data` of the transaction set to the `secret`.
 
-To be notified of the redeem event, both parties SHOULD watch the blockchain for `contract_address` emitting the `Redeemed()` log.
-If Ethereum is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md#execution-phase)), then the funder MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
-In this case, Bob MUST NOT watch for a transaction sent to `contract_address` with the `secret` as `data`.
-This would be insufficient, because he would miss learning the `secret` if the contract is redeemed by a call from another contract (rather than from a transaction).
+To be notified of the redeem event, both parties SHOULD watch the blockchain for
+`contract_address` emitting the `Redeemed()` log.  If Ethereum is the
+`beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md#execution-phase)), then the
+funder MUST watch for such a log, extract the `secret` from the transaction
+receipt and continue the protocol.  In this case, Bob MUST NOT watch for a
+transaction sent to `contract_address` with the `secret` as `data`.  This would
+be insufficient, because he would miss learning the `secret` if the contract is
+redeemed by a call from another contract (rather than from a transaction).
 
 ### Refund
 
-To refund the HTLC, the funder MUST send a transaction to `contract_address` with empty data in a block with timestamp greater than `expiry`.
+To refund the HTLC, the funder MUST send a transaction to `contract_address`
+with empty data in a block with timestamp greater than `expiry`.
 
-To be notified of the refund event, both parties SHOULD watch the blockchain for  `contract_address` emitting the `Refunded()` log.
+To be notified of the refund event, both parties SHOULD watch the blockchain for
+`contract_address` emitting the `Refunded()` log.
 
 ## Registry extension
 
-This RFC extends the [registry](./registry.md#identities) with an identity definition for the Ethereum ledger:
+This RFC extends the [registry](./registry.md#identities) with an identity
+definition for the Ethereum ledger:
 
 | Ledger   | Identity Name | JSON Encoding         | Description         |
 |:---------|:--------------|:----------------------|---------------------|
@@ -248,7 +289,9 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 ## RFC003 SWAP REQUEST
 
-The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the
+`alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used
+where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
@@ -279,7 +322,8 @@ The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `a
 }
 ```
 
-Note, the pre-image of `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
+Note, the pre-image of `secret_hash` is
+`51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
 
 ## RFC003 SWAP RESPONSE
 

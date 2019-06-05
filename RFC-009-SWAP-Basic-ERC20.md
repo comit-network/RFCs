@@ -22,26 +22,34 @@
 
 ## Description
 
-This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is an ERC20 token.
+This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where
+one of the ledgers is Ethereum and the associated asset is an ERC20 token.
 
-The definition of the Ethereum ledger was introduced in [RFC006](./RFC-006-Ethereum.md).
-The definition of ERC20 token asset was introduced in [RFC008](./RFC-008-ERC20.md).
+The definition of the Ethereum ledger was introduced in
+[RFC006](./RFC-006-Ethereum.md).  The definition of ERC20 token asset was
+introduced in [RFC008](./RFC-008-ERC20.md).
 
-To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
+To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC
+defines:
 
-- How to construct a Hash Time Lock Contract (HTLC) to lock an ERC20 token asset on the Ethereum blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-Basic.md).
+- How to construct a Hash Time Lock Contract (HTLC) to lock an ERC20 token asset
+  on the Ethereum blockchain.
+- How to deploy, redeem and refund the HTLC during the execution phase of
+  [RFC003](./RFC-003-SWAP-Basic.md).
 
 ## Hash Time Lock Contract
 
 ### Hash Functions
 
-SHA-256 is the only value the `hash_function` parameter to `comit-rfc-003` may take if this HTLC is used.
-Future RFCs may make modifications to the HTLC to allow other hash functions.
+SHA-256 is the only value the `hash_function` parameter to `comit-rfc-003` may
+take if this HTLC is used.  Future RFCs may make modifications to the HTLC to
+allow other hash functions.
 
 ### Parameters
 
-The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
+The parameters for the ERC20 HTLC follow
+[RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described
+concretely in the following table:
 
 | Parameter       | Description                                                                              |
 |:----------------|:-----------------------------------------------------------------------------------------|
@@ -51,7 +59,9 @@ The parameters for the ERC20 HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-t
 | refund_identity | The Ethereum address of the refunding party                                              |
 | expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded              |
 
-We will refer to the token contract address and quantity from the [RFC008](./RFC-008-ERC20.md) ERC20 asset definition as `token_contract` and `token_quantity` respectively.
+We will refer to the token contract address and quantity from the
+[RFC008](./RFC-008-ERC20.md) ERC20 asset definition as `token_contract` and
+`token_quantity` respectively.
 
 ### Contract
 
@@ -62,14 +72,19 @@ Note that the funding of the HTLC is a two step process:
 - The funder deploys the HTLC contract
 - The funder transfers tokens to the HTLC contract
 
-It is designed like this because it is impossible to deploy an HTLC and transfer a ownership of ERC20 tokens to that HTLC in one transaction.
+It is designed like this because it is impossible to deploy an HTLC and transfer
+a ownership of ERC20 tokens to that HTLC in one transaction.
 
-The contract uses the [ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) `transfer` call to transfer ownership of the tokens
+The contract uses the
+[ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) `transfer`
+call to transfer ownership of the tokens
 
-The contract never checks the caller so the redeem and refund transactions can be sent by anyone.
-The token will only ever be transferred to the `redeem_identity` or the `refund_identity`.
+The contract never checks the caller so the redeem and refund transactions can
+be sent by anyone.  The token will only ever be transferred to the
+`redeem_identity` or the `refund_identity`.
 
-The contract is compiled from the following EVM assembly with placeholder values marked by `<...>`:
+The contract is compiled from the following EVM assembly with placeholder values
+marked by `<...>`:
 
 ``` asm
 {
@@ -170,14 +185,17 @@ finishTransferTokens:
 }
 ```
 
-The following is the contract deployment code encoded template as hex which will deploy the above contract when the placeholder values are replaced with the parameters.
+The following is the contract deployment code encoded template as hex which will
+deploy the above contract when the placeholder values are replaced with the
+parameters.
 
 
 ```
 61014461000f6000396101446000f3361561005457602036141561006057602060006000376020602160206000600060026048f17f100000000000000000000000000000000000000000000000000000000000000160215114166100665760006000f35b426320000002106100a9575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17330000000000000000000000000000000000000036020526100ec565b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a17340000000000000000000000000000000000000046020526100ec565b63a9059cbb6000527f5000000000000000000000000000000000000000000000000000000000000005604052602060606044601c6000736000000000000000000000000000000000000006620186a05a03f150602051ff
 ```
 
-To compile the contract code replace the placeholder values with the HTLC paramters at the following offsets:
+To compile the contract code replace the placeholder values with the HTLC
+paramters at the following offsets:
 
 | Name                     | Byte Range | Length (bytes) |
 | :---                     | :---       | :---           |
@@ -208,60 +226,80 @@ Implementations SHOULD use the following gas limits on the transactions related 
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
+The following section describes how both parties should interact with the
+Ethereum blockchain during the
+[RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
 
-Note that with the ERC20 HTLC there's a *funding* stage after the *deployment* stage.
-The funding stage MUST be completed before the redeemer tries to redeem.
+Note that with the ERC20 HTLC there's a *funding* stage after the *deployment*
+stage.  The funding stage MUST be completed before the redeemer tries to redeem.
 
 ### Deployment
 
-At the start of the deployment stage, both parties compile the contract code as described in the previous section.
-We will call this value `contract_code`.
+At the start of the deployment stage, both parties compile the contract code as
+described in the previous section.  We will call this value `contract_code`.
 
-To deploy the ERC20 HTLC, the *funder* must deploy the `contract_code`.
-They SHOULD do this by sending a contract deployment transaction to the relevant Ethereum blockchain with `contract_code` as the `data` of the transaction.
+To deploy the ERC20 HTLC, the *funder* must deploy the `contract_code`.  They
+SHOULD do this by sending a contract deployment transaction to the relevant
+Ethereum blockchain with `contract_code` as the `data` of the transaction.
 
 
-To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with the `contract_code` as the data.
-Upon observing the deployment transaction, both parties SHOULD record the address the contract was deployed to (referred to as `htlc_contract` from now on).
+To be notified of the deployment event, both parties MAY watch the blockchain
+for a transaction with the `contract_code` as the data.  Upon observing the
+deployment transaction, both parties SHOULD record the address the contract was
+deployed to (referred to as `htlc_contract` from now on).
 
 ### Funding
 
-After deploying the contract, the funder must transfer ownership of the `token_quantity` to the `htlc_contract`.
-They MUST do this by calling the `transfer(htlc_contract,token_quantity)` function on the `token_contract`.
-This can be done by sending a transaction to the `token_contract` with the following data:
+After deploying the contract, the funder must transfer ownership of the
+`token_quantity` to the `htlc_contract`.  They MUST do this by calling the
+`transfer(htlc_contract,token_quantity)` function on the `token_contract`.  This
+can be done by sending a transaction to the `token_contract` with the following
+data:
 
 ```
 a9059cbb <20-byte htlc_contract> <32-byte token_quantity>
 ```
 
-To be notified of the funding event, both parties MAY watch the blockchain for `token_contract` emitting the `Transfer(address,address,uint256)` log where the second `address` argument is the `htlc_contract`.
-(The keccack256 topic filter for the log is: `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef`).
+To be notified of the funding event, both parties MAY watch the blockchain for
+`token_contract` emitting the `Transfer(address,address,uint256)` log where the
+second `address` argument is the `htlc_contract`.  (The keccack256 topic filter
+for the log is:
+`0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef`).
 
-The redeemer MUST check the transaction receipt that the amount transferred to `token_contract` was at least `token_quantity`.
+The redeemer MUST check the transaction receipt that the amount transferred to
+`token_contract` was at least `token_quantity`.
 
 ### Redeem
 
-Before redeeming, the redeemer SHOULD wait until the funding transaction has enough confirmation such that they consider it permanent.
+Before redeeming, the redeemer SHOULD wait until the funding transaction has
+enough confirmation such that they consider it permanent.
 
-To redeem the HTLC, the redeemer SHOULD send a transaction to the `htlc_contract` with the `data` of the transaction set to the `secret`.
+To redeem the HTLC, the redeemer SHOULD send a transaction to the
+`htlc_contract` with the `data` of the transaction set to the `secret`.
 
-To be notified of the redeem event, both parties SHOULD watch the blockchain for `htlc_contract` emitting the `Redeemed()` log.
-If Ethereum is the `beta_ledger`, then the funder (Bob) MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
-In this case, Bob MUST NOT watch for a transaction sent to `htlc_contract` with the `secret` as `data`.
-If he does this, he will miss learning the `secret` if the contract is redeemed by a call from another contract (rather than from a transaction).
+To be notified of the redeem event, both parties SHOULD watch the blockchain for
+`htlc_contract` emitting the `Redeemed()` log.  If Ethereum is the
+`beta_ledger`, then the funder (Bob) MUST watch for such a log, extract the
+`secret` from the transaction receipt and continue the protocol.  In this case,
+Bob MUST NOT watch for a transaction sent to `htlc_contract` with the `secret`
+as `data`.  If he does this, he will miss learning the `secret` if the contract
+is redeemed by a call from another contract (rather than from a transaction).
 
 ### Refund
 
-To refund the HTLC, the funder MUST send a transaction to `htlc_contract` with empty data in a block with timestamp greater than `expiry`.
+To refund the HTLC, the funder MUST send a transaction to `htlc_contract` with
+empty data in a block with timestamp greater than `expiry`.
 
-To be notified of the refund event, both parties SHOULD watch the blockchain for `htlc_contract` emitting the `Refunded()` log.
+To be notified of the refund event, both parties SHOULD watch the blockchain for
+`htlc_contract` emitting the `Refunded()` log.
 
 # Examples/Test vectors
 
 ## RFC003 SWAP REQUEST
 
-The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 PAY token (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the
+`alpha_ledger` is Ethereum, the `alpha_asset` is 1 PAY token (with `...` being
+used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
@@ -296,7 +334,8 @@ The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `a
 }
 ```
 
-Note, the pre-image for the `secret_hash` is `adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb`.
+Note, the pre-image for the `secret_hash` is
+`adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb`.
 
 ## RFC003 SWAP RESPONSE
 
