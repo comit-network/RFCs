@@ -7,12 +7,12 @@
 
 **Table of Contents**
 
-  * [Description](#description)
-  * [The Omni Layer Assets](#the-omni-layer-assets)
-    * [`quantity`](#quantity)
-    * [`property_id`](#property_id)
-  * [Registry extension](#registry-extension)
-  * [Examples](#examples)
+- [Description](#description)
+- [The Omni Layer Assets](#the-omni-layer-assets)
+  - [`quantity`](#quantity)
+  - [`property_id`](#property_id)
+- [Registry extension](#registry-extension)
+- [Examples](#examples)
 
 ## Description
 
