@@ -66,6 +66,7 @@ of using a brand new public key using [BIP32](https://github.com/bitcoin/bips/bl
 Finally, using simple send, it seems that only the ownership of tokens of the
 **first input** are transferred.  The ownership is transferred to the one output
 which:
+
 - is not already present in the inputs (in term of public key)
 - is not an `OP_RETURN` output
 
@@ -97,8 +98,10 @@ is mandatory.
 As per the Omni Layer Spec, assets are defined as *divisible* or *indivisible*
 at creation.  To cater for these two types of assets, the following behaviour is
 defined in the Omni Layer protocol field [Number of coins field](https://github.com/OmniLayer/spec#field-number-of-coins):
+
 - If the asset is **indivisible**, then the `quantity` value is the exact number
   of tokens, i.e. `1` represents one token.
+
 - If the asset is **divisible**, then the `quantity` value represents a hundred
   millionth of a token, i.e. `100,000,000` represents one token.
 

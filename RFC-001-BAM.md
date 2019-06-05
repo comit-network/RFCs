@@ -62,27 +62,31 @@ eventually become heterogeneous, with an array of implementations, varying in
 languages and versions.  Given that, we need a transport protocol that fulfills
 the following requirements:
 
-- **Different kinds of messages:** The protocol needs to support requests
-(response expected) and one-way transmissions (no response).
-- **Self-descriptive messages:** Because of the heterogeneous nature, the
-protocol needs to allow the introduction of new features without breaking older
-versions.  Self-descriptive messages allow backward compatibility because older
-implementations can still parse newer messages and continue even if they don't
-fully understand its content. (Spoiler: There are also ways to force backward
-incompatibility.)
-- **Dynamic/Polymorphic messages:** Similar to HTTP, the messages sent to the
-other party don't always take the exact same form although they convey the same
-meaning.  GET requests for example always describe the intent of retrieving a
-resource.  The concrete structure of two GET requests might differ though.
-Similar to that, we need to send messages between COMIT nodes that communicate a
-certain intent (like initiate an atomic swap) but might take different structure
-(for example, different information needs to be exchanged based on the ledger).
-- **Peer-to-peer:** In a communication between two nodes, not always the same
-one initiates, e.g.  both nodes need to be able to actively send messages to
-each other.  Contrary to this requirement, HTTP for example demands that the
-client always initiates the connection/communication.  In addition, it should be
-possible for nodes to work *behind* a NAT.  This means, nodes should only use
-*one* physical connection to talk in both directions.
+- **Different kinds of messages**: The protocol needs to support requests
+  (response expected) and one-way transmissions (no response).
+
+- **Self-descriptive messages**: Because of the heterogeneous nature, the
+  protocol needs to allow the introduction of new features without breaking
+  older versions.  Self-descriptive messages allow backward compatibility
+  because older implementations can still parse newer messages and continue even
+  if they don't fully understand its content. (Spoiler: There are also ways to
+  force backward incompatibility.)
+
+- **Dynamic/Polymorphic messages**: Similar to HTTP, the messages sent to the
+  other party don't always take the exact same form although they convey the
+  same meaning.  GET requests for example always describe the intent of
+  retrieving a resource.  The concrete structure of two GET requests might
+  differ though.  Similar to that, we need to send messages between COMIT nodes
+  that communicate a certain intent (like initiate an atomic swap) but might
+  take different structure (for example, different information needs to be
+  exchanged based on the ledger).
+
+- **Peer-to-peer**: In a communication between two nodes, not always the same
+  one initiates, e.g.  both nodes need to be able to actively send messages to
+  each other.  Contrary to this requirement, HTTP for example demands that the
+  client always initiates the connection/communication.  In addition, it should
+  be possible for nodes to work *behind* a NAT.  This means, nodes should only
+  use *one* physical connection to talk in both directions.
 
 ## Evaluation of existing protocols
 
@@ -544,12 +548,9 @@ default representation to make it unambiguous:
 
 #### Naming conventions
 
-- Frame types should use all caps convention.
-For example, `REQUEST`.
-- Headers should use snake case convention.
-For example, `payment_method`.
-- `REQUEST` types should use all caps convention as well.
-For example: `BUY`.
+- Frame types should use all caps convention.  For example, `REQUEST`.
+- Headers should use snake case convention.  For example, `payment_method`.
+- `REQUEST` types should use all caps convention as well.  For example: `BUY`.
 
 ### Connection errors / failure cases
 

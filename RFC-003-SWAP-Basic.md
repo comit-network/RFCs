@@ -64,6 +64,7 @@ paths:
 
 - **Activation with secret**: The contract is activated with a *secret* whose
   hash matches the hash in the contract.
+
 - **Activation after expiry**: The contract is activated after an expiry time
   specified in the contract.
 
@@ -88,16 +89,21 @@ redeem path on one HTLC but not on the other.
 
 In this RFC, HTLCs are constructed with the following parameters:
 
-  - **asset**: The asset locked in the HTLC.
-  - **redeem_identity**: The identity the asset is transferred to upon
-    activation of the redeem path.
-  - **refund_identity**: The identity the asset is transferred to upon
-    activation of the refund path.
-  - **expiry**: The absolute time after which the refund path may be activated.
-  - **secret_hash**: The hash whose pre-image is required to activate the redeem
-    path.
-  - **hash_function**: The cryptographic hash function that is used to produce
-    the secret hash.
+- **asset**: The asset locked in the HTLC.
+
+- **redeem_identity**: The identity the asset is transferred to upon activation
+  of the redeem path.
+
+- **refund_identity**: The identity the asset is transferred to upon activation
+  of the refund path.
+
+- **expiry**: The absolute time after which the refund path may be activated.
+
+- **secret_hash**: The hash whose pre-image is required to activate the redeem
+  path.
+
+- **hash_function**: The cryptographic hash function that is used to produce the
+  secret hash.
 
 How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
@@ -172,11 +178,11 @@ ledgers will be included in subsequent RFCs.
 Alice starts the execution phase by deploying the α-HTLC to α with the following
 parameters determined in the setup phase:
 
-  - asset: `alpha_asset`
-  - redeem_identity: `alpha_redeem_identity`
-  - refund_identity: `alpha_refund_identity`
-  - expiry: `alpha_expiry`
-  - secret_hash: `secret_hash`
+- asset: `alpha_asset`
+- redeem_identity: `alpha_redeem_identity`
+- refund_identity: `alpha_refund_identity`
+- expiry: `alpha_expiry`
+- secret_hash: `secret_hash`
 
 ### 2. Bob deploys β-HTLC
 
@@ -187,11 +193,11 @@ will be able to deploy the β-HTLC before `beta_expiry`.
 If he decides to continue with the swap, he deploys β-HTLC to β with the
 following parameters determined in the setup phase:
 
-  - asset: `beta_asset`
-  - redeem_identity: `beta_redeem_identity`
-  - refund_identity: `beta_refund_identity`
-  - expiry: `beta_expiry`
-  - secret_hash: `secret_hash`
+- asset: `beta_asset`
+- redeem_identity: `beta_redeem_identity`
+- refund_identity: `beta_refund_identity`
+- expiry: `beta_expiry`
+- secret_hash: `secret_hash`
 
 If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST
 activate the refund path of α-HTLC to retrieve **A**.
@@ -226,8 +232,10 @@ defined in the specification of the α-HTLC.
 This protocol offers an application the following functionality:
 
 - **Up for Sale**: Alice puts an asset **A** up for sale until `alpha_expiry`.
+
 - **Give Option**: Bob can give Alice an *option* to exchange **A** for his
   asset **B** until `beta_expiry`
+
 - **Exercise Option**: Alice may exercise her option and receive **B** in
   exchange for **A** until `beta_expiry`.
 

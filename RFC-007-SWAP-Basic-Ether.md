@@ -35,8 +35,10 @@ defines:
 
 - The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a
   SWAP on the Ethereum ledger.
+
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Ether asset on
   the Ethereum blockchain.
+
 - How to deploy, redeem and refund the HTLC during the execution phase of
   [RFC003](./RFC-003-SWAP-Basic.md).
 
@@ -240,6 +242,7 @@ SHOULD do this by sending a contract deployment transaction to the relevant
 Ethereum blockchain with:
 
 - `contract_code` as the `data` of the transaction
+
 - The quantity of wei specified in the Ether Asset header as the `value` of the
   transaction
 

@@ -35,8 +35,10 @@ defines:
 
 - The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a
   SWAP on the Bitcoin ledger.
+
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Bitcoin asset on
   the Bitcoin blockchain.
+
 - How to deploy, redeem and refund the HTLC during the execution phase of
   [RFC003](./RFC-003-SWAP-Basic.md).
 
@@ -148,6 +150,7 @@ following properties:
 
 - Its `value` MUST be equal to the `quantity` parameter in the Bitcoin asset
   header.
+
 - It MUST have a Pay-To-Witness-Script-Hash (P2WSH) `scriptPubKey` derived from
   `contract_script` (See
   [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification)

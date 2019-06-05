@@ -41,6 +41,7 @@ defines:
 
 - How to construct Omni layer transactions transferring Omni Layer tokens to a
   HTLC address
+
 - How to deploy, redeem and refund the HTLC during the execution phase of
   [RFC003](./RFC-003-SWAP-basic.md)
 
@@ -63,6 +64,7 @@ The `OP_RETURN` data MAY be constructed manually according to the
 [Simple Send Transfer Coins section of the Omni Layer spec](https://github.com/OmniLayer/spec#transfer-coins-simple-send).
 For reference, here are links to the parts of the Omnicore implementation that
 produce the `OP_RETURN` data:
+
 - [Encode Class C payload](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/encoding.cpp#L83)
 - [Omni prefix for Class C](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/omnicore.cpp#L2040)
 
@@ -70,8 +72,10 @@ Alternatively, the implementer MAY decide to rely on an existing Omni Layer
 implementation to generate it.  For example, the
 [`omni_createpayload_simplesend`](https://github.com/OmniLayer/omnicore/blob/master/src/omnicore/doc/rpc-api.md#omni_createpayload_simplesend)
 RPC api call can be used to produce the `OP_RETURN` data given the following:
+
 - `property_id`: the property id of the Omni Layer Asset (e.g. `31` for TetherUS)
 - `amount`: the quantity of Omni Layer Assets to transfer (e.g. `20`)
+
 The 16 bytes produced by the call MUST then be prefixed with the 4-byte Omni
 Layer header, `6f6d6e69`, and included in the correct `OP_RETURN` output.
 
@@ -90,8 +94,10 @@ assigned.
 ### HTLC Address
 
 The HTLC address MUST either be:
+
 1. The P2WSH address of the HTLC, as described in
    [RFC-005](./RFC-005-SWAP-Basic-Bitcoin.md#hash-time-lock-contract)
+
 2. or the P2SH of the P2WSH above, as descriped in
    [BIP-0141 Segregated Witness](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
 
@@ -101,9 +107,12 @@ bech32 addresses so (2) can be used as a fallback.
 The simple send MUST NOT be done to the old-style P2SH address of the HTLC.
 
 This choice has been made to:
+
 - Limit the number of addresses to watch, making implementation less cumbersome.
+
 - Avoid defining the basic HTLC twice (once, in P2SH format, once in P2WSH
   format).
+
 - Follow the common strategy for segwit backward compatibility (nesting in
   P2SH).
 
@@ -160,13 +169,18 @@ transaction transferring the Omni Layer tokens to the HTLC address derived from
 The transaction MUST have the following properties:
 
 - It MUST be a `valid` Omni Layer transaction.
+
 - It MUST be simple send Omni Layer transaction Class C.
+
 - The simple send `amount` MUST be equal to the `quantity` parameter in the Omni
   Layer asset header.
+
 - It MUST have an output with a `scriptPubKey` in the form of:
+
   - a Pay-To-Witness-Script-Hash (P2WSH) derived from `contract_script` (See
     [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#specification)
     for how to construct the `scriptPubkey` from the `contract_script`).
+
   - OR a Pay-To-Witness-Script-Hash nested in Pay-To-Script-Hash (P2WSH(P2SH))
     derived from `contract_script` (See
     [BIP141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh-nested-in-bip16-p2sh)

@@ -72,8 +72,7 @@ ledgers in an exchange.  Such an exchange can thus be described as:
 
 This terminology has several advantages:
 
-1. It does not imply an order (compared to a terminology like
-   **first**/**second**).
+1. It does not imply an order (compared to a terminology like **first**/**second**).
 2. It is not subjective to any of the parties (compared to terminology like
    **source**/**target**, **incoming**/**outgoing** or **local**/**remote**).
 
@@ -138,10 +137,12 @@ diagram illustrates the process:
 ![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC002-parse-response-body.puml&cache=no)
 
 The `DeclineBody` is an object with two properties:
-  - `reason`: An identifying string that briefly describes why the request was
-    declined.
-  - `details`: An object containing further, relevant details. The object-shape
-    depends on the given `reason`.
+
+- `reason`: An identifying string that briefly describes why the request was
+  declined.
+
+- `details`: An object containing further, relevant details. The object-shape
+  depends on the given `reason`.
 
 See the [Registry extensions](#registry-extensions)-section for examples of a
 `DeclineBody`.

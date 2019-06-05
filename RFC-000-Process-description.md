@@ -36,6 +36,7 @@ accordingly to reflect the newest findings of the discussions.
 
 Once all open issues have been resolved and no other objections are raised
 within a month, a stabilization PR can be opened.  This PR MUST:
+
 - close the discussion issue via `Resolves #...`
 - apply the changes the PR documents to the [registry](./COMIT-registry.md)
 - change the status of the RFC to `Final` in the [README](./README.md) and the
