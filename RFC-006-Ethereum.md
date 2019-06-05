@@ -54,7 +54,6 @@ The `quantity` parameter describes the quantity of wei that the asset represents
 The `quantity` parameter is mandatory.
 Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded as decimal string like `"1000000000000000000"`).
 
-
 ## Registry extension
 
 ### The Ethereum Ledger
@@ -71,7 +70,6 @@ And defines the `network` parameter for it:
 |:----------|---------------------------------------------|------------------------------------------|
 | `network` | see [Ethereum Networks](#ethereum-networks) | The particular blockchain network to use |
 
-
 #### Ethereum Networks
 
 And adds an Ethereum Networks section describing the possible values for this parameter:
@@ -81,7 +79,6 @@ And adds an Ethereum Networks section describing the possible values for this pa
 | `regtest` | Private Ethereum development network |
 | `ropsten` | Ropsten testnet                      |
 | `mainnet` | Ethereum mainnet                     |
-
 
 ## Assets
 
@@ -96,7 +93,6 @@ And defines the `quantity` parameter for it:
 | Key        | Value Type | Description     |
 |:-----------|------------|-----------------|
 | `quantity` | `u256`     | Quantity in wei |
-
 
 # Examples
 

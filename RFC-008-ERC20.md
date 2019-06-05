@@ -46,7 +46,6 @@ Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereu
 The address MUST be a *contract address* which complies with [EIP20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md).
 Implementations MAY use fixed list of contract addresses that are known to be compliant.
 
-
 ## Registry extension
 
 This RFC extends the registry's [Assets table](./registry.md#assets) with the `erc20` Asset:
@@ -61,7 +60,6 @@ And defines its parameters:
 |:-----------------|-----------------------|-----------------------------------------------------------------------------|
 | `quantity`       | `u256`                | The ERC20 contract value to be transferred (not the decimal token quantity) |
 | `token_contract` | `0x` prefixed address | The address of the ERC20 contract                                           |
-
 
 # Examples
 
