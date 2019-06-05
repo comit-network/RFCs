@@ -95,6 +95,7 @@ The protocol begins with one party (the sender) sending a SWAP REQUEST message t
 The header MUST have the following parameters:
 
 #### `hash_function`
+
 Type: [Hash Function](./registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
@@ -103,6 +104,7 @@ This RFC defines `SHA-256`[²](#references) as an initial value for this paramet
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
+
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
 | Name                    | JSON Encoding       | Description                                                                                              |
@@ -192,7 +194,6 @@ He cannot cancel this option; it simply exists until `beta_expiry`.
 If **B** declines in value relative to **A** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
-
 ## Security Considerations
 
 A security model of the protocol and its associated parameters will be included in a later revision of this RFC.
@@ -222,6 +223,7 @@ A new section for listing hash functions is added.
 `SHA-256` is added as an initial value.
 
 ## References
+
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
 
@@ -230,6 +232,7 @@ A new section for listing hash functions is added.
 Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
 ### SWAP REQUEST frame
+
 ``` json
 {
   "type": "REQUEST",

@@ -225,6 +225,7 @@ Note, the property id of TetherUS is `31` and TetherUS is divisible;
 the secret for the `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
 
 ### RFC003 SWAP RESPONSE
+
 A valid `RESPONSE` to the above `REQUEST` could look like:
 
 ``` json

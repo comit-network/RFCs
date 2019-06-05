@@ -21,7 +21,6 @@ Omni Layer refers specifically to the [Omni Layer Protocol](https://github.com/O
 
 The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
 
-
 ## The Omni Layer Assets
 
 The Omni Layer Protocol defines several _assets_, also commonly referred as _coins_ or _tokens_ (from now on referred as Omni _asset_).
@@ -55,7 +54,6 @@ Finally, using simple send, it seems that only the ownership of tokens of the **
 The ownership is transferred to the one output which:
 - is not already present in the inputs (in term of public key)
 - is not an `OP_RETURN` output
-
 
 ### Dust
 
@@ -93,7 +91,6 @@ Note that property id is assigned by the Omni Layer Protocol at the creation of 
 
 The property id MUST be of an existing asset on the target Bitcoin ledger.
 
-
 ## Registry extension
 
 This RFC extends the registry's [Assets table](./registry.md#assets) with the `omni` Asset:
@@ -108,7 +105,6 @@ And defines its parameters:
 |:-----------------|------------|--------------------------------------------------------|
 | `quantity`       | `u64`      | The Omni Layer asset amount to be transferred          |
 | `property_id`    | number     | The property id of the Omni Layer asset                |
-
 
 ## Examples
 
