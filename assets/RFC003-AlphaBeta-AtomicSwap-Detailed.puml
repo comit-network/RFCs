@@ -1,0 +1,142 @@
+' DIAGRAM #########################################
+' RFC003 atomic swap including clients
+' #################################################
+@startuml
+' #################################################
+' SETTINGS: color settings of diagram
+' #################################################
+skinparam sequence {
+	BorderColor black
+	ArrowColor black
+	ActorBorderColor black
+	LifeLineBorderColor black
+	LifeLineBackgroundColor white
+	
+	ParticipantBorderColor black
+	ParticipantBackgroundColor white
+	ParticipantFontColor black
+	
+	ActorBackgroundColor white
+	ActorFontColor black
+}
+' #################################################
+' ACTORS
+' #################################################
+actor Alice
+participant "Alice\nComit-Node" as AC #lightgreen
+participant "Alice\nAlpha Client" as AAC #lightcyan
+participant "Alice\nBeta Client" as ABC #lightgoldenrodyellow
+participant "Alpha\nLedger" as Alpha #lightcyan
+participant "Beta\nLedger" as Beta #lightgoldenrodyellow
+participant "Bob\nBeta Client" as BBC #lightgoldenrodyellow
+participant "Bob\nAlpha Client" as BAC #lightcyan
+participant "Bob\nComit-Node" as BC #lightgreen
+actor Bob
+
+
+' #################################################
+' DIAGRAM
+' #################################################
+Alice->AC: send swap request
+AC->AC: generate secret
+AC->AC: hash secret
+AC->BC: swap request 
+note left #white
+	swap request includes 
+	- hash of secret 
+	- expiries
+	- Alice's identities (if relevant)
+end note
+BC->Bob: new swap request
+Bob->BC: accept swap request
+BC->Alpha: monitor funding of HTLC on Alpha
+BC->AC: accept swap request
+note left #white
+	swap accept includes 
+	- expiries
+	- Bob's identities (if relevant)
+end note
+AC->Alpha: monitor funding of HTLC on Alpha
+AC->Alice: fund action
+Alice->AC: fund Alpha
+AC->AC: prepare HTLC for Alpha
+note left #white
+	Both Alice and Bob have
+	all the parameter to create
+	the exactly same HTLC code.
+end note
+AC->AAC: fund HTLC on Alpha
+AAC->Alpha: fund TX
+Alpha->Alpha: TX in new block
+Alpha->BAC: new Alpha block
+Alpha->AAC: new Alpha block
+AAC->AC: Alice's comit node notices\nfunded HTLC on Alpha
+AC->Beta: monitor funding of HTLC on Beta
+AC->Alice: refund available
+BAC->BC: Bob's comit node notices\nfunded HTLC on Alpha
+BC->Beta: monitor funding of HTLC on Beta
+BC->Bob: fund available
+Bob->BC: fund Beta
+BC->BC: prepare Beta HTLC
+note left #white
+	Both Alice and Bob have
+	all the parameter to create
+	the exactly same HTLC code.
+end note
+BC->BBC: fund HTLC on Beta
+BBC->Beta: fund TX
+Beta->Beta: TX in new block
+Beta->BBC: new Beta block
+Beta->ABC: new Beta block
+BBC->BC: Bob's comit node notices\nfunded HTLC on Beta
+BC->Bob: refund available
+ABC->AC: Alice's comit node notices\nfunded HTLC on Beta
+AC->Alice: redeem available
+Alice->AC: redeem Beta
+AC->AC: prepare redeem TX
+note left #white
+	Alice has to expose the
+	secret to redeem.
+end note
+AC->ABC: redeem
+ABC->Beta: redeem TX
+Beta->Beta: TX in new block
+note right #white
+	Secret publicly
+	available on Beta
+	blockchain.
+end note
+Beta->ABC: new Beta block
+note left #white
+	Alice got Beta asset.
+end note
+Beta->BBC: new Beta block
+ABC->AC: Alice's comit node notices\nredeemed HTLC on Beta
+AC->Alice: just refund available
+BBC->BC: Bob's comit node notices\nredeemed HTLC on Beta
+note right #white
+	Bob's comit node
+	retrieves the secret.
+end note
+BC->Bob: redeem available
+Bob->BC: redeem
+BC->BC: prepare redeem TX
+BC->BAC: redeem
+BAC->Alpha: send redeem TX
+note left #white
+	Smart contract hashes the 
+	given secret and matches
+	it against the hash it has.
+end note
+Alpha->Alpha: TX in new block
+Alpha->AAC: new Alpha block
+Alpha->BAC: new Alpha block
+note right #white
+	Bob got Alpha asset.
+end note
+AAC->AC: Alice's comit node notices\nredeemed HTLC on Alpha
+AC->Alice: swap complete
+BAC->BC: Bob's comit node notices\nredeemed HTLC on Alpha
+BC->Bob: swap complete
+
+@enduml
