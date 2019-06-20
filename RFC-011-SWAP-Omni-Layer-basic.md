@@ -9,19 +9,19 @@
 
 - [Description](#description)
 - [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction)
-  * [Omni Layer data](#omni-layer-data)
-    + [Example](#example)
-  * [Dust](#dust)
-  * [HTLC Address](#htlc-address)
-  * [Inputs & Outputs format to spend the HTLC](#inputs--outputs-format-to-spend-the-htlc)
+    - [Omni Layer data](#omni-layer-data)
+        - [Example](#example)
+    - [Dust](#dust)
+    - [HTLC Address](#htlc-address)
+    - [Inputs & Outputs format to spend the HTLC](#inputs--outputs-format-to-spend-the-htlc)
 - [Execution Phase](#execution-phase)
-  * [Deployment transaction](#deployment-transaction)
-  * [Redeem transaction](#redeem-transaction)
-  * [Refund transaction](#refund-transaction)
+    - [Deployment transaction](#deployment-transaction)
+    - [Redeem transaction](#redeem-transaction)
+    - [Refund transaction](#refund-transaction)
 - [Examples/Test vectors](#examplestest-vectors)
-  * [RFC003 SWAP REQUEST](#rfc003-swap-request)
-  * [RFC003 SWAP RESPONSE](#rfc003-swap-response)
-  * [HTLC](#htlc)
+    - [RFC003 SWAP REQUEST](#rfc003-swap-request)
+    - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
+    - [HTLC](#htlc)
 
 ## Description
 
@@ -50,13 +50,16 @@ Class C transactions use Bitcoin [`OP_RETURN`](https://en.bitcoin.it/wiki/OP_RET
 
 The `OP_RETURN` data MAY be constructed manually according to the [Simple Send Transfer Coins section of the Omni Layer spec](https://github.com/OmniLayer/spec#transfer-coins-simple-send).
 For reference, here are links to the parts of the Omnicore implementation that produce the `OP_RETURN` data:
+
 - [Encode Class C payload](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/encoding.cpp#L83)
 - [Omni prefix for Class C](https://github.com/OmniLayer/omnicore/blob/4c9abdecf56c78e3533a64e8034f920cb1d43eb4/src/omnicore/omnicore.cpp#L2040)
 
 Alternatively, the implementer MAY decide to rely on an existing Omni Layer implementation to generate it.
 For example, the [`omni_createpayload_simplesend`](https://github.com/OmniLayer/omnicore/blob/master/src/omnicore/doc/rpc-api.md#omni_createpayload_simplesend) RPC api call can be used to produce the `OP_RETURN` data given the following:
+
 - `property_id`: the property id of the Omni Layer Asset (e.g. `31` for TetherUS)
 - `amount`: the quantity of Omni Layer Assets to transfer (e.g. `20`)
+
 The 16 bytes produced by the call MUST then be prefixed with the 4-byte Omni Layer header, `6f6d6e69`, and included in the correct `OP_RETURN` output.
 
 ### Dust
@@ -73,6 +76,7 @@ Only spendable outputs MUST have at least `min_sat` Satoshis assigned.
 ### HTLC Address
 
 The HTLC address MUST either be:
+
 1. The P2WSH address of the HTLC, as described in [RFC-005](./RFC-005-SWAP-Basic-Bitcoin.md#hash-time-lock-contract)
 2. or the P2SH of the P2WSH above, as descriped in [BIP-0141 Segregated Witness](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki)
 
@@ -82,6 +86,7 @@ However, not all Omni Layer wallets implementation support bech32 addresses so (
 The simple send MUST NOT be done to the old-style P2SH address of the HTLC.
 
 This choice has been made to:
+
 - Limit the number of addresses to watch, making implementation less cumbersome.
 - Avoid defining the basic HTLC twice (once, in P2SH format, once in P2WSH format).
 - Follow the common strategy for segwit backward compatibility (nesting in P2SH).

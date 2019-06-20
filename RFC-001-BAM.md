@@ -291,10 +291,10 @@ A header's value MUST encode the following information:
 1. A flag to indicate the variant of this header
 
     Headers appear in two variants: MUST understand and MAY ignore.
-This allows nodes with different versions of a particular protocol to enforce rejection of a message that contains a header that the other node does not understand.
-It also facilitates incremental rollout of features.
-At first, a header can be declared as `MAY ignore`.
-At some point, an implementation might demand that another node understands a particular header by only sending the `MUST understand` variant.
+    This allows nodes with different versions of a particular protocol to enforce rejection of a message that contains a header that the other node does not understand.
+    It also facilitates incremental rollout of features.
+    At first, a header can be declared as `MAY ignore`.
+    At some point, an implementation might demand that another node understands a particular header by only sending the `MUST understand` variant.
 
 2. A value: The actual value that is associated with the header
 
@@ -312,8 +312,10 @@ Splitting headers up into `value` and `parameters` was done for the following re
 
 1. Having a single `value` facilitates comparison of header values: A node can determine whether or not they understand a particular header just by looking at the `value`.
 If they don't understand the `value`, they also cannot understand its `parameters`.
+
 2. It is more consistent: By having `value` and `parameters`, the general structure of a header is always the same, independent of the actual data.
 This allows for easier implementation in statically-typed languages.
+
 3. Without a dedicated `parameters` field, there could be a clash with a parameter named `value`, if they would just be next to the original `value` field.
 
 ### JSON Encoding
@@ -427,6 +429,7 @@ Let's start off with an example:
 ```
 
 In the above example:
+
 - `payment_method` is the header-key.
 - The underscore in the beginning denotes that this header MAY be ignored if not understood.
 Respectively, if the key does not start with an underscore, the header is mandatory and MUST be understood by the node.

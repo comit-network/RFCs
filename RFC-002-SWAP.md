@@ -62,6 +62,7 @@ An asset is anything whose ownership can be transferred on a [ledger](#ledger).
 
 The terms **alpha** and **beta** are used to unambiguously identify assets and ledgers in an exchange.
 Such an exchange can thus be described as:
+
 - Transferring the ownership of the **alpha-asset** on the **alpha-ledger** from party A to party B.
 - Transferring the ownership of the **beta-asset** on the **beta-ledger** from party B to party A.
 
@@ -128,8 +129,9 @@ The following diagram illustrates the process:
 ![Decision diagram for parsing the SWAP RESPONSE body](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC002-parse-response-body.puml&cache=no)
 
 The `DeclineBody` is an object with two properties:
-  - `reason`: An identifying string that briefly describes why the request was declined.
-  - `details`: An object containing further, relevant details. The object-shape depends on the given `reason`.
+
+- `reason`: An identifying string that briefly describes why the request was declined.
+- `details`: An object containing further, relevant details. The object-shape depends on the given `reason`.
 
 See the [Registry extensions](#registry-extensions)-section for examples of a `DeclineBody`.
 
