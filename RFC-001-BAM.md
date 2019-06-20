@@ -57,7 +57,7 @@ It is a domain-agnostic and self-descriptive protocol and potentially supports m
 
 In COMIT, nodes need to exchange all kinds of information in a peer-to-peer manner.
 As COMIT is an inherently distributed system, the network will eventually become heterogeneous, with an array of implementations, varying in languages and versions.
-Given that, we need a transport protocol that fulfills the following requirements:
+Given that, we need a transport protocol that fulfils the following requirements:
 
 - **Different kinds of messages:** The protocol needs to support requests (response expected) and one-way transmissions (no response).
 - **Self-descriptive messages:** Because of the heterogeneous nature, the protocol needs to allow the introduction of new features without breaking older versions.
@@ -107,7 +107,7 @@ It covers a wide range of requirements and has many features.
 Unfortunately, it never seemed to get traction and thus, library support is very limited.
 For Rust, we would have had to write our own implementation.
 
-Although BEEP would fulfill all the requirements, there is no implementation for it.
+Although BEEP would fulfil all the requirements, there is no implementation for it.
 We could create and implementation but that would be quite a lot of work because BEEP covers much more than we need.
 
 ### gRPC
