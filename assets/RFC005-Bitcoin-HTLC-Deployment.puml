@@ -1,5 +1,5 @@
 ' DIAGRAM #########################################
-' RFC003 atomic swap
+' RFC003 Bitcoin deployment
 ' #################################################
 @startuml
 ' #################################################
@@ -38,6 +38,7 @@ Alice->AC: send swap request
 AC->AC: generate secret
 AC->AC: hash secret
 AC->AC: prepare refund identity
+AC->AC: hash refund identity
 AC->BC: send swap request
 note left #white
 {
@@ -70,6 +71,7 @@ end note
 BC->Bob: new swap request
 Bob->BC: accept swap request
 BC->BC: prepare redeem identity
+BC->BC: hash redeem identity
 BC->AC: accept swap request
 note right #white
 {
@@ -100,31 +102,21 @@ note right #white
   },
 }
 end note
-BC->BC: compile contract_script
+BC->BC: calculate script address
 note left #white
-OP_IF
-    OP_SIZE 32 OP_EQUALVERIFY
-    OP_SHA256 1f69c... OP_EQUALVERIFY
-    OP_DUP OP_HASH160 1925b..
-OP_ELSE
-    1552 OP_CHECKLOCKTIMEVERIFY OP_DROP
-    OP_DUP OP_HASH160 1925a..
-OP_ENDIF
-OP_EQUALVERIFY
-OP_CHECKSIG
+script address includes (hashed):
+  contract_script
+  hash of secret
+  hash of redeem_identity
+  hash of refund_identity
 end note
-& AC->AC: compile contract_script
+& AC->AC: calculate script address
 note left #white
-OP_IF
-    OP_SIZE 32 OP_EQUALVERIFY
-    OP_SHA256 1f69c... OP_EQUALVERIFY
-    OP_DUP OP_HASH160 1925b..
-OP_ELSE
-    1552 OP_CHECKLOCKTIMEVERIFY OP_DROP
-    OP_DUP OP_HASH160 1925a..
-OP_ENDIF
-OP_EQUALVERIFY
-OP_CHECKSIG
+script address includes (hashed):
+  contract_script
+  hash of secret
+  hash of redeem_identity
+  hash of refund_identity
 end note
 BC->Alpha: monitor deployment of HTLC on Bitcoin
 & AC->Alpha: monitor deployment of HTLC on Bitcoin
@@ -137,7 +129,7 @@ note left #white
 end note
 AC->Alice: fund action
 Alice->AC: fund
-AC->AC: prepare transaction with\n  contract_script,\n  100000000 sat
+AC->AC: prepare TX with\n  contract_script,\n  100000000 sat
 AC-->Alice: prepared TX
 Alice->Alpha: send TX
 Alpha->Alpha: TX in new block

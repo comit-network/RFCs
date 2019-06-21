@@ -1,0 +1,46 @@
+' DIAGRAM #########################################
+' RFC003 Bitcoin refund
+' #################################################
+@startuml
+' #################################################
+' SETTINGS: color settings of diagram
+' #################################################
+skinparam sequence {
+	BorderColor black
+	ArrowColor black
+	ActorBorderColor black
+	LifeLineBorderColor black
+	LifeLineBackgroundColor white
+	
+	ParticipantBorderColor black
+	ParticipantBackgroundColor white
+	ParticipantFontColor black
+	
+	ActorBackgroundColor white
+	ActorFontColor black
+}
+' #################################################
+' ACTORS
+' #################################################
+actor Alice
+participant "Alice\nComit-Node" as AC
+participant "Bitcoin\nLedger" as Alpha
+
+' #################################################
+' DIAGRAM
+' #################################################
+AC->Alice: refund available
+note left #white
+  Assumption:
+  Alice successfully
+  deployed the Bitcoin script.
+end note
+Alice->AC: redeem
+AC->AC: prepare TX with\n  refund_signature,\n  refund_pubkey,\n  byte,\n  contract_script
+AC->Alice: prepared TX
+Alice->Alice: generate new bitcoin address (new_adr)
+Alice->Alpha: send TX with new_adr as output
+Alpha->Alpha: evaluate script
+Alpha->Alpha: Output script_address -> Input new_adr
+
+@enduml

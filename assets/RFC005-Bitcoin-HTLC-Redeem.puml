@@ -1,0 +1,45 @@
+' DIAGRAM #########################################
+' RFC003 Bitcoin redeem
+' #################################################
+@startuml
+' #################################################
+' SETTINGS: color settings of diagram
+' #################################################
+skinparam sequence {
+	BorderColor black
+	ArrowColor black
+	ActorBorderColor black
+	LifeLineBorderColor black
+	LifeLineBackgroundColor white
+	
+	ParticipantBorderColor black
+	ParticipantBackgroundColor white
+	ParticipantFontColor black
+	
+	ActorBackgroundColor white
+	ActorFontColor black
+}
+' #################################################
+' ACTORS
+' #################################################
+participant "Bitcoin\nLedger" as Alpha
+participant "Bob\nComit-Node" as BC
+actor Bob
+
+' #################################################
+' DIAGRAM
+' #################################################
+BC->Bob: redeem available
+note right #white
+  Assumption:
+  Bob already learned the secret.
+end note
+Bob->BC: redeem
+BC->BC: prepare TX with\n  redeem_signature,\n  redeem_pubkey,\n  secret,\n  byte,\n  contract_script
+BC->Bob: prepared TX
+Bob->Bob: generate new bitcoin address (new_adr)
+Bob->Alpha: send TX with new_adr as output
+Alpha->Alpha: evaluate script
+Alpha->Alpha: Output script_address -> Input new_adr
+
+@enduml
