@@ -40,79 +40,91 @@ AC->AC: hash secret
 AC->AC: prepare refund identity
 AC->BC: send swap request
 note left #white
-	{
-      "type": "SWAP",
-      "headers": {
-        "alpha_ledger": {
-          "value": "bitcoin",
-          "parameters": { "network": "mainnet" }
-        },
-        "beta_ledger": {...},
-        "alpha_asset": {
-          "value": "bitcoin",
-          "parameters": { "quantity": "100000000" }
-        },
-        "beta_asset": {...},
-        "protocol": {
-            "value" : "comit-rfc-003",
-            "parameters" : {
-                "hash_function" : "SHA-256" }
-        }
-      },
-      "body": {
-        "alpha_ledger_refund_identity": "1925a...",
-        "alpha_expiry": 1552263040,
-        "secret_hash" : "1f69c8745f712da03fdd4...",
-        ...
-      },
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {...},
+    "alpha_asset": {
+      "value": "bitcoin",
+      "parameters": { "quantity": "100000000" }
+    },
+    "beta_asset": {...},
+    "protocol": {
+        "value" : "comit-rfc-003",
+        "parameters" : {
+            "hash_function" : "SHA-256" }
     }
+  },
+  "body": {
+    "alpha_ledger_refund_identity": "1925a...",
+    "alpha_expiry": 1552,
+    "secret_hash" : "1f69c...",
+    ...
+  },
+}
 end note
 BC->Bob: new swap request
 Bob->BC: accept swap request
 BC->BC: prepare redeem identity
 BC->AC: accept swap request
 note right #white
-	{
-      "type": "SWAP",
-      "headers": {
-        "alpha_ledger": {
-          "value": "bitcoin",
-          "parameters": { "network": "mainnet" }
-        },
-        "beta_ledger": {...},
-        "alpha_asset": {
-          "value": "bitcoin",
-          "parameters": { "quantity": "100000000" }
-        },
-        "beta_asset": {...},
-        "protocol": {
-            "value" : "comit-rfc-003",
-            "parameters" : { "hash_function" :
-                "SHA-256" }
-        }
-      },
-      "body": {
-        "alpha_ledger_refund_identity": "1925a...",
-        "alpha_expiry": 1552263040,
-        "secret_hash" : "1f69c8745f712da03fdd4...",
-        **"alpha_ledger_redeem_identity": "1925b...",**
-        ...
-      },
+{
+  "type": "SWAP",
+  "headers": {
+    "alpha_ledger": {
+      "value": "bitcoin",
+      "parameters": { "network": "mainnet" }
+    },
+    "beta_ledger": {...},
+    "alpha_asset": {
+      "value": "bitcoin",
+      "parameters": { "quantity": "100000000" }
+    },
+    "beta_asset": {...},
+    "protocol": {
+        "value" : "comit-rfc-003",
+        "parameters" : { "hash_function" :
+            "SHA-256" }
     }
+  },
+  "body": {
+    "alpha_ledger_refund_identity": "1925a...",
+    "alpha_expiry": 1552,
+    "secret_hash" : "1f69c...",
+    **"alpha_ledger_redeem_identity": "1925b...",**
+    ...
+  },
+}
 end note
 BC->BC: compile contract_script
+note left #white
+OP_IF
+    OP_SIZE 32 OP_EQUALVERIFY
+    OP_SHA256 1f69c... OP_EQUALVERIFY
+    OP_DUP OP_HASH160 1925b..
+OP_ELSE
+    1552 OP_CHECKLOCKTIMEVERIFY OP_DROP
+    OP_DUP OP_HASH160 1925a..
+OP_ENDIF
+OP_EQUALVERIFY
+OP_CHECKSIG
+end note
 & AC->AC: compile contract_script
 note left #white
-	OP_IF
-        OP_SIZE 32 OP_EQUALVERIFY
-        OP_SHA256 1f69c8745f712da03fdd4... OP_EQUALVERIFY
-        OP_DUP OP_HASH160 1925b..
-    OP_ELSE
-        <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP
-        OP_DUP OP_HASH160 1925a..
-    OP_ENDIF
-    OP_EQUALVERIFY
-    OP_CHECKSIG
+OP_IF
+    OP_SIZE 32 OP_EQUALVERIFY
+    OP_SHA256 1f69c... OP_EQUALVERIFY
+    OP_DUP OP_HASH160 1925b..
+OP_ELSE
+    1552 OP_CHECKLOCKTIMEVERIFY OP_DROP
+    OP_DUP OP_HASH160 1925a..
+OP_ENDIF
+OP_EQUALVERIFY
+OP_CHECKSIG
 end note
 BC->Alpha: monitor deployment of HTLC on Bitcoin
 & AC->Alpha: monitor deployment of HTLC on Bitcoin
@@ -127,7 +139,7 @@ AC->Alice: fund action
 Alice->AC: fund
 AC->AC: prepare transaction with\n  contract_script,\n  100000000 sat
 AC-->Alice: prepared TX
-Alice->Alpha: send transaction
+Alice->Alpha: send TX
 Alpha->Alpha: TX in new block
 AC->Alpha: Alice's comit node notices\nfunded HTLC on Alpha
 & BC->Alpha: Bob's comit node notices\nfunded HTLC on Alpha
