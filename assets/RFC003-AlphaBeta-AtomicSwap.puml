@@ -29,6 +29,8 @@ participant "Beta\nLedger" as Beta
 participant "Bob\nComit-Node" as BC
 actor Bob
 
+' allow parallelism
+!pragma teoz true
 
 ' #################################################
 ' DIAGRAM
@@ -61,56 +63,61 @@ note left #white
 	all the parameter to create
 	the exactly same HTLC code.
 end note
-AC->Alpha: TX to fund HTLC on Alpha
+AC-->Alice: prepared TX
+Alice->Alpha: TX to fund HTLC on Alpha
 Alpha->Alpha: TX in new block
-Alpha->AC: Alice's comit node notices\nfunded HTLC on Alpha
+AC->Alpha: Alice's comit node notices\nfunded HTLC on Alpha
+& BC->Alpha: Bob's comit node notices\nfunded HTLC on Alpha
 AC->Beta: monitor funding of HTLC on Beta
+& BC->Beta: monitor funding of HTLC on Beta
 AC->Alice: refund available
-Alpha->BC: Bob's comit node notices\nfunded HTLC on Alpha
-BC->Beta: monitor funding of HTLC on Beta
-BC->Bob: fund available
+& BC->Bob: fund available
 Bob->BC: fund Beta
 BC->BC: prepare Beta HTLC
+BC-->Bob: prepared TX
 note left #white
 	Both Alice and Bob have
 	all the parameter to create
 	the exactly same HTLC code.
 end note
-BC->Beta: TX to fund HTLC on Beta
+Bob->Beta: TX to fund HTLC on Beta
 Beta->Beta: TX in new block
-Beta->BC: Bob's comit node notices\nfunded HTLC on Beta
+BC->Beta: Bob's comit node notices\nfunded HTLC on Beta
+& AC->Beta: Alice's comit node notices\nfunded HTLC on Beta
 BC->Bob: refund available
-Beta->AC: Alice's comit node notices\nfunded HTLC on Beta
-AC->Alice: redeem available
+& AC->Alice: redeem available
 Alice->AC: redeem Beta
 AC->AC: prepare redeem TX
 note left #white
 	Alice has to expose the
 	secret to redeem.
 end note
-AC->Beta: TX to redeem
+AC-->Alice: prepared TX
+Alice->Beta: TX to redeem
 note right #white
-	Secret publicly
-	available on Beta
-	blockchain.
+	HTLC hashes the
+	given secret and matches
+	it against the hash it has.
+	Secret publicly available.
 end note
 Beta->Beta: TX in new block
 note left #white
 	Alice got Beta asset.
 end note
-Beta->AC: Alice's comit node notices\nredeemed HTLC on Beta
+AC->Beta: Alice's comit node notices\nredeemed HTLC on Beta
+& BC->Beta: Bob's comit node notices\nredeemed HTLC on Beta
 AC->Alice: just refund available
-Beta->BC: Bob's comit node notices\nredeemed HTLC on Beta
+& BC->Bob: redeem available
 note right #white
 	Bob's comit node
 	retrieves the secret.
 end note
-BC->Bob: redeem available
 Bob->BC: redeem
 BC->BC: prepare redeem TX
-BC->Alpha: TX to redeem
+BC-->Bob: prepared TX
+Bob->Alpha: TX to redeem
 note left #white
-	Script hashes the 
+	HTLC hashes the
 	given secret and matches
 	it against the hash it has.
 end note
@@ -118,9 +125,9 @@ Alpha->Alpha: TX in new block
 note right #white
 	Bob got Alpha asset.
 end note
-Alpha->AC: Alice's comit node notices\nredeemed HTLC on Alpha
+AC->Alpha: Alice's comit node notices\nredeemed HTLC on Alpha
+& BC->Alpha: Bob's comit node notices\nredeemed HTLC on Alpha
 AC->Alice: swap complete
-Alpha->BC: Bob's comit node notices\nredeemed HTLC on Alpha
-BC->Bob: swap complete
+& BC->Bob: swap complete
 
 @enduml
