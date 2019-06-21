@@ -54,7 +54,7 @@ note right #white
 	- Bob's identities (if relevant)
 end note
 BC->Alpha: monitor fund of HTLC on Alpha
-AC->Alpha: monitor fund of HTLC on Alpha
+& AC->Alpha: monitor fund of HTLC on Alpha
 note left #white
 	Both Alice and Bob know
 	all the parameter to create
