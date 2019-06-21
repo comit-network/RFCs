@@ -66,41 +66,45 @@ note left #white
 end note
 AC->Alice: fund available
 Alice->AC: deploy and fund Alpha
-AC->AC: prepare TX to deploy and\nfund HTLC on Alpha
+AC->AC: prepare TX to deploy HTLC on Alpha
 AC-->Alice: prepared TX
 note right #white
 	Both Alice and Bob have
 	all the parameter to create
 	the exactly same HTLC code.
 end note
-opt token asset, e.g. ERC20
-   Alice->Alpha: TX to deploy HTLC on Alpha
-   Alpha->Alpha: TX in new block
-end
-Alice->Alpha: TX to fund HTLC on Alpha
+Alice->Alpha: TX to deploy HTLC on Alpha
 Alpha->Alpha: TX in new block
-AC->Alpha: Alice's comit node notices\nfunded HTLC on Alpha
-& BC->Alpha: Bob's comit node notices\nfunded HTLC on Alpha
+opt token asset, e.g. ERC20
+    AC->AC: prepare TX to fund HTLC on Alpha
+    AC-->Alice: prepared TX
+    Alice->Alpha: TX to fund HTLC on Alpha
+    Alpha->Alpha: TX in new block
+end
+AC->Alpha: Alice's comit node notices\ndeployed (and funded) HTLC on Alpha
+& BC->Alpha: Bob's comit node notices\ndeployed (and funded) HTLC on Alpha
 BC->Beta: monitor fund of HTLC on Beta
 & AC->Beta: monitor fund of HTLC on Beta
 AC->Alice: refund available
 & BC->Bob: fund available
-Bob->BC: fund Beta
-BC->BC: prepare TX to deploy and\nfund HTLC on Beta
+Bob->BC: deploy and fund Beta
+BC->BC: prepare TX to deploy HTLC on Beta
 BC-->Bob: prepared TX
 note left #white
 	Both Alice and Bob have
 	all the parameter to create
 	the exactly same HTLC code.
 end note
-opt token asset, e.g. ERC20
-   Bob->Beta: TX to deploy HTLC on Alpha
-   Beta->Beta: TX in new block
-end
-Bob->Beta: TX to fund HTLC on Beta
+Bob->Beta: TX to deploy HTLC on Beta
 Beta->Beta: TX in new block
-BC->Beta: Bob's comit node notices\nfunded HTLC on Beta
-& AC->Beta: Alice's comit node notices\nfunded HTLC on Beta
+opt token asset, e.g. ERC20
+    BC->BC: prepare TX to fund HTLC on Beta
+    BC-->Bob: prepared TX
+    Bob->Beta: TX to fund HTLC on Alpha
+    Beta->Beta: TX in new block
+end
+BC->Beta: Bob's comit node notices\ndeployed (and funded) HTLC on Beta
+& AC->Beta: Alice's comit node notices\ndeployed (and funded) HTLC on Beta
 BC->Beta: monitor redeem of HTLC on Beta
 & AC->Beta: monitor redeem of HTLC on Beta
 BC->Bob: refund available
