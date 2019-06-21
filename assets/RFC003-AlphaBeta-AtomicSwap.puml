@@ -49,8 +49,7 @@ BC->Bob: new swap request
 Bob->BC: accept swap request
 BC->AC: accept swap request
 note right #white
-	swap accept includes 
-	- expiries
+	swap accept includes
 	- Bob's identities (if relevant)
 end note
 BC->Alpha: monitor fund of HTLC on Alpha
@@ -65,10 +64,19 @@ note left #white
 	looking for it in new
 	incoming blocks.
 end note
-AC->Alice: fund action
-Alice->AC: fund Alpha
-AC->AC: prepare TX to fund HTLC on Alpha
+AC->Alice: fund available
+Alice->AC: deploy and fund Alpha
+AC->AC: prepare TX to deploy and\nfund HTLC on Alpha
 AC-->Alice: prepared TX
+note right #white
+	Both Alice and Bob have
+	all the parameter to create
+	the exactly same HTLC code.
+end note
+opt token asset, e.g. ERC20
+   Alice->Alpha: TX to deploy HTLC on Alpha
+   Alpha->Alpha: TX in new block
+end
 Alice->Alpha: TX to fund HTLC on Alpha
 Alpha->Alpha: TX in new block
 AC->Alpha: Alice's comit node notices\nfunded HTLC on Alpha
@@ -78,13 +86,17 @@ BC->Beta: monitor fund of HTLC on Beta
 AC->Alice: refund available
 & BC->Bob: fund available
 Bob->BC: fund Beta
-BC->BC: prepare TX to fund HTLC on Beta
+BC->BC: prepare TX to deploy and\nfund HTLC on Beta
 BC-->Bob: prepared TX
 note left #white
 	Both Alice and Bob have
 	all the parameter to create
 	the exactly same HTLC code.
 end note
+opt token asset, e.g. ERC20
+   Bob->Beta: TX to deploy HTLC on Alpha
+   Beta->Beta: TX in new block
+end
 Bob->Beta: TX to fund HTLC on Beta
 Beta->Beta: TX in new block
 BC->Beta: Bob's comit node notices\nfunded HTLC on Beta
@@ -92,7 +104,7 @@ BC->Beta: Bob's comit node notices\nfunded HTLC on Beta
 BC->Beta: monitor redeem of HTLC on Beta
 & AC->Beta: monitor redeem of HTLC on Beta
 BC->Bob: refund available
-& AC->Alice: redeem available
+& AC->Alice: redeem/refund\navailable
 Alice->AC: redeem Beta
 AC->AC: prepare redeem TX
 note left #white
@@ -102,10 +114,10 @@ end note
 AC-->Alice: prepared TX
 Alice->Beta: TX to redeem
 note right #white
-	HTLC hashes the
-	given secret and matches
-	it against the hash it has.
-	Secret publicly available.
+	HTLC hashes the given secret
+	and matches it against the
+	hash constant in the contract.
+	Secret revealed.
 end note
 Beta->Beta: TX in new block
 note left #white
@@ -116,8 +128,8 @@ AC->Beta: Alice's comit node notices\nredeemed HTLC on Beta
 BC->Alpha: monitor redeem of HTLC on Alpha
 & AC->Alpha: monitor redeem of HTLC on Alpha
 AC->Alice: just refund available
-& BC->Bob: redeem available
-note right #white
+& BC->Bob: redeem/refund\navailable
+note left #white
 	Bob's comit node
 	retrieves the secret.
 end note
@@ -126,9 +138,9 @@ BC->BC: prepare redeem TX
 BC-->Bob: prepared TX
 Bob->Alpha: TX to redeem
 note left #white
-	HTLC hashes the
-	given secret and matches
-	it against the hash it has.
+	HTLC hashes the given secret
+    and matches it against the
+    hash constant in the contract.
 end note
 Alpha->Alpha: TX in new block
 note right #white
