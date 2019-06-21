@@ -106,7 +106,6 @@ To compute the exact Bitcoin script bytes of the contract, implementations shoul
 | `refund_identity` | 74                     | 93                    | 20             | See [Parameters](#parameters)                                              |
 | `6888ac`          | 94                     | 96                    | 3              | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
 
-
 ## Execution Phase
 
 The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
@@ -215,7 +214,6 @@ A valid `RESPONSE` to the above `REQUEST` could look like:
   }
 }
 ```
-
 
 ## HTLC
 

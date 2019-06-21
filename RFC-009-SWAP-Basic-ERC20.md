@@ -206,14 +206,12 @@ Implementations SHOULD use the following gas limits on the transactions related 
 | Redeem      | 100,000               |
 | Refund      | 100,000               |
 
-
 ## Execution Phase
 
 The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
 
 Note that with the ERC20 HTLC there's a *funding* stage after the *deployment* stage.
 The funding stage MUST be completed before the redeemer tries to redeem.
-
 
 ### Deployment
 
@@ -226,7 +224,6 @@ They SHOULD do this by sending a contract deployment transaction to the relevant
 
 To be notified of the deployment event, both parties MAY watch the blockchain for a transaction with the `contract_code` as the data.
 Upon observing the deployment transaction, both parties SHOULD record the address the contract was deployed to (referred to as `htlc_contract` from now on).
-
 
 ### Funding
 
@@ -302,6 +299,7 @@ The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `a
 Note, the pre-image for the `secret_hash` is `adebd583a094215e963ebe4a1474b9bb4bf48167e64f3f474d71e41a75494bbb`.
 
 ## RFC003 SWAP RESPONSE
+
 A valid `RESPONSE` to the above `REQUEST` could look like:
 
 ``` json

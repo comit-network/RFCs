@@ -7,12 +7,12 @@
 
 **Table of Contents**
 
-  * [Description](#description)
-  * [The Omni Layer Assets](#the-omni-layer-assets)
-    * [`quantity`](#quantity)
-    * [`property_id`](#property_id)
-  * [Registry extension](#registry-extension)
-  * [Examples](#examples)
+- [Description](#description)
+- [The Omni Layer Assets](#the-omni-layer-assets)
+    - [`quantity`](#quantity)
+    - [`property_id`](#property_id)
+- [Registry extension](#registry-extension)
+- [Examples](#examples)
 
 ## Description
 
@@ -20,7 +20,6 @@ This RFC defines how Bitcoin-based Omni Layer Assets are described in Asset type
 Omni Layer refers specifically to the [Omni Layer Protocol](https://github.com/OmniLayer/spec).
 
 The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
-
 
 ## The Omni Layer Assets
 
@@ -56,7 +55,6 @@ The ownership is transferred to the one output which:
 - is not already present in the inputs (in term of public key)
 - is not an `OP_RETURN` output
 
-
 ### Dust
 
 The reference implementation of the Bitcoin Core consensus, _bitcoind_ [enforces](https://github.com/bitcoin/bitcoin/blob/c536dfbcb00fb15963bf5d507b7017c241718bf6/src/policy/policy.cpp#L129) that spendable UTXO MUST own enough value to be spent.
@@ -77,6 +75,7 @@ The `quantity` parameter is mandatory.
 
 As per the Omni Layer Spec, assets are defined as *divisible* or *indivisible* at creation.
 To cater for these two types of assets, the following behaviour is defined in the Omni Layer protocol field [Number of coins field](https://github.com/OmniLayer/spec#field-number-of-coins):
+
 - If the asset is **indivisible**, then the `quantity` value is the exact number of tokens, i.e. `1` represents one token.
 - If the asset is **divisible**, then the `quantity` value represents a hundred millionth of a token, i.e. `100,000,000` represents one token.
 
@@ -93,7 +92,6 @@ Note that property id is assigned by the Omni Layer Protocol at the creation of 
 
 The property id MUST be of an existing asset on the target Bitcoin ledger.
 
-
 ## Registry extension
 
 This RFC extends the registry's [Assets table](./registry.md#assets) with the `omni` Asset:
@@ -108,7 +106,6 @@ And defines its parameters:
 |:-----------------|------------|--------------------------------------------------------|
 | `quantity`       | `u64`      | The Omni Layer asset amount to be transferred          |
 | `property_id`    | number     | The property id of the Omni Layer asset                |
-
 
 ## Examples
 

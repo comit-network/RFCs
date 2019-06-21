@@ -56,8 +56,8 @@ Any subsequent RFCs adding a ledger definition MUST specify its identity.
 The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol.
 A HTLC locks an asset until someone activates one of two possible paths:
 
-- **Activation with secret**: The contract is activated with a *secret* whose hash matches the hash in the contract.
-- **Activation after expiry**: The contract is activated after an expiry time specified in the contract.
+- **Activation with secret:** The contract is activated with a *secret* whose hash matches the hash in the contract.
+- **Activation after expiry:** The contract is activated after an expiry time specified in the contract.
 
 Each activation path transfers the asset to a different party.
 The parties are decided at the time of contract creation.
@@ -72,14 +72,14 @@ In this protocol, they would allow an attacker to manipulate the relative expira
 HTLCs MUST enforce the length of the secret to be equal to the hash function's output length.
 If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
 
-In this RFC, HTLCs are constructed with the following parameters:
+In this RFC, HTLCs are constructed with the following parameters
 
-  - **asset**: The asset locked in the HTLC.
-  - **redeem_identity**: The identity the asset is transferred to upon activation of the redeem path.
-  - **refund_identity**: The identity the asset is transferred to upon activation of the refund path.
-  - **expiry**: The absolute time after which the refund path may be activated.
-  - **secret_hash**: The hash whose pre-image is required to activate the redeem path.
-  - **hash_function**: The cryptographic hash function that is used to produce the secret hash.
+  - **asset:** The asset locked in the HTLC.
+  - **redeem_identity:** The identity the asset is transferred to upon activation of the redeem path.
+  - **refund_identity:** The identity the asset is transferred to upon activation of the refund path.
+  - **expiry:** The absolute time after which the refund path may be activated.
+  - **secret_hash:** The hash whose pre-image is required to activate the redeem path.
+  - **hash_function:** The cryptographic hash function that is used to produce the secret hash.
 
 How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
@@ -95,6 +95,7 @@ The protocol begins with one party (the sender) sending a SWAP REQUEST message t
 The header MUST have the following parameters:
 
 #### `hash_function`
+
 Type: [Hash Function](./registry.md#hash-function)
 
 The cryptographic hash function used in the construction of both HTLCs.
@@ -103,6 +104,7 @@ This RFC defines `SHA-256`[²](#references) as an initial value for this paramet
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
 ### SWAP Request Body
+
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
 | Name                    | JSON Encoding       | Description                                                                                              |
@@ -140,11 +142,11 @@ The HTLC definitions and how to verify them on particular ledgers will be includ
 
 Alice starts the execution phase by deploying the α-HTLC to α with the following parameters determined in the setup phase:
 
-  - asset: `alpha_asset`
-  - redeem_identity: `alpha_redeem_identity`
-  - refund_identity: `alpha_refund_identity`
-  - expiry: `alpha_expiry`
-  - secret_hash: `secret_hash`
+- asset: `alpha_asset`
+- redeem_identity: `alpha_redeem_identity`
+- refund_identity: `alpha_refund_identity`
+- expiry: `alpha_expiry`
+- secret_hash: `secret_hash`
 
 ### 2. Bob deploys β-HTLC
 
@@ -153,11 +155,11 @@ He MUST make his decision early enough such that he will be able to deploy the �
 
 If he decides to continue with the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
 
-  - asset: `beta_asset`
-  - redeem_identity: `beta_redeem_identity`
-  - refund_identity: `beta_refund_identity`
-  - expiry: `beta_expiry`
-  - secret_hash: `secret_hash`
+- asset: `beta_asset`
+- redeem_identity: `beta_redeem_identity`
+- refund_identity: `beta_refund_identity`
+- expiry: `beta_expiry`
+- secret_hash: `secret_hash`
 
 If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of α-HTLC to retrieve **A**.
 
@@ -183,15 +185,14 @@ To activate the redeem path he uses the secret and the procedure defined in the 
 
 This protocol offers an application the following functionality:
 
-- **Up for Sale**: Alice puts an asset **A** up for sale until `alpha_expiry`.
-- **Give Option**: Bob can give Alice an *option* to exchange **A** for his asset **B** until `beta_expiry`
-- **Exercise Option**: Alice may exercise her option and receive **B** in exchange for **A** until `beta_expiry`.
+- **Up for Sale:** Alice puts an asset **A** up for sale until `alpha_expiry`.
+- **Give Option:** Bob can give Alice an *option* to exchange **A** for his asset **B** until `beta_expiry`
+- **Exercise Option:** Alice may exercise her option and receive **B** in exchange for **A** until `beta_expiry`.
 
 It is important to note that Bob gives Alice an option not an *offer*.
 He cannot cancel this option; it simply exists until `beta_expiry`.
 If **B** declines in value relative to **A** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
-
 
 ## Security Considerations
 
@@ -222,6 +223,7 @@ A new section for listing hash functions is added.
 `SHA-256` is added as an initial value.
 
 ## References
+
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
 
@@ -230,6 +232,7 @@ A new section for listing hash functions is added.
 Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
 ### SWAP REQUEST frame
+
 ``` json
 {
   "type": "REQUEST",
