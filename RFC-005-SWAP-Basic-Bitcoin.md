@@ -143,6 +143,41 @@ For how to use this witness data to construct the redeem transaction see [BIP141
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
 
+#### Evaluation of the script for redeem
+
+**Given** a bitcoin script address that holds the following (hashed) information:
+1. `script code`
+2. `hash of secret`
+3. `hash of redeem_pubkey`
+4. `hash of refund_pubkey`
+
+**When** a transaction is made to the address that pushes the following on the stack:
+1. redeem_signature
+2. redeem_pubkey
+3. secret
+4. byte (`01`)
+5. contract_script
+
+**Then** the script will be evaluated like this: 
+
+1. pop element of stack: script
+    * match script hash against address
+    * execute script
+2. `OP_IF`: 
+    * pop element of stack: byte
+    * byte set to `01`, enter redeem block
+3. `    OP_SIZE 32 OP_EQUALVERIFY`: 
+    * peek element of stack: secret
+    * check size equals 32 bytes
+4. `    OP_SHA256 <secret_hash> OP_EQUALVERIFY`: 
+    * pop scret of stack and hash it
+    * match it against `hash of secret`
+5. `    OP_DUP OP_HASH160 <redeem_identity> OP_EQUALVERIFY OP_CHECKSIG`
+    * [standard evaluation of transaction to bitcoin address](https://en.bitcoin.it/wiki/Script#Standard_Transaction_to_Bitcoin_address_.28pay-to-pubkey-hash.29), address defined in transaction
+
+Note that the address to spend to can be any address, not necessarily the `redeem_pubkey`, any 
+address can be given to the transaction as output. 
+
 ### Refund
 
 To refund the HTLC, the funder MUST submit a transaction to the blockchain which spends the P2WSH output.
@@ -156,6 +191,39 @@ The funder can use the following witness data to spend the output after the `exp
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 To be notified of the refund event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
+
+#### Evaluation of the script for refund
+
+**Given** a bitcoin script address that holds the following (hashed) information:
+1. `script code`
+2. `hash of secret`
+3. `hash of redeem_pubkey`
+4. `hash of refund_pubkey`
+
+**When** a transaction is made to the address that pushes the following on the stack:
+1. refund_signature
+2. refund_pubkey
+3. byte (`01`)
+4. contract_script
+
+**Then** the script will be evaluated like this: 
+
+1. pop element of stack: script
+    * match script hash against address
+    * execute script
+2. `OP_IF`: 
+    * pop element of stack: byte
+    * byte set to `00`, enter refund block
+3. `    <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP`: 
+    * put expiry constant on stack
+    * check if expiry timestamp is in the past
+    * remove expiry constant from stack
+4. `    OP_DUP OP_HASH160 <redeem_identity> OP_EQUALVERIFY OP_CHECKSIG`
+    * [standard evaluation of transaction to bitcoin address](https://en.bitcoin.it/wiki/Script#Standard_Transaction_to_Bitcoin_address_.28pay-to-pubkey-hash.29), address defined in transaction
+
+Note that the address to spend to can be any address, not necessarily the `redeem_pubkey`, any 
+address can be given to the transaction as output. 
+
 
 ## Registry extension
 
