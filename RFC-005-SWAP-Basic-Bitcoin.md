@@ -203,7 +203,7 @@ To be notified of the refund event, both parties MAY watch the blockchain for tr
 **When** a transaction is made to the address that pushes the following on the stack:
 1. refund_signature
 2. refund_pubkey
-3. byte (`01`)
+3. byte (`00`)
 4. contract_script
 
 **Then** the script will be evaluated like this: 
