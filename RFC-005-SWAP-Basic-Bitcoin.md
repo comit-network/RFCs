@@ -199,7 +199,6 @@ For how to use this witness data to construct the redeem transaction see [BIP141
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
 
-
 ### Refund
 
 To refund the HTLC, the funder MUST submit a transaction to the blockchain which spends the P2WSH output.
@@ -213,7 +212,6 @@ The funder can use the following witness data to spend the output after the `exp
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 To be notified of the refund event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
-
 
 ## Registry extension
 
