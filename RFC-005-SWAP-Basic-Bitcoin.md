@@ -106,6 +106,62 @@ To compute the exact Bitcoin script bytes of the contract, implementations shoul
 | `refund_identity` | 74                     | 93                    | 20             | See [Parameters](#parameters)                                              |
 | `6888ac`          | 94                     | 96                    | 3              | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
 
+
+Script execution overview:
+
+```
+// cur element on stack: byte
+//   evaluate byte: 01
+//   OP_IF (redeem) is entered
+//   pop byte
+OP_IF
+
+    // cur element on stack: secret
+    //   peek secret size and push size on stack
+    //   push constant 32 on stack
+    //   pop 2 element of stack (32, secret size) and check equality
+    OP_SIZE 32 OP_EQUALVERIFY
+    
+    // cur element on stack: secret
+    //   hash secret (on stack)
+    //   push  <secret_hash> constant on stack
+    // 	 pop 2 elements of stack (<secret_hash>, hashed secret) and check equality
+    OP_SHA256 <secret_hash> OP_EQUALVERIFY
+    
+    // cur element on stack: pubkey
+    //   push duplicate pubkey on stack
+    //   hash current element on stack (pubkey)
+    //   push <redeem_identity> pubkey-hash constant on stack
+    OP_DUP OP_HASH160 <redeem_identity>
+    
+// if byte set to 00
+//   evaluate byte: 00
+//   OP_ELSE (refund) is entered
+//   pop byte
+OP_ELSE
+
+    // cur element on stack: pubkey
+    //   <expiry> constant pushed on stack
+    //   evaluate current stack elem (<expiry>) past current timestamp
+    //   pop expiry constant off stack
+    <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP
+    
+    // cur element on stack: pubkey
+    //   push duplicate pubkey on stack
+    //   hash current element on stack (pubkey)
+    //   push <refund_identity> pubkey-hash constant on stack
+    OP_DUP OP_HASH160 <refund_identity>
+    
+OP_ENDIF
+
+// pop 2 elements of stack (<redeem/refund_identity>, hashed pubkey) and check equality
+OP_EQUALVERIFY
+
+// pop 2 elements of stack (pubkey, signature) and check signature
+OP_CHECKSIG
+```
+
+
 ## Execution Phase
 
 The following section describes how both parties should interact with the Bitcoin blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
@@ -143,40 +199,6 @@ For how to use this witness data to construct the redeem transaction see [BIP141
 To be notified of the redeem event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
 If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md)), then the funder MUST watch for such a transaction and  extract the `secret` from its witness data and continue the protocol.
 
-#### Evaluation of the script for redeem
-
-**Given** a bitcoin script address that holds the following (hashed) information:
-1. `script code`
-2. `hash of secret`
-3. `hash of redeem_pubkey`
-4. `hash of refund_pubkey`
-
-**When** a transaction is made to the address that pushes the following on the stack:
-1. redeem_signature
-2. redeem_pubkey
-3. secret
-4. byte (`01`)
-5. contract_script
-
-**Then** the script will be evaluated like this: 
-
-1. pop element of stack: script
-    * match script hash against address
-    * execute script
-2. `OP_IF`: 
-    * pop element of stack: byte
-    * byte set to `01`, enter redeem block
-3. `    OP_SIZE 32 OP_EQUALVERIFY`: 
-    * peek element of stack: secret
-    * check size equals 32 bytes
-4. `    OP_SHA256 <secret_hash> OP_EQUALVERIFY`: 
-    * pop scret of stack and hash it
-    * match it against `hash of secret`
-5. `    OP_DUP OP_HASH160 <redeem_identity> OP_EQUALVERIFY OP_CHECKSIG`
-    * [standard evaluation of transaction to bitcoin address](https://en.bitcoin.it/wiki/Script#Standard_Transaction_to_Bitcoin_address_.28pay-to-pubkey-hash.29), address defined in transaction
-
-Note that the address to spend to can be any address, not necessarily the `redeem_pubkey`, any 
-address can be given to the transaction as output. 
 
 ### Refund
 
@@ -191,38 +213,6 @@ The funder can use the following witness data to spend the output after the `exp
 | contract_script  | The compiled contract (as generally required when redeeming from a P2WSH output)                        |
 
 To be notified of the refund event, both parties MAY watch the blockchain for transactions that spend from the output and check that the witness data is in the above form.
-
-#### Evaluation of the script for refund
-
-**Given** a bitcoin script address that holds the following (hashed) information:
-1. `script code`
-2. `hash of secret`
-3. `hash of redeem_pubkey`
-4. `hash of refund_pubkey`
-
-**When** a transaction is made to the address that pushes the following on the stack:
-1. refund_signature
-2. refund_pubkey
-3. byte (`00`)
-4. contract_script
-
-**Then** the script will be evaluated like this: 
-
-1. pop element of stack: script
-    * match script hash against address
-    * execute script
-2. `OP_IF`: 
-    * pop element of stack: byte
-    * byte set to `00`, enter refund block
-3. `    <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP`: 
-    * put expiry constant on stack
-    * check if expiry timestamp is in the past
-    * remove expiry constant from stack
-4. `    OP_DUP OP_HASH160 <redeem_identity> OP_EQUALVERIFY OP_CHECKSIG`
-    * [standard evaluation of transaction to bitcoin address](https://en.bitcoin.it/wiki/Script#Standard_Transaction_to_Bitcoin_address_.28pay-to-pubkey-hash.29), address defined in transaction
-
-Note that the address to spend to can be any address, not necessarily the `redeem_pubkey`, any 
-address can be given to the transaction as output. 
 
 
 ## Registry extension
