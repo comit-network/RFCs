@@ -100,7 +100,7 @@ Beta->Beta: TX in new block
 opt token asset, e.g. ERC20
     BC->BC: prepare TX to fund HTLC on Beta
     BC-->Bob: prepared TX
-    Bob->Beta: TX to fund HTLC on Alpha
+    Bob->Beta: TX to fund HTLC on Beta
     Beta->Beta: TX in new block
 end
 BC->Beta: Bob's comit node notices\ndeployed (and funded) HTLC on Beta
