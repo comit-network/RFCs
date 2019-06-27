@@ -69,8 +69,7 @@ Absolute time locks are necessary because the protocol is only secure if the exp
 *Relative time lock* HTLCs have an expiration time that is relative to their inclusion in the ledger.
 In this protocol, they would allow an attacker to manipulate the relative expiration times of the HTLCs if they are able to delay the inclusion of a HTLC onto one of the ledgers.
 
-HTLCs MUST enforce the length of the secret to be equal to the hash function's output length.
-If this is not enforced, a secret may be able to active the redeem path on one HTLC but not on the other.
+A secret length of 32 bytes is enforced by the HTLCs.
 
 In this RFC, HTLCs are constructed with the following parameters
 
