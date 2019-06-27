@@ -142,7 +142,7 @@ And the possible parameters they each may have:
 
 ## SWAP Protocols
 
-The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message.
+The following is a list of protocols defined in COMIT RFCs for use in the `protocol` header of a SWAP message (i.e. a REQUEST message with type SWAP).
 
 | Value           | Reference                          | Description            |
 | :-------------- | ---------------------------------- | ---------------------- |
