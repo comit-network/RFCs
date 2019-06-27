@@ -90,7 +90,7 @@ Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β l
 
 ### SWAP Request Header
 
-The protocol begins with one party (the sender) sending a SWAP REQUEST message to another (the receiver) with the `protocol` header's value set to `comit-rfc-003`.
+The protocol begins with one party (the sender, referred to as 'Alice') sending a SWAP REQUEST message to another party (the receiver, referred to as 'Bob') with the `protocol` header's value set to `comit-rfc-003`.
 The header MUST have the following parameters:
 
 #### `hash_function`
