@@ -332,42 +332,8 @@ As mentioned, the JSON documents are actually sent over the wire **without** new
 
 #### Frames
 
-Each frame is encoded as a JSON-object with the following schema:
 
-```json
-{
-  "$id": "https://comit.network/transport-protocol/frame.json",
-  "type": "object",
-  "definitions": {},
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "properties": {
-    "type": {
-      "$id": "/properties/type",
-      "type": "string",
-      "title": "The frame type",
-      "default": "",
-      "examples": [
-        "REQUEST"
-      ]
-    },
-    "id": {
-      "$id": "/properties/id",
-      "type": "integer",
-      "title": "The frame id",
-      "default": 0,
-      "examples": [
-        0
-      ],
-      "minimum" : 0,
-      "maximum" : 4294967295
-    },
-    "payload": {
-      "$id": "/properties/payload",
-      "type": "object"
-    }
-  }
-}
-```
+Each frame is encoded as a JSON-object with a `type`, `id` and `payload` field.
 
 Example:
 
