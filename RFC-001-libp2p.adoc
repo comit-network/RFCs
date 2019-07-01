@@ -1,0 +1,361 @@
+= COMIT messaging protocol
+:toc:
+:revdate: 2018-09-04
+:numbered:
+:sectnumlevels: 5
+
+NOTE: RFC-Number: 001 +
+Status: Draft +
+Discussion-issue: https://github.com/comit-network/RFCs/issues/17[#17] +
++ Created on: {revdate} +
+
+== Description
+
+This RFC describes the COMIT messaging protocol.
+It consists of a set of types and conventions based on top of the libp2p network stack.
+
+== Motivation
+
+In COMIT, nodes need to exchange all kinds of information in a peer-to-peer manner.
+As COMIT is an inherently distributed system, the network will eventually become heterogeneous, with an array of implementations, varying in languages and versions.
+Given that, we need a transfer protocol that fulfils the following requirements:
+
+- **Different kinds of messages:** The protocol needs to support requests (response expected) and one-way transmissions (no response).
+- **Self-descriptive messages:** Because of the heterogeneous nature, the protocol needs to allow the introduction of new features without breaking older versions.
+Self-descriptive messages allow backward compatibility because older implementations can still parse newer messages and continue even if they don't fully understand their content. (Spoiler: There are also ways to force backward incompatibility.)
+- **Dynamic/Polymorphic messages:** Similar to HTTP, the messages sent to the other party don't always take the exact same form although they convey the same meaning.
+GET requests for example always describe the intent of retrieving a resource.
+The concrete structure of two GET requests might differ though.
+Similar to that, we need to send messages between COMIT nodes that communicate a certain intent (like initiate an atomic swap) but might take different structure (for example, different information needs to be exchanged based on the ledger).
+- **Peer-to-peer:** In a communication between two nodes, not always the same one initiates, e.g.
+both nodes need to be able to actively send messages to each other.
+Contrary to this requirement, HTTP for example demands that the client always initiates the connection/communication.
+In addition, it should be possible for nodes to work *behind* a NAT.
+This means, nodes should only use *one* physical connection to talk in both directions.
+
+== Evaluation of existing protocols
+
+We looked at several existing application protocols.
+In particular, we evaluated the following:
+
+- HTTP(2)
+- WebSockets
+- A profile for BEEP (RFC 3080)
+- gRPC and protobuf
+- libp2p
+
+=== HTTP(2)
+
+HTTP by definition is a client-server protocol.
+Unfortunately, this almost rules it out right from the beginning.
+With HTTP2 though, the protocol introduces so-called `Frames` which, among other things, allow the often cited PUSH-functionality of HTTP2. One way to use HTTP2 would be to modify the protocol slightly, so that each party could send `Frames` at any time: Means also the "server" could send request frames to the client and vice versa.
+
+We decided against this approach because we feared it might falsely suggest compatibility with HTTP2 software, although this compatibility is not given.
+Using HTTP (1 or 2) the intended way doesn't work because it only supports uni-directional communication.
+
+=== WebSockets
+
+WebSockets are the Web's solution for bidirectional communication.
+Although it would support the peer-to-peer requirement, WebSockets have a very low abstraction level, as they don't specify anything about the actual message that is sent over.
+Instead, the websocket spec mostly deals with things that are related to the Web (what a surprise!) like protection of shared infrastructure through masking of the actual payload or upgrades of HTTP connection to a web socket connection.
+
+While WebSockets could have been a solution, they actually don't provide any benefit over plain sockets for us.
+In order to keep the complexity low, we decided against it.
+
+=== A profile for BEEP
+
+BEEP is a fully bidirectional application protocol and looks very much like what we needed at first sight.
+It covers a wide range of requirements and has many features.
+Unfortunately, it never seemed to get traction and thus, library support is very limited.
+For Rust, we would have had to write our own implementation.
+
+Although BEEP would fulfil all the requirements, there is no implementation for it.
+We could create and implementation but that would be quite a lot of work because BEEP covers much more than we need.
+
+=== gRPC
+
+Whilst gRPC is a popular way of defining messaging between applications, it doesn't really fit our requirements: It doesn't work in a peer-to-peer context as it is centered around the idea of Client-Server.
+The messages are neither self-descriptive nor dynamic: In order to parse a message, a party needs to know the message format upfront.
+This is usually achieved through compiling `protobuf` files into source code.
+The messages are also not dynamic as their structure needs to be known at compile-time.
+
+Given that, we decided against gRPC.
+
+=== libp2p
+
+Libp2p is a modular network stack extracted from the ipfs (interplanetary file system) project.
+It provides reusable modules for common needs of peer-to-peer networking applications like discovery mechanisms, abstractions of various transport protocols, pluggable transport layer encryption and multiplexing.
+
+These are all features we find want for the transport layer of the COMIT network and hence we decided to build the communication layer on top of libp2p.
+
+== The COMIT messaging protocol
+
+=== Identification & configuration
+
+Application protocols in libp2p have an identifier which allows nodes to exchange, which protocols they understand.
+For COMIT and the messages described in this document, we use the protocol identifier: `/comit/1.0.0`.
+
+The libp2p stack of COMIT is configured as follows:
+
+- TCP transport
+- mplex multiplexer: https://github.com/libp2p/specs/tree/master/mplex/README.md
+- yamux multiplexer: https://github.com/hashicorp/yamux/blob/master/spec.md
+- secio encryption: https://github.com/libp2p/specs/blob/master/secio/README.md
+
+=== Versioning
+
+This document defines version `1.0.0` of the COMIT messaging protocol.
+
+=== Multiplexing
+
+Communication in a peer-to-peer network typically requires some form of multiplexing to allow every party to act as the initiator of a session if they want to actively send messages to another party.
+This section first briefly explains, how such multiplexing can be achieved if all you have are plain network sockets.
+As a second step, we will quickly cover, how the `substream` mechanism of libp2p affects this and thereby simplifies our application protocol.
+
+==== Multiplexing with plain sockets
+
+With traditional network sockets, there is always a listener and a dialer.
+The listening party has to have a port open the dialling party can connect to.
+If one party is behind a NAT, the only way to establish a network connection is for this party to dial to the other one.
+Establishing such a connection is expensive.
+We have to wait for the TCP handshake to complete and if there is transport encryption in place, keys might need to be exchanged before the first actual payload can be sent to the other party.
+Due to this cost and network limitations like NAT, it is good to reuse a connection between two parties once we have established one.
+This is where multiplexing comes into play.
+If both parties want to be able to send and receive messages at any point in time, those messages need to carry metadata so that the receiving end can correctly identify and associate messages.
+
+If all you have are plain network sockets, such a multiplexing strategy needs to be backed into your application protocol, which is a non-trivial increase in complexity.
+In fact, a former version of the COMIT messaging protocol (BAM!) had support for such functionality because we were not yet building on top of libp2p back then.
+
+==== Multiplexing with libp2p substreams
+
+Libp2p has the concept of substreams.
+A substream is a virtual socket for a specific protocol between two nodes.
+Opening a new substream is cheap compared to an actual network connection.
+It is also independent of the underlying physical network topology, i.e. it does not matter which party opened the actual physical network connection:
+Every party can open a new substream at any point in time.
+
+=== Design
+
+This paragraph describes the over-arching design of the COMIT messaging protocol.
+It builds heavily upon the https://github.com/libp2p/specs/tree/master/connections#definitions[terminology] that is used within the libp2p spec.
+
+To send a new message to another node, a COMIT node MUST open a new substream.
+Within a single substream, there is always just one _active_ party.
+Only the _active_ party is allowed to send a message.
+The dialer of the substream is initially the _active_ party.
+Hence, the node opening the substream is the first one to send a message.
+
+==== Message format
+
+All messages within the COMIT protocol are JSON objects.
+They MUST be serialized to a single line and are delimited by the newline character `\n`.
+The messages MUST use UTF-8 encoding.
+
+TODO: include pretty printing note
+
+==== Dealing with errors
+
+Nodes MAY immediately close the substream if they encounter an error.
+This includes:
+
+- deserialization errors: i.e. the other party sends malformed JSON
+- protocol errors: the other party does not conform to the messaging protocol
+
+Implementations SHOULD consider it a hard error if a remote node preemptively closes a substream.
+Very likely, the substream got closed because of an unrecoverable error (like in the list above) and hence, implementations SHOULD NOT retry the communication because it is unlikely to succeed.
+
+===== Frames
+
+All COMIT messages are encoded using the concept of a `FRAME`.
+Frames identify themselves through a `type` and carry a `payload` where `type` is a string and `payload` is an object:
+
+.Representation of the `FRAME` type
+[source,json]
+----
+{
+  "type": "...",
+  "payload": {}
+}
+----
+
+The `type` defines how the `payload` of a frame is encoded.
+The following types are allowed:
+
+- `REQUEST`
+- `RESPONSE`
+
+=== Frame types
+
+==== Request / Response
+
+Upon opening a substream, the dialling party is active and can send a `REQUEST` frame.
+The listening party MUST answer with a `RESPONSE` frame.
+After receiving/sending a `RESPONSE` frame, both nodes MUST close the substream.
+
+===== Structure
+
+A frame of type `REQUEST` carries the following payload:
+
+- type
+- headers
+- body
+
+.Representation of a `REQUEST` frame
+[source,json]
+----
+{
+  "type": "REQUEST",
+  "payload": {
+    "type": "...",
+    "headers": {},
+    "body": {}
+  }
+}
+----
+
+Conversely, a frame of type `RESPONSE` looks like this:
+
+- headers
+- body
+
+.Representation of a `RESPONSE` frame
+[source,json]
+----
+{
+  "type": "RESPONSE",
+  "payload": {
+    "headers": {},
+    "body": {}
+  }
+}
+----
+
+`headers` as well as `body` are optional in `REQUEST` and `RESPONSE` frames and MAY be omitted.
+If omitted, they MUST be interpreted as an empty JSON object.
+
+====== Type
+
+The field `type` in a request defines the semantics of the given request.
+Defining a particular request type usually comes with defining the headers which are usable within this request.
+
+====== Headers
+
+Headers are supposed to be defined by further RFCs which introduce dedicated `REQUEST` types.
+
+In addition, headers also encode compatibility information.
+Each header is available in two variants:
+
+- MUST understand
+- MAY ignore
+
+If a node receives a header in the `MUST understand` variant in a `REQUEST` and it does not understand it, it MUST close the substream immediately.
+Headers encoded as `MAY ignore` are ok to be not understood.
+Nodes may simply ignore them as if they were not there.
+
+To avoid more complexity through additional messages, the spec doesn't define a concept for acknowledging processing of a `RESPONSE` to the sender.
+Thus, there is no way of signaling to the sender of a `RESPONSE` whether or not it was properly understood.
+Therefore, careful thought should be put into the design and use of the `MUST understand` variant of a header to make this failure case as rare as possible.
+In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
+Usually, this can be derived from the `REQUEST` that is sent by a node.
+
+====== Body
+
+The structure of the `body` of a REQUEST is entirely up the `REQUEST` type.
+Such definition MAY include one or more headers indicating how the body should be parsed (similar to HTTP's `Content-Type` header).
+
+When defining a new `REQUEST` type, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
+The rule of thumb here is that implementations should be able to parse all headers orthogonally.
+Hence, the structure of one header SHOULD NOT depend on those of other headers.
+All data that cannot be represented in that way SHOULD be put into the `body`.
+Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
+
+===== Headers
+
+Headers is a JSON-object with each entry being a single header.
+Each header encodes the following information:
+
+1. The "variant" (MUST understand vs MAY ignore)
+2. A value
+3. Parameters
+
+.A request example with a single header
+[source,json]
+----
+{
+  "type": "REQUEST",
+  "payload": {
+    "type": "...",
+    "headers": {
+      "payment_method": { // <1>
+        "value": "credit-card", // <2>
+        "parameters": { // <3>
+          "provider": "tenx",
+          "number": "0000-0000-0000-0000"
+        }
+      }
+    },
+    "body": {}
+  }
+}
+----
+1. `payment_method` is a header
+2. `credit-card` is the header's value
+3. the `parameters` object contains the header's parameters
+
+The design is the same for each header and allows applications to parse headers without having to know all possible headers upfront.
+However, this design can be verbose if your header does not need any parameters.
+Thus, we allow what we call a "compact" representation.
+The following to examples are both valid and implementations MUST consider them to be equivalent:
+
+.A request example containing a header without parameters
+[source,json]
+----
+{
+  "type": "REQUEST",
+  "payload": {
+    "type": "...",
+    "headers": {
+      "payment_method": {
+        "value": "cash",
+        "parameters": {}
+      }
+    },
+    "body": {}
+  }
+}
+----
+.A request example with a header in "compact" representation
+[source,json]
+----
+{
+  "type": "REQUEST",
+  "payload": {
+    "type": "...",
+    "headers": {
+      "payment_method": "cash"
+    },
+    "body": {}
+  }
+}
+----
+
+=== Naming conventions
+
+- Frame types should use all caps convention.
+For example, `REQUEST`.
+- Headers should use snake case convention.
+For example, `payment_method`.
+- `REQUEST` types should use all caps convention as well.
+For example: `SWAP`.
+
+== Registry extensions
+
+=== List of frame types
+
+This RFC adds a section "FRAME types" to track the list of available ``type``s to be used for ``FRAME``s.
+The following types are added to this list:
+
+- REQUEST
+- RESPONSE
+
+Each of the defined REQUEST ``type``s should list the headers that can be used with this REQUEST.
