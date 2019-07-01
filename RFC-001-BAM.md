@@ -57,7 +57,7 @@ It is a domain-agnostic and self-descriptive protocol and potentially supports m
 
 In COMIT, nodes need to exchange all kinds of information in a peer-to-peer manner.
 As COMIT is an inherently distributed system, the network will eventually become heterogeneous, with an array of implementations, varying in languages and versions.
-Given that, we need a transport protocol that fulfils the following requirements:
+Given that, we need a transfer protocol that fulfils the following requirements:
 
 - **Different kinds of messages:** The protocol needs to support requests (response expected) and one-way transmissions (no response).
 - **Self-descriptive messages:** Because of the heterogeneous nature, the protocol needs to allow the introduction of new features without breaking older versions.
