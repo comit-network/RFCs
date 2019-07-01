@@ -57,7 +57,7 @@ BC->Alpha: monitor fund of HTLC on Alpha
 note left #white
 	Both Alice and Bob know
 	all the parameter to create
-	the exactly same TX data
+	the exact same TX data
 	for both ledgers. Monitoring
 	is done by both parties by
 	creating the TX data and
@@ -71,7 +71,7 @@ AC-->Alice: prepared TX
 note right #white
 	Both Alice and Bob have
 	all the parameter to create
-	the exactly same HTLC code.
+	the exact same HTLC code.
 end note
 Alice->Alpha: TX to deploy HTLC on Alpha
 Alpha->Alpha: TX in new block
@@ -93,7 +93,7 @@ BC-->Bob: prepared TX
 note left #white
 	Both Alice and Bob have
 	all the parameter to create
-	the exactly same HTLC code.
+	the exact same HTLC code.
 end note
 Bob->Beta: TX to deploy HTLC on Beta
 Beta->Beta: TX in new block
