@@ -1,0 +1,158 @@
+' DIAGRAM #########################################
+' RFC003 atomic swap
+' #################################################
+@startuml
+' #################################################
+' SETTINGS: color settings of diagram
+' #################################################
+skinparam sequence {
+	BorderColor black
+	ArrowColor black
+	ActorBorderColor black
+	LifeLineBorderColor black
+	LifeLineBackgroundColor white
+	
+	ParticipantBorderColor black
+	ParticipantBackgroundColor white
+	ParticipantFontColor black
+	
+	ActorBackgroundColor white
+	ActorFontColor black
+}
+' #################################################
+' ACTORS
+' #################################################
+actor Alice
+participant "Alice\nComit-Node" as AC
+participant "Alpha\nLedger" as Alpha
+participant "Beta\nLedger" as Beta
+participant "Bob\nComit-Node" as BC
+actor Bob
+
+' allow parallelism
+!pragma teoz true
+
+' #################################################
+' DIAGRAM
+' #################################################
+Alice->AC: send swap request
+AC->AC: generate secret
+AC->AC: hash secret
+AC->BC: swap request 
+note left #white
+	swap request includes 
+	- hash of secret 
+	- expiries
+	- Alice's identities (if relevant)
+end note
+BC->Bob: new swap request
+Bob->BC: accept swap request
+BC->AC: accept swap request
+note right #white
+	swap accept includes
+	- Bob's identities (if relevant)
+end note
+BC->Alpha: monitor fund of HTLC on Alpha
+& AC->Alpha: monitor fund of HTLC on Alpha
+note left #white
+	Both Alice and Bob know
+	all the parameter to create
+	the exact same TX data
+	for both ledgers. Monitoring
+	is done by both parties by
+	creating the TX data and
+	looking for it in new
+	incoming blocks.
+end note
+AC->Alice: fund available
+Alice->AC: deploy and fund Alpha
+AC->AC: prepare TX to deploy HTLC on Alpha
+AC-->Alice: prepared TX
+note right #white
+	Both Alice and Bob have
+	all the parameter to create
+	the exact same HTLC code.
+end note
+Alice->Alpha: TX to deploy HTLC on Alpha
+Alpha->Alpha: TX in new block
+opt token asset, e.g. ERC20
+    AC->AC: prepare TX to fund HTLC on Alpha
+    AC-->Alice: prepared TX
+    Alice->Alpha: TX to fund HTLC on Alpha
+    Alpha->Alpha: TX in new block
+end
+AC->Alpha: Alice's comit node notices\ndeployed (and funded) HTLC on Alpha
+& BC->Alpha: Bob's comit node notices\ndeployed (and funded) HTLC on Alpha
+BC->Beta: monitor fund of HTLC on Beta
+& AC->Beta: monitor fund of HTLC on Beta
+AC->Alice: refund available
+& BC->Bob: fund available
+Bob->BC: deploy and fund Beta
+BC->BC: prepare TX to deploy HTLC on Beta
+BC-->Bob: prepared TX
+note left #white
+	Both Alice and Bob have
+	all the parameter to create
+	the exact same HTLC code.
+end note
+Bob->Beta: TX to deploy HTLC on Beta
+Beta->Beta: TX in new block
+opt token asset, e.g. ERC20
+    BC->BC: prepare TX to fund HTLC on Beta
+    BC-->Bob: prepared TX
+    Bob->Beta: TX to fund HTLC on Beta
+    Beta->Beta: TX in new block
+end
+BC->Beta: Bob's comit node notices\ndeployed (and funded) HTLC on Beta
+& AC->Beta: Alice's comit node notices\ndeployed (and funded) HTLC on Beta
+BC->Beta: monitor redeem of HTLC on Beta
+& AC->Beta: monitor redeem of HTLC on Beta
+BC->Bob: refund available
+& AC->Alice: redeem/refund\navailable
+Alice->AC: redeem Beta
+AC->AC: prepare redeem TX
+note left #white
+	Alice has to expose the
+	secret to redeem.
+end note
+AC-->Alice: prepared TX
+Alice->Beta: TX to redeem
+note right #white
+	HTLC hashes the given secret
+	and matches it against the
+	hash constant in the contract.
+	Secret revealed.
+end note
+Beta->Beta: TX in new block
+note left #white
+	Alice got Beta asset.
+end note
+AC->Beta: Alice's comit node notices\nredeemed HTLC on Beta
+& BC->Beta: Bob's comit node notices\nredeemed HTLC on Beta
+BC->Alpha: monitor redeem of HTLC on Alpha
+& AC->Alpha: monitor redeem of HTLC on Alpha
+AC->Alice: just refund available
+& BC->Bob: redeem/refund\navailable
+note left #white
+	Bob's comit node
+	retrieves the secret.
+end note
+Bob->BC: redeem
+BC->BC: prepare redeem TX
+BC-->Bob: prepared TX
+Bob->Alpha: TX to redeem
+note left #white
+	HTLC hashes the given secret
+    and matches it against the
+    hash constant in the contract.
+end note
+Alpha->Alpha: TX in new block
+note right #white
+	Bob got Alpha asset.
+end note
+AC->Alpha: Alice's comit node notices\nredeemed HTLC on Alpha
+& BC->Alpha: Bob's comit node notices\nredeemed HTLC on Alpha
+AC->Alice: swap complete
+& BC->Bob: swap complete
+
+@enduml
