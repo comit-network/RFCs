@@ -28,7 +28,7 @@
         - [`details`](#details)
     - [Section for hash functions](#section-for-hash-functions)
 - [References](#references)
-- Appendix
+- [Appendix](#appendix)
     - [Examples](#examples)
         - [SWAP REQUEST frame](#swap-request-frame)
         - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
