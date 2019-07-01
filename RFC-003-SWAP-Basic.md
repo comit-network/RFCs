@@ -28,16 +28,19 @@
         - [`details`](#details)
     - [Section for hash functions](#section-for-hash-functions)
 - [References](#references)
-- [Examples](#examples)
-    - [SWAP REQUEST frame](#swap-request-frame)
-    - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
-    - [Response to declined SWAP RESPONSE (declined because too tight timeouts)](#response-to-declined-swap-response-declined-because-too-tight-timeouts)
+- Appendix
+    - [Examples](#examples)
+        - [SWAP REQUEST frame](#swap-request-frame)
+        - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
+        - [Response to declined SWAP RESPONSE (declined because too tight timeouts)](#response-to-declined-swap-response-declined-because-too-tight-timeouts)
+    - [Sequence Diagram](#sequence-diagram)
 
 ## Description
 
 This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
 It is a simplified version of the protocol originally described by TierNolan[¹](#references).
+A detailed sequence diagram showing the content of this RFC can be found in the appendix section [Sequence Diagram](#sequence-diagram).
 
 ## Concepts
 
@@ -227,11 +230,13 @@ A new section for listing hash functions is added.
 1. https://en.bitcoin.it/wiki/Atomic_swap
 2. https://tools.ietf.org/html/rfc4634#section-4.1
 
-## Examples
+## Appendix
+
+### Examples
 
 Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
-### SWAP REQUEST frame
+#### SWAP REQUEST frame
 
 ``` json
 {
@@ -274,7 +279,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
 }
 ```
 
-### Response to Accepted SWAP REQUEST
+#### Response to Accepted SWAP REQUEST
 
 ``` json
 {
@@ -292,7 +297,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
 }
 ```
 
-### Response to declined SWAP RESPONSE (declined because too tight timeouts)
+#### Response to declined SWAP RESPONSE (declined because too tight timeouts)
 
 ``` json
 {
@@ -311,3 +316,7 @@ Elements not relevant for this RFC or which are subject to later definition are 
   }
 }
 ```
+
+### Sequence Diagram
+
+![RFC003-EthereumBitcoin-AtomicSwap](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC003-AlphaBeta-AtomicSwap.puml&fmt=svg)
