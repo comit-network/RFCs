@@ -220,7 +220,7 @@ Subsequent RFCs can refer to this type if they want to define a particular asset
 
 ### The type `SwapProtocol`
 
-A section "Protocols" is added to the registry which tracks all currently defined protocols.
+A section "SWAP Protocols" is added to the registry which tracks all currently defined protocols.
 Subsequent RFCs can refer to this type if they want to define a particular swap protocol.
 
 ### The type `DeclineBody` and the initial set of possible values

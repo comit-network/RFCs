@@ -492,7 +492,7 @@ For example, `REQUEST`.
 - Headers should use snake case convention.
 For example, `payment_method`.
 - `REQUEST` types should use all caps convention as well.
-For example: `BUY`.
+For example: `SWAP`.
 
 ### Connection errors / failure cases
 
