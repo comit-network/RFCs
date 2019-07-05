@@ -62,13 +62,13 @@ This may be expanded in subsequent RFCs.
 
 The parameters for the Bitcoin HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
-| Variable        | Description                                                                 |
-|:----------------|:----------------------------------------------------------------------------|
-| asset           | The quantity of satoshi                                                     |
-| secret_hash     | The hash of the `secret` (32 bytes for SHA-256)                             |
-| redeem_identity | The `pubkeyhash` of the redeeming party                                     |
-| refund_identity | The `pubkeyhash` of the refunding party                                     |
-| expiry          | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
+| Variable         | Description                                                                 |
+| :--------------- | :-------------------------------------------------------------------------- |
+| asset            | The quantity of satoshi                                                     |
+| secret_hash      | The hash of the `secret` (32 bytes for SHA-256)                             |
+| redeem_identity  | The `pubkeyhash` of the redeeming party                                     |
+| refund_identity  | The `pubkeyhash` of the refunding party                                     |
+| refund_timestamp | The absolute UNIX timestamp in seconds after which the HTLC can be refunded |
 
 ### Contract
 
@@ -80,31 +80,32 @@ OP_IF
     OP_SHA256 <secret_hash> OP_EQUALVERIFY
     OP_DUP OP_HASH160 <redeem_identity>
 OP_ELSE
-    <expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP
+    <refund_timestamp> OP_CHECKLOCKTIMEVERIFY OP_DROP
     OP_DUP OP_HASH160 <refund_identity>
 OP_ENDIF
 OP_EQUALVERIFY
 OP_CHECKSIG
 ```
 
-As required by [RFC003](./RFC-003-SWAP-Basic.md), this HTLC uses absolute time locks to check whether `expiry` has been reached.
-Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `expiry` in the contract.
+As required by [RFC003](./RFC-003-SWAP-Basic.md), this HTLC uses absolute time locks to check whether `refund_timestamp` has been reached.
+Specifically, `OP_CHECKLOCKTIMEVERIFY` (see [BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)) is used to compare the time in the block's header to the `refund_timestamp` in the contract.
 
-Implementations MUST consider an `expiry` value below `500000000` for a Bitcoin HTLC to be invalid due to the [`lock_time`](https://en.bitcoin.it/wiki/Protocol_documentation#tx) transaction field interpreting values below `500000000` as block heights.
+Implementations MUST consider an `refund_timestamp` value below `500000000` for a Bitcoin HTLC to be invalid due to the [`lock_time`](https://en.bitcoin.it/wiki/Protocol_documentation#tx) transaction field interpreting values below `500000000` as block heights.
 
-To compute the exact Bitcoin script bytes of the contract, implementations should use the following offset table:
+The following code snippet contains the above script compiled into hex with the parameters filled with placeholders.
 
-| Data              | Position of first byte | Position of last byte | Length (bytes) | Description                                                                |
-|:------------------|:-----------------------|:----------------------|:---------------|:---------------------------------------------------------------------------|
-| `6382012088a820`  | 0                      | 6                     | 7              | `OP_IF OP_SIZE 32 OP_EQUALVERIFY OP_SHA256` + `PUSH32` for the secret_hash |
-| `secret_hash`     | 7                      | 39                    | 32             | See [Parameters](#parameters)                                              |
-| `8876a9`          | 40                     | 42                    | 3              | `OP_EQUALVERIFY OP_DUP OP_HASH160`                                         |
-| `redeem_identity` | 43                     | 64                    | 20             | See [Parameters](#parameters)                                              |
-| `67`              | 65                     | 65                    | 1              | `OP_ELSE`                                                                  |
-| `expiry`          | 66                     | 69                    | 4              | See [Parameters](#parameters)                                              |
-| `b17576a9`        | 70                     | 73                    | 4              | `OP_CHECKLOCKTIMEVERIFY OP_DROP OP_DUP OP_HASH160`                         |
-| `refund_identity` | 74                     | 93                    | 20             | See [Parameters](#parameters)                                              |
-| `6888ac`          | 94                     | 96                    | 3              | `OP_ENDIF OP_EQUALVERIFY OP_CHECKSIG`                                      |
+```
+6382012088a82010000000000000000000000000000000000000000000000000000000000000018876a9143000000000000000000000000000000000000003670420000002b17576a91440000000000000000000000000000000000000046888ac
+```
+
+Use the following table to fill in the correct parameters and build the actual HTLC:
+
+| Name               | Byte Range | Length (bytes) |
+| :----------------- | :--------- | :------------- |
+| `secret_hash`      | 7..39      | 32             |
+| `redeem_identity`  | 43..63     | 20             |
+| `refund_timestamp` | 65..69     | 4              |
+| `refund_identity`  | 74..94     | 20             |
 
 ## Execution Phase
 
@@ -146,7 +147,7 @@ If Bitcoin is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md)), then th
 ### Refund
 
 To refund the HTLC, the funder MUST submit a transaction to the blockchain which spends the P2WSH output.
-The funder can use the following witness data to spend the output after the `expiry`:
+The funder can use the following witness data to spend the output after the `refund_timestamp`:
 
 | Data             | Description                                                                                             |
 |:-----------------|:--------------------------------------------------------------------------------------------------------|
@@ -219,12 +220,12 @@ A valid `RESPONSE` to the above `REQUEST` could look like:
 
 The above `REQUEST` and `RESPONSE` results in the following parameters to the HTLC:
 
-| Parameter       | value                                                              |
-|:----------------|--------------------------------------------------------------------|
-| redeem_identity | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
-| refund_identity | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
-| secret_hash     | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
-| expiry          | 1552263040                                                         |
+| Parameter        | value                                                              |
+| :--------------- | ------------------------------------------------------------------ |
+| redeem_identity  | `c021f17be99c6adfbcba5d38ee0d292c0399d2f5`                         |
+| refund_identity  | `1925a274ac004373bb5429553bdb55c40e57b124`                         |
+| secret_hash      | `1f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e` |
+| refund_timestamp | 1552263040                                                         |
 
 
 Which compiles into the following Bitcoin script bytes:
