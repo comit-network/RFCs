@@ -125,6 +125,8 @@ Use the following table to fill in the correct parameters and build the actual H
 |20
 |===
 
+CAUTION: The `refund_timestamp` is of length 4 which means we https://github.com/bitcoin/bitcoin/blob/29082e8f40c360847882553ad1b3900e5e402688/src/script/script.h#L229-L246[have to use] the `OP_PUSHDATA4` op code to keep the script minimal. Data pushed using either `OP_PUSHDATA2` or `OP_PUSHDATA4` MUST be encoded in https://en.bitcoin.it/wiki/Script#Constants[*little-endian*]. Hence, you MUST convert `refund_timestamp` to *little-endian* before constructing the HTLC from its parameters.
+
 == Execution Phase
 
 The following section describes how both parties should interact with the Bitcoin blockchain during the link:./RFC-003-SWAP-Basic.md#execution-phase[RFC003 execution phase].
@@ -287,6 +289,9 @@ Which compiles into the following Bitcoin script bytes:
 ```
 6382012088a8201f69c8745f712da03fdd43486ef705fc24f3e34d54cf44d967cf5cd4204c835e8876a914c021f17be99c6adfbcba5d38ee0d292c0399d2f5670480a7855cb17576a9141925a274ac004373bb5429553bdb55c40e57b1246888ac
 ```
+
+NOTE: Keep in mind to encode the `refund_timestamp` as *little-endian* when constructing the HTLC.
+
 
 Which results in the following P2WSH address by network:
 
