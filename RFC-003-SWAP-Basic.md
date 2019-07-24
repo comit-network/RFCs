@@ -318,4 +318,6 @@ Elements not relevant for this RFC or which are subject to later definition are 
 
 ### Sequence Diagram
 
+Sequence diagram that depicts a successfull atomic swap where both parties redeem:
+
 ![RFC003-EthereumBitcoin-AtomicSwap](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC003-AlphaBeta-AtomicSwap.puml&fmt=svg)
