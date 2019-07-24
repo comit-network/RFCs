@@ -108,7 +108,7 @@ BC->Beta: Bob's comit node notices\ndeployed (and funded) HTLC on Beta
 BC->Beta: monitor redeem of HTLC on Beta
 & AC->Beta: monitor redeem of HTLC on Beta
 BC->Bob: refund available
-& AC->Alice: redeem/refund\navailable
+& AC->Alice: redeem available
 Alice->AC: redeem Beta
 AC->AC: prepare redeem TX
 note left #white
@@ -131,8 +131,7 @@ AC->Beta: Alice's comit node notices\nredeemed HTLC on Beta
 & BC->Beta: Bob's comit node notices\nredeemed HTLC on Beta
 BC->Alpha: monitor redeem of HTLC on Alpha
 & AC->Alpha: monitor redeem of HTLC on Alpha
-AC->Alice: just refund available
-& BC->Bob: redeem/refund\navailable
+BC->Bob: redeem available
 note left #white
 	Bob's comit node
 	retrieves the secret.
