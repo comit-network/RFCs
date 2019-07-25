@@ -204,7 +204,7 @@ Beta            |--------------------|
 In order for the swap to be atomic the alpha asset must be redeemed *before* `beta_expiry`.
 To be more precise; the alpha redeem transaction must have been accepted into the alpha ledger before `beta_expiry`.
 This means that the window of time for which atomicity is guaranteed for Alice is actually *smaller* than it at first appears.
-There exists a point on the beta time window depicted above (and again below) after which a redeem transaction may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
+There exists a point on the beta time window depicted above (and again below) after which a redeem transaction by Alice may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
 This point is marked below with `???` because it is dependant on the ledger.
 
 
