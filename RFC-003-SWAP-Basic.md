@@ -117,6 +117,8 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 | `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret |
 | `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                      |
 
+In order for the protocol to provide atomicity there are constraints on the expiry times, please see 'Expiry Time Considerations' below.
+
 If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consider the request to be invalid.
 
 ### SWAP Response
@@ -182,6 +184,28 @@ Alice then waits until `alpha_expiry` and then MUST activate the refund path of 
 When Bob learns the secret from Alice's redeem activation of β-HTLC he MUST activate the redeem path of α-HTLC and gain ownership of **A**.
 He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining **A**.
 To activate the redeem path he uses the secret and the procedure defined in the specification of the α-HTLC.
+
+## Expiry Time Considerations
+
+Conceptually there is a time window from when the HTLC is deployed until the HTLC expires and can be refunded.
+The protocol depends on the alpha time window being a superset of the beta time window.
+
+```
+  time ->
+
+     deploy                                   expiry
+
+Alpha  |----------------------------------------|
+
+Beta            |--------------------|
+
+              deploy               expiry
+```
+
+In order for the swap to be atomic the alpha asset must be redeemed *before* `beta_expiry`.
+To be more precise; the alpha redeem transaction must have been accepted into the alpha ledger before `beta_expiry`.
+This means that the window of time for which atomicity is guaranteed for Alice is actually *smaller* than it at first appears.
+There exists a point on the beta time window depicted above after which a redeem transaction by Alice may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
 
 ## Application Considerations
 
