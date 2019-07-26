@@ -93,7 +93,7 @@ Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β l
 
 ### SWAP Request Header
 
-The protocol begins with one party (the sender, referred to as 'Alice') sending a SWAP REQUEST message to another party (the receiver, referred to as 'Bob') with the `protocol` header's value set to `comit-rfc-003`.
+The setup phase begins with one party, the sender (referred to as 'Alice'), sending a SWAP REQUEST message to another party, the receiver (referred to as 'Bob'), with the `protocol` header's value set to `comit-rfc-003`.
 The header MUST have the following parameters:
 
 #### `hash_function`
@@ -130,7 +130,7 @@ If responding with `successful` for the `negotiation_result` header, the respond
 
 ## Execution Phase
 
-After the Setup phase the sender of the request is designated the role Alice while the responder takes the role of Bob.
+After the Setup phase completes the execution phase takes place (assuming the swap was accepted).
 The execution phase of the protocol takes place exclusively by interacting with the Ledgers.
 
 The protocol is described below as if both parties have immediate access to the most recent state of the ledger and are able to effect persistent changes to it immediately.
