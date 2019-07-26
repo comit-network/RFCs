@@ -190,7 +190,7 @@ To activate the redeem path he uses the secret and the procedure defined in the 
 Conceptually there is a time window from when the HTLC is deployed until the HTLC expires and can be refunded.
 The protocol depends on the alpha time window being a superset of the beta time window.
 
-
+```
   time ->
 
      deploy                                 expiry
@@ -200,6 +200,7 @@ Alpha  |----------------------------------------|
 Beta            |--------------------|
 
              deploy              expiry
+```
 
 In order for the swap to be atomic the alpha asset must be redeemed *before* `beta_expiry`.
 To be more precise; the alpha redeem transaction must have been accepted into the alpha ledger before `beta_expiry`.
