@@ -193,13 +193,13 @@ The protocol depends on the alpha time window being a superset of the beta time 
 ```
   time ->
 
-     deploy                                 expiry
+     deploy                                   expiry
 
 Alpha  |----------------------------------------|
 
 Beta            |--------------------|
 
-             deploy              expiry
+              deploy               expiry
 ```
 
 In order for the swap to be atomic the alpha asset must be redeemed *before* `beta_expiry`.
