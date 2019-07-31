@@ -26,7 +26,7 @@ The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe 
 The Omni Layer Protocol defines several _assets_, also commonly referred as _coins_ or _tokens_ (from now on referred as Omni _asset_).
 It also allows the definition of new assets by the mean of a Bitcoin transaction containing specific data.
 
-This asset MUST be used on the Bitcoin Ledger, as defined in [RFC-004](./RFC-004-SWAP-Bitcoin.md).
+This asset MUST be used on the Bitcoin Ledger, as defined in [RFC-004](./RFC-004-Bitcoin.md).
 Subsequent RFCs MAY introduce the support of other ledgers for Omni Layer Assets.
 
 While *Omni* or *OmniCoin* holds a special place among the assets as being predefined and having special properties in the Omni Layer Protocol, it is not different than other Omni assets in the context of the COMIT protocol family.
