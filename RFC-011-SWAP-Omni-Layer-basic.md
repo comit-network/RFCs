@@ -27,7 +27,7 @@
 
 This RFC describes to execute a [RFC003](./RFC-003-SWAP-basic.md) SWAP where one of the ledgers is Bitcoin and the associated asset is an Omni Layer token asset.
 
-For the definition of the Bitcoin ledger see [RFC004](./RFC-004-SWAP-Bitcoin.md).
+For the definition of the Bitcoin ledger see [RFC004](./RFC-004-Bitcoin.md).
 For the definition of the Omni Layer token asset see [RFC010](./RFC-010-Omni-Layer.md).
 
 This RFC re-purposes the Hash Time Locked Contract (HTLC) Bitcoin script from [RFC005](./RFC-005-SWAP-Bitcoin-basic.md) to lock Omni Layer tokens instead of Bitcoin.
