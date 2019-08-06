@@ -382,7 +382,7 @@ For the `ERROR` frame the `payload` looks like this:
 
 ```json
 {
-    "type": {},
+    "type": "...",
     "details": {},
 }
 ```
