@@ -376,6 +376,17 @@ As noted above, responses don't have a `type`.
 }
 ```
 
+##### Error
+
+For the `ERROR` frame the `payload` looks like this:
+
+```json
+{
+    "type": {},
+    "details": {},
+}
+```
+
 #### Header
 
 This section defines how headers are encoded in the JSON-based text encoding. 
