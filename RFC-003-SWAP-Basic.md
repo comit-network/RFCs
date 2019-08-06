@@ -123,7 +123,7 @@ If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consi
 
 ### SWAP Response
 
-If responding with `successful` for the `negotiation_result` header, the responder MUST include the following fields in the response body:
+If responding with `accepted` for the `decision` header, the responder MUST include the following fields in the response body:
 
 | Name                    | JSON Encoding | Description                                                                                              |
 | ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
