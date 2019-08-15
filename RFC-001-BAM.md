@@ -24,13 +24,6 @@
                 - [Type](#type-1)
                 - [Headers](#headers)
                 - [Body](#body)
-        - [Error](#error)
-            - [Structure](#structure-1)
-                - [type](#type)
-                - [details](#details)
-            - [Possible error types](#possible-error-types)
-            - [Error details](#error-details)
-                - [Details for `unknown-mandatory-header`](#details-for-unknown-mandatory-header)
     - [Headers](#headers-1)
     - [JSON Encoding](#json-encoding)
         - [Frames](#frames-1)
@@ -144,7 +137,6 @@ The following types are allowed:
 
 - REQUEST
 - RESPONSE
-- ERROR
 
 The following types are reserved for future use:
 
@@ -230,54 +222,6 @@ The rule of thumb here is that implementations should be able to parse all heade
 Hence, the structure of one header SHOULD NOT depend on those of other headers.
 All data that cannot be represented in that way SHOULD be put into the `body`.
 Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
-
-#### Error
-
-The `ERROR` frame is used to communicate failures between nodes at the communication level.
-They MUST NOT be used to communicate errors on the application level.
-Instead, `ERROR` frames are used for received `FRAME`s which cannot be parsed or are invalid.
-An `ERROR` frame can only be sent instead of reply message (e.g. `RESPONSE`).
-Its `id` MUST match that of a previously received frame, like a `REQUEST` frame.
-
-##### Structure
-
-`ERROR` frames carry the following payload:
-
-###### type
-
-A machine-friendly identifier for this type of error.
-
-###### details
-
-An object which further describes this error.
-The shape depends on the `type` of the `ERROR` frame.
-
-##### Possible error types
-
-This RFC introduces the following ERROR frame types.
-Future RFCs MAY extend this list with new error types.
-
-| type | details |
-|---|---|
-| `unknown-frame-type` | None |
-| `malformed-frame` | None |
-| `unknown-request-type` | None |
-| `unknown-mandatory-header` | [See below](#details-for-unknown-mandatory-header) |
-
-##### Error details
-
-###### Details for `unknown-mandatory-header`
-
-The details object for the `unknown-mandatory-header` error is an object with a single key `header`.
-Its value is the key of the header that was marked as mandatory by the sender but was not understood by the receiver.
-
-For example:
-
-```json
-{
-  "header": "payment_method"
-}
-```
 
 ### Headers
 
@@ -376,17 +320,6 @@ As noted above, responses don't have a `type`.
 }
 ```
 
-##### Error
-
-For the `ERROR` frame the `payload` looks like this:
-
-```json
-{
-    "type": "...",
-    "details": {},
-}
-```
-
 #### Header
 
 This section defines how headers are encoded in the JSON-based text encoding. 
@@ -473,15 +406,7 @@ For example: `SWAP`.
 
 ### Connection errors / failure cases
 
-The following section describes the behaviour in certain failure scenarios.
-
-#### Malformed response
-
-It can happen that a counterparty sends a malformed response or that the response is not deserializable due to some other cause.
-For requests, an `ERROR` frame with type `malformed-frame` can be sent back to the other party.
-However, there are no response messages for responses.
-In this case, implementations should treat this as a *temporary* failure by logging the incident and ignoring the malformed response.
-Implementations should be able to receive further messages on the connection.
+Any errors that occur at the messaging level cause the receiving node to close the communication channel.
 
 ## Registry extensions
 
@@ -490,9 +415,7 @@ Implementations should be able to receive further messages on the connection.
 This RFC adds a section "FRAME types" to track the list of available `type`s to be used for `FRAME`s.
 The following types are added to this list:
 
-- REQUEST/RESPONSE
-- ERROR
+- REQUEST
+- RESPONSE
 
 Each of the defined REQUEST `type`s should list the headers that can be used with this REQUEST.
-
-For the `ERROR` frame, the `type`s listed in the [ERROR frame](#possible-error-types) section are added as valid types.
