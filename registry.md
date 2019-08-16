@@ -5,7 +5,6 @@
 - [FRAME types](#frame-types)
     - [REQUEST / RESPONSE](#request--response)
         - [SWAP](#swap)
-    - [ERROR](#error)
 - [Ledgers](#ledgers)
     - [`bitcoin` Parameters](#bitcoin-parameters)
         - [Bitcoin Networks](#bitcoin-networks)
@@ -49,18 +48,6 @@ A SWAP request and the according response allow for the following headers to app
 - `decision`
 
 Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
-
-### ERROR
-
-Implementations SHOULD be aware of the following list of ERROR frame types.
-This list can be extended by RFCs, so implementations SHOULD be prepared to receive an ERROR frame that is not listed here.
-
-| Type                       | Reference                   |
-| -------------------------- | --------------------------- |
-| `unknown-frame-type`       | [RFC-001](./RFC-001-BAM.md) |
-| `malformed-frame`          | [RFC-001](./RFC-001-BAM.md) |
-| `unknown-request-type`     | [RFC-001](./RFC-001-BAM.md) |
-| `unknown-mandatory-header` | [RFC-001](./RFC-001-BAM.md) |
 
 ## Ledgers
 
