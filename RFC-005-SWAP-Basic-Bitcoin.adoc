@@ -213,9 +213,9 @@ This RFC extends the link:./registry.md#identities[registry] with an identity de
 |The result of applying SHA-256 and then RIPEMD-160 to a user's SECP256k1 compressed public key
 |===
 
-= Examples/Test vectors
+== Examples/Test vectors
 
-== RFC003 SWAP REQUEST
+=== RFC003 SWAP REQUEST
 
 The following shows an link:RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Bitcoin, the `alpha_asset` is 1 Bitcoin (with `...` being used where the value is only relevant for the `beta_ledger`[RFC003].
 
@@ -250,7 +250,7 @@ The following shows an link:RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha
 
 Note, the secret for the `secret_hash` is `51a488e06e9c69c555b8ad5e2c4629bb3135b96accd1f23451af75e06d3aee9c`.
 
-== RFC003 SWAP RESPONSE
+=== RFC003 SWAP RESPONSE
 A valid `RESPONSE` to the above `REQUEST` could look like:
 
 ``` json
@@ -263,7 +263,7 @@ A valid `RESPONSE` to the above `REQUEST` could look like:
 }
 ```
 
-== HTLC
+=== HTLC
 
 The above `REQUEST` and `RESPONSE` results in the following parameters to the HTLC:
 
