@@ -81,7 +81,7 @@ To cater for these two types of assets, the following behaviour is defined in th
 
 The `quantity` value will be inserted in the appropriate Omni Layer transactions, hence the same behaviour is adopted.
 
-Its value MUST be a `u64` (note that in JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
+Its value MUST be a `u64` encoded as a decimal string, e.g. `"100000000"`.
 
 #### `property_id`
 
@@ -109,7 +109,7 @@ And defines its parameters:
 
 ## Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer asset TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
+The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer asset TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 Note: TetherUS is divisible.
 

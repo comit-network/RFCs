@@ -52,7 +52,7 @@ To specify Ether in an Asset type header use the value `ether` with the followin
 
 The `quantity` parameter describes the quantity of wei that the asset represents.
 The `quantity` parameter is mandatory.
-Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded as decimal string like `"1000000000000000000"`).
+Its value MUST be a `u256` encoded as a decimal string, e.g. `"1000000000000000000"`.
 
 ## Registry extension
 
@@ -96,7 +96,7 @@ And defines the `quantity` parameter for it:
 
 # Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 Ether as the `alpha_asset`.
+The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 Ether as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json

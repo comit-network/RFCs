@@ -34,13 +34,13 @@ To describe ERC20 asset in an Asset type header specify `erc20` as the value alo
 
 The `quantity` parameter describes the quantity of token wei the asset represents.
 The `quantity` parameter is mandatory.
-Its value MUST be a `u256` (note that in the JSON encoding a `u256` is encoded as decimal string like `"1000000000000000000"`).
+Its value MUST be a `u256` encoded as a decimal string, e.g. `"1000000000000000000"`.
 
 ### `token_contract`
 
 The `token_contract` parameter specifies which token contract and therefore which token the asset header is referring to.
 The `token_contract` parameter is mandatory.
-In the JSON encoding, the address MUST be encoded as this 20-byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
+The address MUST be encoded as this 20-byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
 Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
 
 The address MUST be a *contract address* which complies with [EIP20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md).
@@ -63,7 +63,7 @@ And defines its parameters:
 
 # Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 [PAY token](https://etherscan.io/token/0xB97048628DB6B661D4C2aA833e95Dbe1A905B280) as the `alpha_asset`.
+The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 [PAY token](https://etherscan.io/token/0xB97048628DB6B661D4C2aA833e95Dbe1A905B280) as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json

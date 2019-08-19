@@ -49,7 +49,7 @@ To specify Bitcoin in an Asset type header use the value `bitcoin` with the foll
 
 The `quantity` parameter describes the quantity of satoshi that the asset represents.
 The `quantity` parameter is mandatory.
-Its value MUST be a `u64` (note that in the JSON encoding a `u64` is encoded as decimal string like `"100000000"`).
+Its value MUST be a `u64` encoded as a decimal string, e.g. `"100000000"`
 
 ## Registry extension
 
@@ -96,7 +96,7 @@ And defines the `quantity` parameter for it:
 
 ## SWAP Request
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) JSON encoded SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`.
+The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json

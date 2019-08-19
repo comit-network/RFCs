@@ -39,14 +39,14 @@ To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines
 
 The identity to be used on Ethereum is the Ethereum *address* as defined in equation 284 of the [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf): the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
 
-In the JSON encoding, an ethereum address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
+An ethereum address MUST be encoded as this 20 byte hex string prefixed by `0x` (as is standard in the Ethereum ecosystem).
 Furthermore, implementations MUST also accept [EIP50](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md) mixed case addresses and MAY verify the checksum.
 
 This RFC extends the [registry](./registry.md) with the following entry in the identity table:
 
-| Ledger   | Identity Name | JSON Encoding         | Description         |
-|:---------|:--------------|:----------------------|---------------------|
-| Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
+| Ledger   | Identity Name | Description         |
+|:---------|:--------------|---------------------|
+| Ethereum | `address`     | An Ethereum Address |
 
 Note that since *contract* addresses and *user* addresses are indistinguishable, a contract address could be used as an identity.
 RFCs that use the Ethereum identity defined here should explain the impact (if any) this has on the protocol.
@@ -240,7 +240,7 @@ To be notified of the refund event, both parties SHOULD watch the blockchain for
 
 This RFC extends the [registry](./registry.md#identities) with an identity definition for the Ethereum ledger:
 
-| Ledger   | Identity Name | JSON Encoding         | Description         |
+| Ledger   | Identity Name | Encoding              | Description         |
 |:---------|:--------------|:----------------------|---------------------|
 | Ethereum | `address`     | `0x` prefixed address | An Ethereum Address |
 
