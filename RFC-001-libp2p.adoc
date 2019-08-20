@@ -259,7 +259,10 @@ Therefore, careful thought should be put into the design and use of the `MUST un
 In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
 Usually, this can be derived from the `REQUEST` that is sent by a node.
 
-Furthermore, headers consist of a value and parameters.
+Header keys come in the `MUST understand` variant by default.
+Alternatively, for the `MAY ignore` variant, they MUST be prefixed with the underscore character `_`.
+
+Headers consist of a value and parameters.
 
 .A request example with a single header
 [source,json]
