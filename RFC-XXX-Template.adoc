@@ -1,6 +1,8 @@
 = Title
 :toc:
 :revdate: YYYY-MM-DD
+:numbered:
+:sectnumlevels: 5
 
 NOTE: RFC-Number: 000 +
 Status: Draft +
