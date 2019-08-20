@@ -235,32 +235,26 @@ Each heading represents a `reason`.
 
 The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.
 
-##### `details`
-
-TBD 
-
-#### `protocol-unsupported`
+#### `unsupported-protocol`
 
 The protocol specified in the `protocol` header is not known to the receiving party.
 
-##### `details`
+#### `unsupported-swap`
 
-TBD <!-- List known protocols in details -->
+The ledger-asset combination specified in the SWAP request is not supported by the receiving party.
 
-#### `unknown-ledger`
+This can mean that:
+1. The ledger is not known
+2. The asset is not known
+3. Ledger and asset are not known
 
-A ledger referenced by the sending party is unknown to the receiving party.
-Note that different networks of the same blockchain are different ledgers!
-Bitcoin Testnet is a different ledger than Bitcoin Mainnet.
+This error can be extended to a more complex `unknown-asset` and `unknown-ledger` in the future.
+The error cases for these variants have to be properly defined first.
 
-##### `details`
+#### `missing-header`
 
-TBD <!-- List known ledgers in details -->
+A mandatory header expected by the receiving party is not properly specified by the sending party.
 
-#### `unknown-asset`
+#### `malformed-json`
 
-An asset referenced by the sending party is unknown to the receiving party.
-
-##### `details`
-
-TBD <!-- List known assets in details -->
+Deserialization of the incoming request fails.
