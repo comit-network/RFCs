@@ -129,15 +129,18 @@ In fact, a former version of the COMIT messaging protocol (BAM!) had support for
 ==== Multiplexing with libp2p substreams
 
 Libp2p has the concept of substreams.
-A substream is a virtual socket for a specific protocol between two nodes.
+Substream are a virtual sockets for a specific protocol between two nodes on top of a single physical connection.
 Opening a new substream is cheap compared to an actual network connection.
 It is also independent of the underlying physical network topology, i.e. it does not matter which party opened the actual physical network connection:
 Every party can open a new substream at any point in time.
+
+The above properties allow and encourage a pattern where substreams are basically very short-lived sessions, for example, for a single request - response handshake.
 
 === Design
 
 This paragraph describes the over-arching design of the COMIT messaging protocol.
 It builds heavily upon the https://github.com/libp2p/specs/tree/master/connections#definitions[terminology] that is used within the libp2p spec.
+The protocol builds on the above mentioned pattern of using substreams as short-lived sessions.
 
 To send a new message to another node, a COMIT node MUST open a new substream.
 Within a single substream, there is always just one _active_ party.
