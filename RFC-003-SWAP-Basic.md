@@ -109,7 +109,7 @@ How to construct HTLCs based on SHA-256 and other hash functions for particular 
 
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
-| Name                    | JSON Encoding       | Description                                                                                              |
+| Name                    | Encoding            | Description                                                                                              |
 | :---------------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
 | `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                    |
 | `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                     |
@@ -125,7 +125,7 @@ If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consi
 
 If responding with `accepted` for the `decision` header, the responder MUST include the following fields in the response body:
 
-| Name                    | JSON Encoding | Description                                                                                              |
+| Name                    | Encoding      | Description                                                                                              |
 | ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
 | `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret |
 | `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`     |

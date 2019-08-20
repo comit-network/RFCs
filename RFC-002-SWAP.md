@@ -80,7 +80,7 @@ The messages to negotiate such an exchange consist of a `REQUEST` frame and a co
 #### Definition
 
 A SWAP REQUEST message is a `FRAME` of type `REQUEST`.
-[As per definition](./RFC-001-BAM.md#type-1) in `BAM!`, a `REQUEST` `FRAME` has a `type` that defines its semantics.
+[As per definition](RFC-001-libp2p.adoc#_frame_types) in `RFC001`, a `REQUEST` `FRAME` has a `type` that defines its semantics.
 For the SWAP REQUEST message, this type is `SWAP`.
 
 #### Headers
