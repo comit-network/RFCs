@@ -192,8 +192,6 @@ Upon opening a substream, the dialling party is active and can send a `REQUEST` 
 The listening party MUST answer with a `RESPONSE` frame.
 After receiving/sending a `RESPONSE` frame, both nodes MUST close the substream.
 
-===== Structure
-
 A frame of type `REQUEST` carries the following payload:
 
 - type
@@ -233,12 +231,12 @@ Conversely, a frame of type `RESPONSE` looks like this:
 `headers` as well as `body` are optional in `REQUEST` and `RESPONSE` frames and MAY be omitted.
 If omitted, they MUST be interpreted as an empty JSON object.
 
-====== Type
+===== Type
 
 The field `type` in a request defines the semantics of the given request.
 Defining a particular request type usually comes with defining the headers which are usable within this request.
 
-====== Headers
+===== Headers
 
 Headers are supposed to be defined by further RFCs which introduce dedicated `REQUEST` types.
 
@@ -258,25 +256,7 @@ Therefore, careful thought should be put into the design and use of the `MUST un
 In particular, nodes SHOULD NOT send a `RESPONSE` that contains a `MUST understand` header without them having confidence that the receiving node will understand it.
 Usually, this can be derived from the `REQUEST` that is sent by a node.
 
-====== Body
-
-The structure of the `body` of a REQUEST is entirely up the `REQUEST` type.
-Such definition MAY include one or more headers indicating how the body should be parsed (similar to HTTP's `Content-Type` header).
-
-When defining a new `REQUEST` type, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
-The rule of thumb here is that implementations should be able to parse all headers orthogonally.
-Hence, the structure of one header SHOULD NOT depend on those of other headers.
-All data that cannot be represented in that way SHOULD be put into the `body`.
-Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
-
-===== Headers
-
-Headers is a JSON-object with each entry being a single header.
-Each header encodes the following information:
-
-1. The "variant" (MUST understand vs MAY ignore)
-2. A value
-3. Parameters
+Furthermore, headers consist of a value and parameters.
 
 .A request example with a single header
 [source,json]
@@ -338,6 +318,17 @@ The following to examples are both valid and implementations MUST consider them 
   }
 }
 ----
+
+===== Body
+
+The structure of the `body` of a REQUEST is entirely up the `REQUEST` type.
+Such definition MAY include one or more headers indicating how the body should be parsed (similar to HTTP's `Content-Type` header).
+
+When defining a new `REQUEST` type, it is common to overcome the question of whether a specific piece of data should be encoded as a header or be represented in the body.
+The rule of thumb here is that implementations should be able to parse all headers orthogonally.
+Hence, the structure of one header SHOULD NOT depend on those of other headers.
+All data that cannot be represented in that way SHOULD be put into the `body`.
+Implementations can then first parse the set of headers to determine the expected shape of the `body`, in order to continue parsing.
 
 === Naming conventions
 
