@@ -154,7 +154,7 @@ All messages within the COMIT protocol are JSON objects.
 They MUST be serialized to a single line and are delimited by the newline character `\n`.
 The messages MUST use UTF-8 encoding.
 
-TODO: include pretty printing note
+NOTE: For readability, all examples of JSON messages are pretty-printed to use several lines. As mentioned, above, implementations MUST delimit messages with the newline character `\n` and hence, the message itself MUST NOT contain newlines.
 
 ==== Dealing with errors
 
