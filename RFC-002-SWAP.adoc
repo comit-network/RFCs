@@ -14,7 +14,7 @@ Discussion-issue: https://github.com/comit-network/RFCs/issues/18[#18] +
 This RFC serves two purposes:
 
 1. Introduce terminology used to describe the exchange of assets.
-2. Define a REQUEST/RESPONSE message pair for two parties to negotiate such an exchange via `BAM!`.
+2. Define a REQUEST/RESPONSE message pair for two parties to negotiate such an exchange via the COMIT messaging protocol.
 
 == Content
 
