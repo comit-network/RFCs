@@ -5,7 +5,7 @@ If you want to get involved, make sure to read [RFC-000](./RFC-000-Process-descr
 
 - [000: RFC-Process description](./RFC-000-Process-description.md)
 - [001: COMIT messaging protocol](./RFC-001-libp2p.adoc)
-- [002: SWAP Message Types](./RFC-002-SWAP.md)
+- [002: SWAP Message Types](./RFC-002-SWAP.adoc)
 - [003: Basic HTLC Atomic Swap](./RFC-003-SWAP-Basic.md)
 - [004: The Bitcoin Ledger](./RFC-004-Bitcoin.md)
 - [005: Bitcoin Basic HTLC Atomic Swap](./RFC-005-SWAP-Basic-Bitcoin.adoc)

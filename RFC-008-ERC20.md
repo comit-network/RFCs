@@ -16,7 +16,7 @@
 
 This RFC defines how Ethereum based [ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) tokens should be described in Asset type headers.
 
-The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
+The Asset type header was introduced in [RFC002](RFC-002-SWAP.adoc) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The ERC20 Asset
 
@@ -63,7 +63,7 @@ And defines its parameters:
 
 # Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 [PAY token](https://etherscan.io/token/0xB97048628DB6B661D4C2aA833e95Dbe1A905B280) as the `alpha_asset`.
+The following shows an example [RFC002](RFC-002-SWAP.adoc) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 [PAY token](https://etherscan.io/token/0xB97048628DB6B661D4C2aA833e95Dbe1A905B280) as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json

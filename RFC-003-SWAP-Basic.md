@@ -37,7 +37,7 @@
 
 ## Description
 
-This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](./RFC-002-SWAP.md#protocol) SWAP protocol.
+This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](RFC-002-SWAP.adoc#protocol) SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
 It is a simplified version of the protocol originally described by TierNolan[¹](#references).
 A detailed sequence diagram showing the content of this RFC can be found in the appendix section [Sequence Diagram](#sequence-diagram).
@@ -87,7 +87,7 @@ How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
 ## Setup Phase
 
-In the setup phase the two parties exchange [RFC002](./RFC-002-SWAP.md) SWAP messages to negotiate the parameters of the HTLCs.
+In the setup phase the two parties exchange [RFC002](RFC-002-SWAP.adoc) SWAP messages to negotiate the parameters of the HTLCs.
 The values α, β, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
 Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β ledgers.
 

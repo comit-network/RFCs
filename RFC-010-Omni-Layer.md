@@ -19,7 +19,7 @@
 This RFC defines how Bitcoin-based Omni Layer Assets are described in Asset type headers.
 Omni Layer refers specifically to the [Omni Layer Protocol](https://github.com/OmniLayer/spec).
 
-The Asset type header was introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
+The Asset type header was introduced in [RFC002](RFC-002-SWAP.adoc) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The Omni Layer Assets
 
@@ -109,7 +109,7 @@ And defines its parameters:
 
 ## Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer asset TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
+The following shows an example [RFC002](RFC-002-SWAP.adoc) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 [Omni Layer asset TetherUS](https://www.omniexplorer.info/asset/31) as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 Note: TetherUS is divisible.
 
