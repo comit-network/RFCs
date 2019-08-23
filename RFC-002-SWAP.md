@@ -251,10 +251,10 @@ This can mean that:
 This error can be extended to a more complex `unknown-asset` and `unknown-ledger` in the future.
 The error cases for these variants have to be properly defined first.
 
-#### `missing-header`
+#### `missing-mandatory-header`
 
 A mandatory header expected by the receiving party is not properly specified by the sending party.
 
-#### `malformed-json`
+#### `unexpected-json-field`
 
-Deserialization of the incoming request fails.
+The receiving party cannot properly deserialize the json header or body because of an unexpected json-field.
