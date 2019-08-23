@@ -20,7 +20,7 @@
 
 This RFC specifies how the Ethereum blockchain and its native asset Ether are described in Ledger and Asset type headers within the COMIT protocol.
 *Ethereum* refers specifically to the blockchain endorsed by [The Ethereum Foundation](https://www.ethereum.org/foundation) and its associated testnets but not any other blockchains related to or derived from it.
-The Ledger and Asset type headers were introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
+The Ledger and Asset type headers were introduced in [RFC002](RFC-002-SWAP.adoc) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The Ethereum Ledger
 
@@ -96,7 +96,7 @@ And defines the `quantity` parameter for it:
 
 # Examples
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 Ether as the `alpha_asset`.
+The following shows an example [RFC002](RFC-002-SWAP.adoc) SWAP REQUEST with Ethereum as the `alpha_ledger` and 1 Ether as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json

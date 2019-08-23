@@ -21,7 +21,7 @@
 
 This RFC specifies how the Bitcoin blockchain and its native asset Bitcoin are described in Ledger and Asset type headers within the COMIT protocol.
 Bitcoin refers specifically to [Bitcoin Core](https://github.com/bitcoin/bitcoin/) and not any blockchains derived from it.
-The Ledger and Asset type headers were introduced in [RFC002](./RFC-002-SWAP.md) to describe assets being exchanged in a COMIT SWAP protocol.
+The Ledger and Asset type headers were introduced in [RFC002](RFC-002-SWAP.adoc) to describe assets being exchanged in a COMIT SWAP protocol.
 
 ## The Bitcoin Ledger
 
@@ -96,7 +96,7 @@ And defines the `quantity` parameter for it:
 
 ## SWAP Request
 
-The following shows an example [RFC002](./RFC-002-SWAP.md) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`.
+The following shows an example [RFC002](RFC-002-SWAP.adoc) SWAP REQUEST with Bitcoin as the `alpha_ledger` and 1 Bitcoin as the `alpha_asset`.
 Fields that are outside of the scope of this RFC are filled with `...`.
 
 ``` json
