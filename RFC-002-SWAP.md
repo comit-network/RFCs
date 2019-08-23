@@ -244,7 +244,7 @@ The protocol specified in the `protocol` header is not known to the receiving pa
 The ledger-asset combination specified in the SWAP request is not supported by the receiving party.
 
 This can mean that:
-1. The ledger is not known
+1. The ledger is unknown
 2. The asset is not known
 3. Ledger and asset are not known
 
