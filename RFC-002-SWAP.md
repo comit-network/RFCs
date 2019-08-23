@@ -245,7 +245,7 @@ The ledger-asset combination specified in the SWAP request is not supported by t
 
 This can mean that:
 1. The ledger is unknown
-2. The asset is not known
+2. The asset is unknown
 3. Ledger and asset are unknown
 
 This error can be extended to a more complex `unknown-asset` and `unknown-ledger` in the future.
