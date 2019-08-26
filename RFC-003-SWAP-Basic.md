@@ -16,8 +16,8 @@
     - [SWAP Request Body](#swap-request-body)
     - [SWAP Response](#swap-response)
 - [Execution Phase](#execution-phase)
-    - [1. Alice deploys α-HTLC](#1-alice-deploys-α-htlc)
-    - [2. Bob deploys β-HTLC](#2-bob-deploys-β-htlc)
+    - [1. Alice deploys alpha-HTLC](#1-alice-deploys-alpha-htlc)
+    - [2. Bob deploys beta-HTLC](#2-bob-deploys-beta-htlc)
     - [3. Alice redeems](#3-alice-redeems)
     - [4. Bob redeems](#4-bob-redeems)
 - [Application Considerations](#application-considerations)
@@ -88,8 +88,8 @@ How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 ## Setup Phase
 
 In the setup phase the two parties exchange [RFC002](RFC-002-SWAP.adoc) SWAP messages to negotiate the parameters of the HTLCs.
-The values α, β, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
-Additionally, α-HTLC and β-HTLC refer to the HTLCs deployed on the α and β ledgers.
+The values alpha, beta, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
+Additionally, alpha-HTLC and beta-HTLC refer to the HTLCs deployed on the alpha and beta ledgers.
 
 ### SWAP Request Header
 
@@ -113,8 +113,8 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 | :---------------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
 | `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                    |
 | `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                     |
-| `alpha_refund_identity` | `α::Identity`       | The identity on α that **A** can be transferred to after `alpha_expiry`                                  |
-| `beta_redeem_identity`  | `β::Identity`       | The identity on β that **B** will be transferred to when the β-HTLC is activated with the correct secret |
+| `alpha_refund_identity` | `alpha::Identity`       | The identity on alpha that **A** can be transferred to after `alpha_expiry`                                  |
+| `beta_redeem_identity`  | `beta::Identity`       | The identity on beta that **B** will be transferred to when the beta-HTLC is activated with the correct secret |
 | `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                      |
 
 In order for the protocol to provide atomicity there are constraints on the expiry times, please see 'Expiry Time Considerations' below.
@@ -127,8 +127,8 @@ If responding with `accepted` for the `decision` header, the responder MUST incl
 
 | Name                    | Encoding      | Description                                                                                              |
 | ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
-| `alpha_redeem_identity` | `α::Identity` | The identity on α that **A** will be transferred to when the α-HTLC is activated with the correct secret |
-| `beta_refund_identity`  | `β::Identity` | The identity on β that **B** will be transferred to when the β-HTLC is activated after `beta_expiry`     |
+| `alpha_redeem_identity` | `alpha::Identity` | The identity on alpha that **A** will be transferred to when the alpha-HTLC is activated with the correct secret |
+| `beta_refund_identity`  | `beta::Identity` | The identity on beta that **B** will be transferred to when the beta-HTLC is activated after `beta_expiry`     |
 
 ## Execution Phase
 
@@ -142,9 +142,9 @@ Parties should also take this into account when choosing or accepting the `alpha
 Parties MUST verify that the deployed HTLC is exactly what was negotiated during the setup phase.
 The HTLC definitions and how to verify them on particular ledgers will be included in subsequent RFCs.
 
-### 1. Alice deploys α-HTLC
+### 1. Alice deploys alpha-HTLC
 
-Alice starts the execution phase by deploying the α-HTLC to α with the following parameters determined in the setup phase:
+Alice starts the execution phase by deploying the alpha-HTLC to alpha with the following parameters determined in the setup phase:
 
 - asset: `alpha_asset`
 - redeem_identity: `alpha_redeem_identity`
@@ -152,12 +152,12 @@ Alice starts the execution phase by deploying the α-HTLC to α with the followi
 - expiry: `alpha_expiry`
 - secret_hash: `secret_hash`
 
-### 2. Bob deploys β-HTLC
+### 2. Bob deploys beta-HTLC
 
-When Bob sees that the α-HTLC is deployed on α he decides whether to deploy the β-HTLC or abort the swap.
-He MUST make his decision early enough such that he will be able to deploy the β-HTLC before `beta_expiry`.
+When Bob sees that the alpha-HTLC is deployed on alpha he decides whether to deploy the beta-HTLC or abort the swap.
+He MUST make his decision early enough such that he will be able to deploy the beta-HTLC before `beta_expiry`.
 
-If he decides to continue with the swap, he deploys β-HTLC to β with the following parameters determined in the setup phase:
+If he decides to continue with the swap, he deploys beta-HTLC to beta with the following parameters determined in the setup phase:
 
 - asset: `beta_asset`
 - redeem_identity: `beta_redeem_identity`
@@ -165,25 +165,25 @@ If he decides to continue with the swap, he deploys β-HTLC to β with the follo
 - expiry: `beta_expiry`
 - secret_hash: `secret_hash`
 
-If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of α-HTLC to retrieve **A**.
+If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC to retrieve **A**.
 
 ### 3. Alice redeems
 
-With both HTLCs deployed, Alice decides whether to activate the redeem path of the β-HTLC or abort the swap.
-She MUST make her decision early enough such that she is able to activate the redeem path of β-HTLC before `beta_expiry`.
-To activate the redeem path she uses her secret and the procedure defined in the specification of β-HTLC.
+With both HTLCs deployed, Alice decides whether to activate the redeem path of the beta-HTLC or abort the swap.
+She MUST make her decision early enough such that she is able to activate the redeem path of beta-HTLC before `beta_expiry`.
+To activate the redeem path she uses her secret and the procedure defined in the specification of beta-HTLC.
 
 If Alice attempts redeeming too close to or after `beta_expiry` she risks having Bob cancel the redeem by activating the refund before her.
 If Bob does this successfully, he may learn the secret and therefore gain **A** while also having **B** returned to him.
 
-If she decides to abort the swap, Bob waits until `beta_expiry` and then MUST activate the refund path of the β-HTLC.
-Alice then waits until `alpha_expiry` and then MUST activate the refund path of α-HTLC.
+If she decides to abort the swap, Bob waits until `beta_expiry` and then MUST activate the refund path of the beta-HTLC.
+Alice then waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC.
 
 ### 4. Bob redeems
 
-When Bob learns the secret from Alice's redeem activation of β-HTLC he MUST activate the redeem path of α-HTLC and gain ownership of **A**.
+When Bob learns the secret from Alice's redeem activation of beta-HTLC he MUST activate the redeem path of alpha-HTLC and gain ownership of **A**.
 He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining **A**.
-To activate the redeem path he uses the secret and the procedure defined in the specification of the α-HTLC.
+To activate the redeem path he uses the secret and the procedure defined in the specification of the alpha-HTLC.
 
 ## Expiry Time Considerations
 
@@ -217,7 +217,7 @@ This protocol offers an application the following functionality:
 
 It is important to note that Bob gives Alice an option not an *offer*.
 He cannot cancel this option; it simply exists until `beta_expiry`.
-If **B** declines in value relative to **A** after Bob has deployed β-HTLC Alice may abort the protocol to her own advantage.
+If **B** declines in value relative to **A** after Bob has deployed beta-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
 ## Security Considerations
