@@ -36,7 +36,7 @@ The following `type`s are defined:
 
 #### SWAP
 
-Introduced in [RFC-002](./RFC-002-SWAP.md).
+Introduced in [RFC-002](RFC-002-SWAP.adoc).
 
 A SWAP request and the according response allow for the following headers to appear:
 
@@ -47,7 +47,7 @@ A SWAP request and the according response allow for the following headers to app
 - `protocol`
 - `decision`
 
-Please refer to [RFC-002](./RFC-002-SWAP.md) for the exact definition of those headers.
+Please refer to [RFC-002](RFC-002-SWAP.adoc) for the exact definition of those headers.
 
 ## Ledgers
 
@@ -142,10 +142,10 @@ The value of the `decision` header MUST be set to `declined`.
 
 | `reason`               | Reference                          | Description                                                                                                                                                              |
 | :--------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `unsatisfactory-rate`  | [RFC-002](./RFC-002-SWAP.md)       | The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.                                                                                           |
-| `protocol-unsupported` | [RFC-002](./RFC-002-SWAP.md)       | The protocol specified in the `protocol` header is not known to the receiving party.                                                                                     |
-| `unknown-ledger`       | [RFC-002](./RFC-002-SWAP.md)       | A ledger referenced by the sending party is unknown to the receiving party.                                                                                              |
-| `unknown-asset`        | [RFC-002](./RFC-002-SWAP.md)       | An asset referenced by the sending party is unknown to the receiving party.                                                                                              |
+| `unsatisfactory-rate`  | [RFC-002](RFC-002-SWAP.adoc)       | The rate of `alpha_asset` to `beta_asset` is not satisfactory to the receiver.                                                                                           |
+| `protocol-unsupported` | [RFC-002](RFC-002-SWAP.adoc)       | The protocol specified in the `protocol` header is not known to the receiving party.                                                                                     |
+| `unknown-ledger`       | [RFC-002](RFC-002-SWAP.adoc)       | A ledger referenced by the sending party is unknown to the receiving party.                                                                                              |
+| `unknown-asset`        | [RFC-002](RFC-002-SWAP.adoc)       | An asset referenced by the sending party is unknown to the receiving party.                                                                                              |
 | `timeouts-too-tight`   | [RFC-003](./RFC-003-SWAP-Basic.md) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. |
 
 ## Identities
