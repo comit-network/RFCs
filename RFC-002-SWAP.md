@@ -255,6 +255,6 @@ The error cases for these variants have to be properly defined first.
 
 A mandatory header expected by the receiving party is not properly specified by the sending party.
 
-#### `unexpected-json-field`
+#### `bad-json-field`
 
-The receiving party cannot properly deserialize the json header or body because of an unexpected json-field.
+The receiving party cannot properly deserialize the json header or body because of a bad json-field (e.g. a field that is not part of the specification or a wrongly typed field value).
