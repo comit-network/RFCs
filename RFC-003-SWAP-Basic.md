@@ -88,8 +88,8 @@ How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 ## Setup Phase
 
 In the setup phase the two parties exchange [RFC002](RFC-002-SWAP.adoc) SWAP messages to negotiate the parameters of the HTLCs.
-The values alpha, beta, **A** and **B** used below refer to the ledgers and assets described by the SWAP headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
-Additionally, alpha-HTLC and beta-HTLC refer to the HTLCs deployed on the alpha and beta ledgers.
+We use the terms alpha-ledger, beta-leger, alpha-asset and beta-asset to refer to the ledgers and assets described by the headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
+Additionally, alpha-HTLC and beta-HTLC refer to the HTLCs deployed on the alpha-ledger and beta-ledger  ledgers.
 
 ### SWAP Request Header
 
@@ -111,10 +111,10 @@ When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST mess
 
 | Name                    | Encoding            | Description                                                                                              |
 | :---------------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
-| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha HTLC                                                    |
-| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta HTLC                                                     |
-| `alpha_refund_identity` | `alpha::Identity`       | The identity on alpha that **A** can be transferred to after `alpha_expiry`                                  |
-| `beta_redeem_identity`  | `beta::Identity`       | The identity on beta that **B** will be transferred to when the beta-HTLC is activated with the correct secret |
+| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha-HTLC                                                    |
+| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta-HTLC                                                    |
+| `alpha_refund_identity` | `alpha::Identity`       | The identity on alpha-ledger that alpha-asset can be transferred to after `alpha_expiry`                                  |
+| `beta_redeem_identity`  | `beta::Identity`       | The identity on beta-ledger  that **B** will be transferred to when the beta-HTLC is activated with the correct secret |
 | `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                      |
 
 In order for the protocol to provide atomicity there are constraints on the expiry times, please see 'Expiry Time Considerations' below.
@@ -127,8 +127,8 @@ If responding with `accepted` for the `decision` header, the responder MUST incl
 
 | Name                    | Encoding      | Description                                                                                              |
 | ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
-| `alpha_redeem_identity` | `alpha::Identity` | The identity on alpha that **A** will be transferred to when the alpha-HTLC is activated with the correct secret |
-| `beta_refund_identity`  | `beta::Identity` | The identity on beta that **B** will be transferred to when the beta-HTLC is activated after `beta_expiry`     |
+| `alpha_redeem_identity` | `alpha::Identity` | The identity on alpha-ledger that alpha-asset will be transferred to when the alpha-HTLC is activated with the correct secret |
+| `beta_refund_identity`  | `beta::Identity` | The identity on beta-ledger  that **B** will be transferred to when the beta-HTLC is activated after `beta_expiry`     |
 
 ## Execution Phase
 
@@ -144,7 +144,7 @@ The HTLC definitions and how to verify them on particular ledgers will be includ
 
 ### 1. Alice deploys alpha-HTLC
 
-Alice starts the execution phase by deploying the alpha-HTLC to alpha with the following parameters determined in the setup phase:
+Alice starts the execution phase by deploying the alpha-HTLC to alpha-ledger with the following parameters determined in the setup phase:
 
 - asset: `alpha_asset`
 - redeem_identity: `alpha_redeem_identity`
@@ -154,10 +154,10 @@ Alice starts the execution phase by deploying the alpha-HTLC to alpha with the f
 
 ### 2. Bob deploys beta-HTLC
 
-When Bob sees that the alpha-HTLC is deployed on alpha he decides whether to deploy the beta-HTLC or abort the swap.
+When Bob sees that the alpha-HTLC is deployed on alpha-ledger he decides whether to deploy the beta-HTLC or abort the swap.
 He MUST make his decision early enough such that he will be able to deploy the beta-HTLC before `beta_expiry`.
 
-If he decides to continue with the swap, he deploys beta-HTLC to beta with the following parameters determined in the setup phase:
+If he decides to continue with the swap, he deploys beta-HTLC to beta-ledger  with the following parameters determined in the setup phase:
 
 - asset: `beta_asset`
 - redeem_identity: `beta_redeem_identity`
@@ -165,7 +165,7 @@ If he decides to continue with the swap, he deploys beta-HTLC to beta with the f
 - expiry: `beta_expiry`
 - secret_hash: `secret_hash`
 
-If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC to retrieve **A**.
+If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC to retrieve alpha-asset.
 
 ### 3. Alice redeems
 
@@ -174,50 +174,50 @@ She MUST make her decision early enough such that she is able to activate the re
 To activate the redeem path she uses her secret and the procedure defined in the specification of beta-HTLC.
 
 If Alice attempts redeeming too close to or after `beta_expiry` she risks having Bob cancel the redeem by activating the refund before her.
-If Bob does this successfully, he may learn the secret and therefore gain **A** while also having **B** returned to him.
+If Bob does this successfully, he may learn the secret and therefore gain alpha-asset while also having **B** returned to him.
 
 If she decides to abort the swap, Bob waits until `beta_expiry` and then MUST activate the refund path of the beta-HTLC.
 Alice then waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC.
 
 ### 4. Bob redeems
 
-When Bob learns the secret from Alice's redeem activation of beta-HTLC he MUST activate the redeem path of alpha-HTLC and gain ownership of **A**.
-He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining **A**.
+When Bob learns the secret from Alice's redeem activation of beta-HTLC he MUST activate the redeem path of alpha-HTLC and gain ownership of alpha-asset.
+He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining alpha-asset.
 To activate the redeem path he uses the secret and the procedure defined in the specification of the alpha-HTLC.
 
 ## Expiry Time Considerations
 
 Conceptually there is a time window from when the HTLC is deployed until the HTLC expires and can be refunded.
-The protocol depends on the alpha time window being a superset of the beta time window.
+The protocol depends on the alpha-ledger time window being a superset of the beta-ledger  time window.
 
 ```
   time ->
 
-     deploy                                   expiry
+            deploy                                   expiry
 
-Alpha  |----------------------------------------|
+alpha-ledger  |----------------------------------------|
 
-Beta            |--------------------|
+beta-ledger             |--------------------|
 
-              deploy               expiry
+                      deploy               expiry
 ```
 
-In order for the swap to be atomic the alpha asset must be redeemed *before* `beta_expiry`.
-To be more precise; the alpha redeem transaction must have been accepted into the alpha ledger before `beta_expiry`.
+In order for the swap to be atomic the alpha-ledger asset must be redeemed *before* `beta_expiry`.
+To be more precise; the alpha-ledger redeem transaction must have been accepted into the alpha-ledger ledger before `beta_expiry`.
 This means that the window of time for which atomicity is guaranteed for Alice is actually *smaller* than it at first appears.
-There exists a point on the beta time window depicted above after which a redeem transaction by Alice may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
+There exists a point on the beta-ledger  time window depicted above after which a redeem transaction by Alice may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
 
 ## Application Considerations
 
 This protocol offers an application the following functionality:
 
-- **Up for Sale:** Alice puts an asset **A** up for sale until `alpha_expiry`.
-- **Give Option:** Bob can give Alice an *option* to exchange **A** for his asset **B** until `beta_expiry`
-- **Exercise Option:** Alice may exercise her option and receive **B** in exchange for **A** until `beta_expiry`.
+- **Up for Sale:** Alice puts an asset alpha-asset up for sale until `alpha_expiry`.
+- **Give Option:** Bob can give Alice an *option* to exchange alpha-asset for his asset **B** until `beta_expiry`
+- **Exercise Option:** Alice may exercise her option and receive **B** in exchange for alpha-asset until `beta_expiry`.
 
 It is important to note that Bob gives Alice an option not an *offer*.
 He cannot cancel this option; it simply exists until `beta_expiry`.
-If **B** declines in value relative to **A** after Bob has deployed beta-HTLC Alice may abort the protocol to her own advantage.
+If **B** declines in value relative to alpha-asset after Bob has deployed beta-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
 ## Security Considerations
