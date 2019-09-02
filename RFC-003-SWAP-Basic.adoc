@@ -1,50 +1,24 @@
-# Basic HTLC Atomic Swap
+= Basic HTLC Atomic Swap
+:toc:
+:revdate: 2019-01-15
+:numbered:
+:sectnumlevels: 5
 
-- RFC-Number: 003
-- Status: Draft
-- Discussion issue: [#19](https://github.com/comit-network/RFCs/issues/19)
-- Created on: 15 Jan. 2019
+NOTE: RFC-Number: 003 +
+Status: Draft +
+Discussion-issue: https://github.com/comit-network/RFCs/issues/19[#19] +
++ Created on: {revdate} +
 
-**Table of Contents**
-- [Description](#description)
-- [Concepts](#concepts)
-    - [Identity](#identity)
-    - [Hash Time Lock Contract (HTLC)](#hash-time-lock-contract-htlc)
-- [Setup Phase](#setup-phase)
-    - [SWAP Request Header](#swap-request-header)
-        - [`hash_function`](#hash_function)
-    - [SWAP Request Body](#swap-request-body)
-    - [SWAP Response](#swap-response)
-- [Execution Phase](#execution-phase)
-    - [1. Alice deploys alpha-HTLC](#1-alice-deploys-alpha-htlc)
-    - [2. Bob deploys beta-HTLC](#2-bob-deploys-beta-htlc)
-    - [3. Alice redeems](#3-alice-redeems)
-    - [4. Bob redeems](#4-bob-redeems)
-- [Application Considerations](#application-considerations)
-- [Security Considerations](#security-considerations)
-- [Registry Extensions](#registry-extensions)
-    - [Ledgers have identities](#ledgers-have-identities)
-    - [Decline reason for tight timeouts](#decline-reason-for-tight-timeouts)
-        - [`details`](#details)
-    - [Section for hash functions](#section-for-hash-functions)
-- [References](#references)
-- [Appendix](#appendix)
-    - [Examples](#examples)
-        - [SWAP REQUEST frame](#swap-request-frame)
-        - [Response to Accepted SWAP REQUEST](#response-to-accepted-swap-request)
-        - [Response to declined SWAP RESPONSE (declined because too tight timeouts)](#response-to-declined-swap-response-declined-because-too-tight-timeouts)
-    - [Sequence Diagram](#sequence-diagram)
+== Description
 
-## Description
-
-This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT [RFC002](RFC-002-SWAP.adoc#protocol) SWAP protocol.
+This RFC describes a basic atomic swap protocol and the related parameters required to use it as a COMIT link:./RFC-002-SWAP.adoc#protocol[RFC002] SWAP protocol.
 It uses Hash Time Locked Contracts to swap ownership of two assets on different ledgers between two parties.
-It is a simplified version of the protocol originally described by TierNolan[¹](#references).
-A detailed sequence diagram showing the content of this RFC can be found in the appendix section [Sequence Diagram](#sequence-diagram).
+It is a simplified version of the protocol originally described by <<TierNolan>>.
+A detailed sequence diagram showing the content of this RFC can be found in the appendix section <<Sequence Diagram>>.
 
-## Concepts
+== Concepts
 
-### Identity
+=== Identity
 
 This RFC introduces the notion of an "identity".
 An identity belongs to a user and represents the minimal information required to transfer an asset to that user on a particular ledger.
@@ -54,7 +28,7 @@ On blockchain based ledgers a user's identity is usually some function of a publ
 This RFC extends the registry to include a section specifying the identity for each supported ledger.
 Any subsequent RFCs adding a ledger definition MUST specify its identity.
 
-### Hash Time Lock Contract (HTLC)
+=== Hash Time Lock Contract (HTLC)
 
 The Hash Time Locked Contract (HTLC) is the primary construct used in this protocol.
 A HTLC locks an asset until someone activates one of two possible paths:
@@ -85,64 +59,91 @@ In this RFC, HTLCs are constructed with the following parameters
 
 How to construct an HTLC for each ledger will be defined in subsequent RFCs.
 
-## Setup Phase
+== Setup Phase
 
-In the setup phase the two parties exchange [RFC002](RFC-002-SWAP.adoc) SWAP messages to negotiate the parameters of the HTLCs.
+In the setup phase the two parties exchange link:./RFC-002-SWAP.adoc SWAP messages to negotiate the parameters of the HTLCs.
 We use the terms alpha-ledger, beta-leger, alpha-asset and beta-asset to refer to the ledgers and assets described by the headers `alpha_ledger`, `beta_ledger`, `alpha_asset` and `beta_asset` respectively.
 Additionally, alpha-HTLC and beta-HTLC refer to the HTLCs deployed on the alpha-ledger and beta-ledger  ledgers.
 
-### SWAP Request Header
+=== SWAP Request Header
 
 The setup phase begins with one party, the sender (referred to as 'Alice'), sending a SWAP REQUEST message to another party, the receiver (referred to as 'Bob'), with the `protocol` header's value set to `comit-rfc-003`.
 The header MUST have the following parameters:
 
-#### `hash_function`
+==== `hash_function`
 
-Type: [Hash Function](./registry.md#hash-function)
+Type: link:./registry.md#hash-function[Hash Function]
 
 The cryptographic hash function used in the construction of both HTLCs.
 It MUST be available on the `alpha_ledger` and the `beta_ledger`.
-This RFC defines `SHA-256`[²](#references) as an initial value for this parameter.
+This RFC defines <<sha256>> as an initial value for this parameter.
 How to construct HTLCs based on SHA-256 and other hash functions for particular ledgers will be described in subsequent RFCs.
 
-### SWAP Request Body
+=== SWAP Request Body
 
 When `comit-rfc-003` is used as the value for `protocol` for a SWAP REQUEST message the body MUST have the following fields:
 
-| Name                    | Encoding            | Description                                                                                              |
-| :---------------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
-| `alpha_expiry`          | `u32`               | The UNIX timestamp of the time-lock on the alpha-HTLC                                                    |
-| `beta_expiry`           | `u32`               | The UNIX timestamp of the time-lock on the beta-HTLC                                                    |
-| `alpha_refund_identity` | `alpha::Identity`       | The identity on alpha-ledger that alpha-asset can be transferred to after `alpha_expiry`                                  |
-| `beta_redeem_identity`  | `beta::Identity`       | The identity on beta-ledger  that **B** will be transferred to when the beta-HTLC is activated with the correct secret |
-| `secret_hash`           | `hex-encoded-bytes` | The output of calling `hash_function` on the secret                                                      |
+.SWAP Request body for the `comit-rfc-003` protocol.
+|===
+|Field |Type |Description
 
-In order for the protocol to provide atomicity there are constraints on the expiry times, please see 'Expiry Time Considerations' below.
+|`alpha_expiry`
+|u32
+|The UNIX timestamp of the time-lock on the alpha-HTLC
+
+|`beta_expiry`
+|u32
+|The UNIX timestamp of the time-lock on the beta-HTLC
+
+|`alpha_refund_identity`
+|`Identity` on the alpha-ledger (see the relevant registry section)
+|The identity on alpha-ledger that alpha-asset can be transferred to after `alpha_expiry`
+
+|`beta_redeem_identity`
+|`Identity` on the beta-ledger (see the relevant registry section)
+|The identity on beta-ledger that beta-asset will be transferred to when the beta-HTLC is activated with the correct secret
+
+|`secret_hash`
+|hex-encoded byte string
+|The output of calling `hash_function` on the secret
+
+|===
+
+In order for the protocol to provide atomicity there are constraints on the expiry times, please see <<Expiry Time Considerations>> below.
 
 If `alpha_expiry` or `beta_expiry` are in the past, implementations SHOULD consider the request to be invalid.
 
-### SWAP Response
+=== SWAP Response
 
 If responding with `accepted` for the `decision` header, the responder MUST include the following fields in the response body:
 
-| Name                    | Encoding      | Description                                                                                              |
-| ----------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
-| `alpha_redeem_identity` | `alpha::Identity` | The identity on alpha-ledger that alpha-asset will be transferred to when the alpha-HTLC is activated with the correct secret |
-| `beta_refund_identity`  | `beta::Identity` | The identity on beta-ledger  that **B** will be transferred to when the beta-HTLC is activated after `beta_expiry`     |
+.SWAP Response body
+|===
+|Field |Type |Description
 
-## Execution Phase
+|`alpha_redeem_identity`
+|`Identity` on the alpha-ledger (see the relevant registry section)
+|The identity on alpha-ledger that alpha-asset will be transferred to when the alpha-HTLC is activated with the correct secret
+
+|`beta_refund_identity`
+|`Identity` on the beta-ledger (see the relevant registry section)
+|The identity on beta-ledger  that beta-asset will be transferred to when the beta-HTLC is activated after `beta_expiry`
+
+|===
+
+== Execution Phase
 
 After the Setup phase completes the execution phase takes place (assuming the swap was accepted).
 The execution phase of the protocol takes place exclusively by interacting with the Ledgers.
 
 The protocol is described below as if both parties have immediate access to the most recent state of the ledger and are able to effect persistent changes to it immediately.
 For ledgers where recent transactions may be reverted, parties MUST wait until they have confidence that a transaction is permanent before they take any action depending on it.
-Parties should also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see [Security Considerations](#security-considerations)).
+Parties should also take this into account when choosing or accepting the `alpha_expiry` and `beta_expiry` parameters (see <<Security Considerations>>)).
 
 Parties MUST verify that the deployed HTLC is exactly what was negotiated during the setup phase.
 The HTLC definitions and how to verify them on particular ledgers will be included in subsequent RFCs.
 
-### 1. Alice deploys alpha-HTLC
+=== 1. Alice deploys alpha-HTLC
 
 Alice starts the execution phase by deploying the alpha-HTLC to alpha-ledger with the following parameters determined in the setup phase:
 
@@ -152,7 +153,7 @@ Alice starts the execution phase by deploying the alpha-HTLC to alpha-ledger wit
 - expiry: `alpha_expiry`
 - secret_hash: `secret_hash`
 
-### 2. Bob deploys beta-HTLC
+=== 2. Bob deploys beta-HTLC
 
 When Bob sees that the alpha-HTLC is deployed on alpha-ledger he decides whether to deploy the beta-HTLC or abort the swap.
 He MUST make his decision early enough such that he will be able to deploy the beta-HTLC before `beta_expiry`.
@@ -167,25 +168,25 @@ If he decides to continue with the swap, he deploys beta-HTLC to beta-ledger  wi
 
 If Bob decides to abort the swap, Alice waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC to retrieve alpha-asset.
 
-### 3. Alice redeems
+=== 3. Alice redeems
 
 With both HTLCs deployed, Alice decides whether to activate the redeem path of the beta-HTLC or abort the swap.
 She MUST make her decision early enough such that she is able to activate the redeem path of beta-HTLC before `beta_expiry`.
 To activate the redeem path she uses her secret and the procedure defined in the specification of beta-HTLC.
 
 If Alice attempts redeeming too close to or after `beta_expiry` she risks having Bob cancel the redeem by activating the refund before her.
-If Bob does this successfully, he may learn the secret and therefore gain alpha-asset while also having **B** returned to him.
+If Bob does this successfully, he may learn the secret and therefore gain alpha-asset while also having beta-asset returned to him.
 
 If she decides to abort the swap, Bob waits until `beta_expiry` and then MUST activate the refund path of the beta-HTLC.
 Alice then waits until `alpha_expiry` and then MUST activate the refund path of alpha-HTLC.
 
-### 4. Bob redeems
+=== 4. Bob redeems
 
 When Bob learns the secret from Alice's redeem activation of beta-HTLC he MUST activate the redeem path of alpha-HTLC and gain ownership of alpha-asset.
-He MUST make sure he does this before `alpha_expiry` or risks both losing **B** and not gaining alpha-asset.
+He MUST make sure he does this before `alpha_expiry` or risks both losing beta-asset and not gaining alpha-asset.
 To activate the redeem path he uses the secret and the procedure defined in the specification of the alpha-HTLC.
 
-## Expiry Time Considerations
+== Expiry Time Considerations
 
 Conceptually there is a time window from when the HTLC is deployed until the HTLC expires and can be refunded.
 The protocol depends on the alpha-ledger time window being a superset of the beta-ledger  time window.
@@ -207,61 +208,69 @@ To be more precise; the alpha-ledger redeem transaction must have been accepted 
 This means that the window of time for which atomicity is guaranteed for Alice is actually *smaller* than it at first appears.
 There exists a point on the beta-ledger  time window depicted above after which a redeem transaction by Alice may not get included into the ledger before the expiry time, at which time it is possible for Bob to attempt a refund transaction.
 
-## Application Considerations
+== Application Considerations
 
 This protocol offers an application the following functionality:
 
 - **Up for Sale:** Alice puts an asset alpha-asset up for sale until `alpha_expiry`.
-- **Give Option:** Bob can give Alice an *option* to exchange alpha-asset for his asset **B** until `beta_expiry`
-- **Exercise Option:** Alice may exercise her option and receive **B** in exchange for alpha-asset until `beta_expiry`.
+- **Give Option:** Bob can give Alice an *option* to exchange alpha-asset for his asset beta-asset until `beta_expiry`
+- **Exercise Option:** Alice may exercise her option and receive beta-asset in exchange for alpha-asset until `beta_expiry`.
 
 It is important to note that Bob gives Alice an option not an *offer*.
 He cannot cancel this option; it simply exists until `beta_expiry`.
-If **B** declines in value relative to alpha-asset after Bob has deployed beta-HTLC Alice may abort the protocol to her own advantage.
+If beta-asset declines in value relative to alpha-asset after Bob has deployed beta-HTLC Alice may abort the protocol to her own advantage.
 Applications where this behaviour is undesirable should either not use this protocol or mitigate the issue within the application in some way.
 
-## Security Considerations
+== Security Considerations
 
 A security model of the protocol and its associated parameters will be included in a later revision of this RFC.
 
-## Registry Extensions
+== Registry Extensions
 
-This RFC extends the [registry](./registry.md) in the following ways:
+This RFC extends the link:./registry.md[registry] in the following ways:
 
-### Ledgers have identities
+=== Ledgers have identities
 
 The ledger section now includes an `identity` table which specifies the exact identity to use on a particular ledger.
 
-### Decline reason for tight timeouts
+=== Decline reason for tight timeouts
 
 The decline reason `timeouts-too-tight` is added.
 This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver MAY accept the swap if they are given more time.
 
-#### `details`
+==== `details`
 
-| detail   | type   | required | description                                                                         |
-| :------- | :----- | :------- | :---------------------------------------------------------------------------------- |
-| min_time | number | no       | The minimum time difference between the HLTCs in seconds that the receiver requires |
+.Details of the `timeouts-too-tight` decline reason
+|===
+|detail |type |required |description
 
-### Section for hash functions
+|min_time
+|number
+|no
+|The minimum time difference between the HLTCs in seconds that the receiver requires
+
+|===
+
+=== Section for hash functions
 
 A new section for listing hash functions is added.
 `SHA-256` is added as an initial value.
 
-## References
+== References
 
-1. https://en.bitcoin.it/wiki/Atomic_swap
-2. https://tools.ietf.org/html/rfc4634#section-4.1
+- [[[TierNolan,1]]] https://en.bitcoin.it/wiki/Atomic_swap
+- [[[sha256,2]]] https://tools.ietf.org/html/rfc4634#section-4.1
 
-## Appendix
+== Appendix
 
-### Examples
+=== Examples
 
 Elements not relevant for this RFC or which are subject to later definition are filled in with "...".
 
-#### SWAP REQUEST frame
+==== SWAP REQUEST frame
 
-``` json
+[source,json]
+----
 {
   "type": "REQUEST",
   "id": 0,
@@ -300,11 +309,12 @@ Elements not relevant for this RFC or which are subject to later definition are 
     }
   } 
 }
-```
+----
 
-#### Response to Accepted SWAP REQUEST
+==== Response to Accepted SWAP REQUEST
 
-``` json
+[source,json]
+----
 {
   "type": "RESPONSE",
   "id": 0,
@@ -318,11 +328,12 @@ Elements not relevant for this RFC or which are subject to later definition are 
     },
   }
 }
-```
+----
 
-#### Response to declined SWAP RESPONSE (declined because too tight timeouts)
+==== Response to declined SWAP RESPONSE (declined because too tight timeouts)
 
-``` json
+[source,json]
+----
 {
   "type": "RESPONSE",
   "id": 0,
@@ -338,10 +349,10 @@ Elements not relevant for this RFC or which are subject to later definition are 
     },
   }
 }
-```
+----
 
-### Sequence Diagram
+=== Sequence Diagram
 
 Sequence diagram that depicts a successfull atomic swap where both parties redeem:
 
-![RFC003-EthereumBitcoin-AtomicSwap](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC003-AlphaBeta-AtomicSwap.puml&fmt=svg)
+image::http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/comit-network/RFCs/master/assets/RFC003-AlphaBeta-AtomicSwap.puml&fmt=svg[RFC003-EthereumBitcoin-AtomicSwap]

@@ -133,7 +133,7 @@ The following is a list of protocols defined in COMIT RFCs for use in the `proto
 
 | Value           | Reference                          | Description            |
 | :-------------- | ---------------------------------- | ---------------------- |
-| `comit-rfc-003` | [RFC-003](./RFC-003-SWAP-Basic.md) | Basic HTLC Atomic Swap |
+| `comit-rfc-003` | [RFC-003](RFC-003-SWAP-Basic.adoc) | Basic HTLC Atomic Swap |
 
 ## SWAP decline reasons
 
@@ -146,11 +146,11 @@ The value of the `decision` header MUST be set to `declined`.
 | `protocol-unsupported` | [RFC-002](RFC-002-SWAP.adoc)       | The protocol specified in the `protocol` header is not known to the receiving party.                                                                                     |
 | `unknown-ledger`       | [RFC-002](RFC-002-SWAP.adoc)       | A ledger referenced by the sending party is unknown to the receiving party.                                                                                              |
 | `unknown-asset`        | [RFC-002](RFC-002-SWAP.adoc)       | An asset referenced by the sending party is unknown to the receiving party.                                                                                              |
-| `timeouts-too-tight`   | [RFC-003](./RFC-003-SWAP-Basic.md) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. |
+| `timeouts-too-tight`   | [RFC-003](RFC-003-SWAP-Basic.adoc) | This indicates to the sender that the difference between `alpha_expiry` and `beta_expiry` is too small and the receiver may accept the swap if they are given more time. |
 
 ## Identities
 
-[RFC003](./RFC-003-SWAP-Basic.md#identity) requires that each ledger has an associated identity:
+[RFC003](RFC-003-SWAP-Basic.adoc#identity) requires that each ledger has an associated identity:
 
 | Ledger   | Identity Name | Encoding                 | Reference                                  | Description                                                                           |
 | :------- | :------------ | :----------------------- | :----------------------------------------- | ------------------------------------------------------------------------------------- |
