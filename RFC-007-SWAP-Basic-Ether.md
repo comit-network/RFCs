@@ -23,19 +23,19 @@
 
 ## Description
 
-This RFC defines how to execute a [RFC003](./RFC-003-SWAP-Basic.md) SWAP where one of the ledgers is Ethereum and the associated asset is the native Ether asset.
+This RFC defines how to execute a [RFC003](RFC-003-SWAP-Basic.adoc) SWAP where one of the ledgers is Ethereum and the associated asset is the native Ether asset.
 
 For definitions of the Ethereum ledger and Ether asset see [RFC006](./RFC-006-Ethereum.md).
 
-To fulfil the requirements of [RFC003](./RFC-003-SWAP-Basic.md) this RFC defines:
+To fulfil the requirements of [RFC003](RFC-003-SWAP-Basic.adoc) this RFC defines:
 
-- The [identity](./RFC-003-SWAP-Basic.md#identity) to be used when negotiating a SWAP on the Ethereum ledger.
+- The [identity](RFC-003-SWAP-Basic.adoc#identity) to be used when negotiating a SWAP on the Ethereum ledger.
 - How to construct a Hash Time Lock Contract (HTLC) to lock the Ether asset on the Ethereum blockchain.
-- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](./RFC-003-SWAP-Basic.md).
+- How to deploy, redeem and refund the HTLC during the execution phase of [RFC003](RFC-003-SWAP-Basic.adoc).
 
 ## The Ethereum Identity
 
-[RFC003](./RFC-003-SWAP-Basic.md) requires ledgers have an *identity* type specified to negotiate a SWAP.
+[RFC003](RFC-003-SWAP-Basic.adoc) requires ledgers have an *identity* type specified to negotiate a SWAP.
 
 The identity to be used on Ethereum is the Ethereum *address* as defined in equation 284 of the [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf): the right most 160-bits (20 bytes) of the Keccak-256 hash of the corresponding ECDSA public key.
 
@@ -60,7 +60,7 @@ This may be expanded in subsequent RFCs.
 
 ### Parameters
 
-The parameters for the Ether HTLC follow [RFC003](./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc) and are described concretely in the following table:
+The parameters for the Ether HTLC follow [RFC003](RFC-003-SWAP-Basic.adoc#hash-time-lock-contract-htlc) and are described concretely in the following table:
 
 | Variable        | Description                                                                 |
 |:----------------|:----------------------------------------------------------------------------|
@@ -201,7 +201,7 @@ Implementations SHOULD use the following gas limits on the transactions related 
 
 ## Execution Phase
 
-The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](./RFC-003-SWAP-Basic.md#execution-phase).
+The following section describes how both parties should interact with the Ethereum blockchain during the [RFC003 execution phase](RFC-003-SWAP-Basic.adoc#execution-phase).
 
 ### Deployment
 
@@ -226,7 +226,7 @@ Before redeeming, the redeemer SHOULD wait until the deployment transaction has 
 To redeem the HTLC, the redeemer SHOULD send a transaction to the `contract_address` with the `data` of the transaction set to the `secret`.
 
 To be notified of the redeem event, both parties SHOULD watch the blockchain for `contract_address` emitting the `Redeemed()` log.
-If Ethereum is the `beta_ledger` (see [RFC003](./RFC-003-SWAP-Basic.md#execution-phase)), then the funder MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
+If Ethereum is the `beta_ledger` (see [RFC003](RFC-003-SWAP-Basic.adoc#execution-phase)), then the funder MUST watch for such a log, extract the `secret` from the transaction receipt and continue the protocol.
 In this case, Bob MUST NOT watch for a transaction sent to `contract_address` with the `secret` as `data`.
 This would be insufficient, because he would miss learning the `secret` if the contract is redeemed by a call from another contract (rather than from a transaction).
 
@@ -248,7 +248,7 @@ This RFC extends the [registry](./registry.md#identities) with an identity defin
 
 ## RFC003 SWAP REQUEST
 
-The following shows an [RFC003](RFC-003-SWAP-Basic.md) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
+The following shows an [RFC003](RFC-003-SWAP-Basic.adoc) SWAP REQUEST where the `alpha_ledger` is Ethereum, the `alpha_asset` is 1 Ether (with `...` being used where the value is only relevant for the `beta_ledger`).
 
 ``` json
 {
