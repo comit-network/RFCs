@@ -150,11 +150,9 @@ Hence, the node opening the substream is the first one to send a message.
 
 ==== Message format
 
-All messages within the COMIT protocol are JSON objects.
-They MUST be serialized to a single line and are delimited by the newline character `\n`.
-The messages MUST use UTF-8 encoding.
+Messages within the COMIT protocol follow the <<NDJSON>> specification.
 
-NOTE: For readability, all examples of JSON messages are pretty-printed to use several lines. As mentioned, above, implementations MUST delimit messages with the newline character `\n` and hence, the message itself MUST NOT contain newlines.
+NOTE: For readability, all examples of JSON messages are pretty-printed to use several lines. As per NDJSON specification, newlines are forbidden inside the actual messages.
 
 ==== Dealing with errors
 
@@ -356,3 +354,7 @@ The following types are added to this list:
 - RESPONSE
 
 Each of the defined REQUEST ``type``s should list the headers that can be used with this REQUEST.
+
+== References
+
+- [[NDJSON]]NDJSON: https://github.com/ndjson/ndjson-spec/blob/master/README.md
