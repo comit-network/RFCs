@@ -4,7 +4,6 @@
 
 NOTE: RFC-Number: 005 +
 Status: Draft +
-Discussion-issue: https://github.com/comit-network/RFCs/issues/42[#42] +
 + Created on: {revdate} +
 
 == Description

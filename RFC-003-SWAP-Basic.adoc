@@ -6,7 +6,6 @@
 
 NOTE: RFC-Number: 003 +
 Status: Draft +
-Discussion-issue: https://github.com/comit-network/RFCs/issues/19[#19] +
 + Created on: {revdate} +
 
 == Description
