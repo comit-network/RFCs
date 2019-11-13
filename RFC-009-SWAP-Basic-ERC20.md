@@ -2,7 +2,6 @@
 
 - RFC-Number: 009
 - Status: Draft
-- Discussion-issue: [#46](https://github.com/comit-network/RFCs/issues/46)
 - Created on: 2019-03-12
 
 **Table of Contents**

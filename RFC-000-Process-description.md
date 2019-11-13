@@ -2,12 +2,12 @@
 
 - RFC-Number: 000
 - Status: Draft
-- Discussion-issue: -
 - Created on: 25 Jan. 2019
 
 **Table of contents**
-- [Description](#description)
-- [Lifecycle](#lifecycle)
+- [Process description](#process-description)
+  - [Description](#description)
+  - [Lifecycle](#lifecycle)
     - [Everything starts as `Draft`](#everything-starts-as-draft)
     - [On to stabilization](#on-to-stabilization)
 
@@ -22,9 +22,6 @@ We are using an RFC process because we want the documentation and the process ar
 
 Anybody is welcome to submit an RFC to extend or change the COMIT protocol by opening a pull-request to this repository.
 All accepted changes will have status `Draft`.
-RFCs in `Draft` status MUST have a discussion issue that can be used to discuss the current content of the RFC.
-This will be the place where anybody can voice opinions or point out possible flaws or inconsistencies.
-As instructed by the [issue template](./.github/ISSUE_TEMPLATE/discussion_issue.md), please add a checklist for unresolved problems or open questions at the end of the discussion issue.
 As long as an RFC is in `Draft`, new PRs can change it accordingly to reflect the newest findings of the discussions.
 
 ### On to stabilization

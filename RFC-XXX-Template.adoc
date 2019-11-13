@@ -6,7 +6,6 @@
 
 NOTE: RFC-Number: 000 +
 Status: Draft +
-Discussion-issue: - +
 + Created on: {revdate} +
 
 == Description

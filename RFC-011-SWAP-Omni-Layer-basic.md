@@ -2,23 +2,22 @@
 
 - RFC-Number: 011
 - Status: Draft
-- Discussion-issue: -
 - Created on: 27 Mar. 2019
 
 **Table of Contents**
 
-- [Description](#description)
-- [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction)
+- [Omni Layer Basic HTLC Atomic Swap](#omni-layer-basic-htlc-atomic-swap)
+  - [Description](#description)
+  - [Constructing an Omni Layer Transaction](#constructing-an-omni-layer-transaction)
     - [Omni Layer data](#omni-layer-data)
-        - [Example](#example)
     - [Dust](#dust)
     - [HTLC Address](#htlc-address)
-    - [Inputs & Outputs format to spend the HTLC](#inputs--outputs-format-to-spend-the-htlc)
-- [Execution Phase](#execution-phase)
+    - [Inputs & Outputs format to spend from the HTLC output](#inputs--outputs-format-to-spend-from-the-htlc-output)
+  - [Execution Phase](#execution-phase)
     - [Deployment transaction](#deployment-transaction)
     - [Redeem transaction](#redeem-transaction)
     - [Refund transaction](#refund-transaction)
-- [Examples/Test vectors](#examplestest-vectors)
+  - [Examples/Test vectors](#examplestest-vectors)
     - [RFC003 SWAP REQUEST](#rfc003-swap-request)
     - [RFC003 SWAP RESPONSE](#rfc003-swap-response)
     - [HTLC](#htlc)
