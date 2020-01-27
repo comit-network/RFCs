@@ -25,7 +25,7 @@ link:./RFC-003-SWAP-Basic.md[RFC003] requires ledgers have an *identity* type sp
 The Identity to be used on Bitcoin is the user's compressed SECP256k1 Public Key, or `pubkey`.
 The compressed public key is used because it needs to be compatible with segwit transactions (see https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)[BIP143]).
 
-Using `pubkey` will allow migration to Bitcoin mini-scripts, which take public keys, and not pubkeyhashes, as input.
+Using `pubkey` will allow migration to Bitcoin miniscripts, which take public keys, and not pubkeyhashes, as input.
 
 A `pubkey` MUST be compressed and encoded as a 33-byte hex string, without a `0x` prefix.
 
