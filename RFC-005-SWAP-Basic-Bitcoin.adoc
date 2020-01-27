@@ -22,13 +22,12 @@ To fulfil the requirements of link:./RFC-003-SWAP-Basic.md[RFC003] this RFC defi
 
 link:./RFC-003-SWAP-Basic.md[RFC003] requires ledgers have an *identity* type specified to negotiate a SWAP.
 
-The Identity to be used on Bitcoin is the 20-byte *pubkeyhash* which is the result of applying SHA-256 and then RIPEMD-160 to a user's compressed SECP256k1 public key.
+The Identity to be used on Bitcoin is the user's compressed SECP256k1 Public Key, or `pubkey`.
 The compressed public key is used because it needs to be compatible with segwit transactions (see https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type)[BIP143]).
 
-While it may seem more intuitive to use a Bitcoin *address* as the identity, the pubkeyhash better fits the definition of identity given in link:./RFC-003-SWAP-Basic.md[RFC003].
-Using a Bitcoin address as the identity would require implementations to do a number of cumbersome validation steps such as verifying that it is a p2pkh or p2wpkh address, extracting the pubkeyhash and validating the network.
+Using `pubkey` will allow migration to Bitcoin miniscripts, which take public keys, and not pubkeyhashes, as input.
 
-A *pubkeyhash* MUST be encoded as a 20-byte hex string.
+A `pubkey` MUST be compressed and encoded as a 33-byte hex string, without a `0x` prefix.
 
 This RFC extends the link:./registry.md[registry] with the following entry in the identity table:
 
@@ -37,9 +36,9 @@ This RFC extends the link:./registry.md[registry] with the following entry in th
 |Ledger |Identity Name |Encoding |Description
 
 |Bitcoin
-|`pubkeyhash`
-|`hex-encoded-bytes (20)`
-|The result of applying SHA-256 and then RIPEMD-160 to a user's SECP256k1 compressed public key
+|`pubkey`
+|`hex-encoded-bytes (33)`
+| A compressed public key
 |===
 
 == Hash Time Lock Contract
@@ -53,6 +52,8 @@ This may be expanded in subsequent RFCs.
 
 The parameters for the Bitcoin HTLC follow link:./RFC-003-SWAP-Basic.md#hash-time-lock-contract-htlc[RFC003] and are described concretely in the following table:
 
+A `pubkeyhash` is the 20-byte result of applying SHA-256 and then RIPEMD-160 on the `pubkey` (identity).
+
 .Parameters of the Bitcoin HTLC
 |===
 |Variable |Description
@@ -63,10 +64,10 @@ The parameters for the Bitcoin HTLC follow link:./RFC-003-SWAP-Basic.md#hash-tim
 |secret_hash
 |The hash of the `secret` (32 bytes for SHA-256)
 
-|redeem_identity
+|redeem_pubkeyhash
 |The `pubkeyhash` of the redeeming party
 
-|refund_identity
+|refund_pubkeyhash
 |The `pubkeyhash` of the refunding party
 
 |refund_timestamp

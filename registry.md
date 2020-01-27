@@ -152,10 +152,10 @@ The value of the `decision` header MUST be set to `declined`.
 
 [RFC003](RFC-003-SWAP-Basic.adoc#identity) requires that each ledger has an associated identity:
 
-| Ledger   | Identity Name | Encoding                 | Reference                                  | Description                                                                           |
-| :------- | :------------ | :----------------------- | :----------------------------------------- | ------------------------------------------------------------------------------------- |
-| Bitcoin  | `pubkeyhash`  | `hex-encoded-bytes (20)` | [RFC-004](./RFC-005-SWAP-Basic-Bitcoin.md) | The result of applying SHA256 and then RIPEMD160 to a SECP256k1 compressed public key |
-| Ethereum | `address`     | `0x` prefixed address    | [RFC-007](./RFC-007-SWAP-Basic-Ether.md)   | An Ethereum Address                                                                   |
+| Ledger   | Identity Name | Encoding                 | Reference                                  | Description             |
+| :------- | :------------ | :----------------------- | :----------------------------------------- | ----------------------- |
+| Bitcoin  | `pubkey`      | `hex-encoded-bytes (33)` | [RFC-004](./RFC-005-SWAP-Basic-Bitcoin.md) | A compressed public key |
+| Ethereum | `address`     | `0x` prefixed address    | [RFC-007](./RFC-007-SWAP-Basic-Ether.md)   | An Ethereum Address     |
 
 ## Hash Functions
 
