@@ -226,7 +226,7 @@ The contract emits two logs:
 
 |===
 
-The contract returns two different error values the failure case:
+The contract returns two different error values for the failure cases:
 
 |===
 | Description | bytes  | Emitted When
@@ -298,8 +298,8 @@ To be notified of the refund event, both parties SHOULD watch the blockchain for
 
 A transaction to the HTLC will fail in two cases:
 
-. *If redeem was attempted with an invalid secret*: the contract will return `invalidSecret` int bytes (`0x696e76616c69645365637265740000000000000000000000000000000000000000`)
-. *If refund was attempted too early*: the contract will return `tooEarly` int bytes (`0x746f6f4561726c79000000000000000000000000000000000000000000000000`)
+. *If redeem was attempted with an invalid secret*: the contract will return `invalidSecret` in bytes (`0x696e76616c69645365637265740000000000000000000000000000000000000000`)
+. *If refund was attempted too early*: the contract will return `tooEarly` in bytes (`0x746f6f4561726c79000000000000000000000000000000000000000000000000`)
 
 == Registry extension
 
