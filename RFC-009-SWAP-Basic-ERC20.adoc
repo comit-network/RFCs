@@ -143,24 +143,6 @@ check_expiry:
     mstore(0, "tooEarly")
     revert(0, 32)
 
-
-/*
-    memory  layout
-    0 secret
-    32 hash return value
-    ->
-    0 transfer pointer
-    32 to
-    64 amount
-    96 transfer return
-
-    place holders
-    0x3000000000000000000000000000000000000003 // redeem address
-    0x4000000000000000000000000000000000000004 // refund address
-    0x6000000000000000000000000000000000000000000000000000000000000006 // amount
-    0x7000000000000000000000000000000000000007 //token contract address
-
-*/
 redeem:
     // log ascii to hex of "redeemed"
     // 0x72656465656d6564000000000000000000000000000000000000000000000000
