@@ -115,7 +115,7 @@ The contract is compiled from the following EVM assembly:
     iszero
 
     // If passed secret is wrong size, jump to exit contract
-    exit
+    invalid_secret
     jumpi
 
     // Load secret into memory
@@ -140,8 +140,11 @@ The contract is compiled from the following EVM assembly:
     redeem
     jumpi
 
-    // Exit if hashes don't match
-    return(0, 0)
+    // Continue to invalid secret if no match
+invalid_secret:
+    // return "invalidSecret" = 0x696e76616c69645365637265740000000000000000000000000000000000000000
+    mstore(0, "invalidSecret")
+    revert(0, 32)
 
 check_expiry:
     // Timestamp of the current block in seconds since the epoch
@@ -157,26 +160,30 @@ check_expiry:
     refund
     jumpi
 
-exit:
-    // Exit
-    return(0, 0)
+    // return "too early" = 0x746f6f4561726c79000000000000000000000000000000000000000000000000
+    mstore(0, "tooEarly")
+    revert(0, 32)
+
 
 redeem:
-    log1(0, 32, 0xB8CAC300E37F03AD332E581DEA21B2F0B84EAAADC184A295FEF71E81F44A7413) // log keccak256("Redeemed()")
+    // log ascii to hex of "redeemed"
+    // 0x72656465656d6564000000000000000000000000000000000000000000000000
+    log1(0, 32, "redeemed")
     selfdestruct(<redeem_identity>)
 
 refund:
-    log1(0, 0, 0x5D26862916391BF49478B2F5103B0720A842B45EF145A268F2CD1FB2AED55178) // log keccak256("Refunded()")
+    // log ascii to hex of "refunded"
+    // 0x726566756e646564000000000000000000000000000000000000000000000000
+    log1(0, 0, "refunded")
     selfdestruct(<refund_identity>)
 }
-
 ----
 
 The following is the contract deployment code template encoded as hex which will deploy the above contract when the placeholder values are replaced with the parameters.
 
 [source]
 ----
-6100dc61000f6000396100dc6000f336156051576020361415605c57602060006000376020602160206000600060026048f17f1000000000000000000000000000000000000000000000000000000000000001602151141660625760006000f35b42632000000210609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a1733000000000000000000000000000000000000003ff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1734000000000000000000000000000000000000004ff
+61012861000f6000396101286000f3361561007957602036141561004f57602060006000376020602160206000600060026048f17f100000000000000000000000000000000000000000000000000000000000000160215114166100ae575b7f696e76616c69645365637265740000000000000000000000000000000000000060005260206000fd5b426320000002106100eb577f746f6f4561726c7900000000000000000000000000000000000000000000000060005260206000fd5b7f72656465656d656400000000000000000000000000000000000000000000000060206000a1733000000000000000000000000000000000000003ff5b7f726566756e64656400000000000000000000000000000000000000000000000060006000a1734000000000000000000000000000000000000004ff
 ----
 
 To compile the contract code replace the placeholder values with the HTLC parameters at the following offsets:
@@ -185,19 +192,19 @@ To compile the contract code replace the placeholder values with the HTLC parame
 |Name | Byte Range | Length (bytes)
 
 | `secret_hash`
-| 51..83
+| 53..85
 | 32
 
 | `refund_timestamp`
-| 99..103
+| 139..143
 | 4
 
 | `redeem_address`
-| 153..173
+| 229..249
 | 20
 
 | `refund_address`
-| 214..234
+| 290..310
 | 20
 |===
 
@@ -207,15 +214,30 @@ The contract emits two logs:
 |===
 | Topic | keccack256(Topic)| Data  | Emitted When
 
-| `Redeemed()`
-| 0xb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a7413
+| ascii to hex of `redeemed`
+| 0x72656465656d6564000000000000000000000000000000000000000000000000
 | `secret`
 | The contract is redeemed
 
-| `Refunded()`
-| 0x5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed55178
+| ascii to hex of `refunded`
+| 0x726566756e646564000000000000000000000000000000000000000000000000
 | -
 | The contract is refunded
+
+|===
+
+The contract returns two different error values for the failure cases:
+
+|===
+| Description | bytes  | Emitted When
+
+| ascii to hex of `invalidSecret`
+| 0x696e76616c69645365637265740000000000000000000000000000000000000000
+| Attempt to redeem with an invalid secret
+
+| ascii to hex of `tooEarly`
+| 0x746f6f4561726c79000000000000000000000000000000000000000000000000
+| Attempt to refund too early
 
 |===
 
@@ -271,6 +293,13 @@ This would be insufficient, because he would miss learning the `secret` if the c
 To refund the HTLC, the funder MUST send a transaction to `contract_address` with empty data in a block with timestamp greater than `expiry`.
 
 To be notified of the refund event, both parties SHOULD watch the blockchain for  `contract_address` emitting the `Refunded()` log.
+
+=== Failure
+
+A transaction to the HTLC will fail in two cases:
+
+. *If redeem was attempted with an invalid secret*: the contract will return `invalidSecret` in bytes (`0x696e76616c69645365637265740000000000000000000000000000000000000000`)
+. *If refund was attempted too early*: the contract will return `tooEarly` in bytes (`0x746f6f4561726c79000000000000000000000000000000000000000000000000`)
 
 == Registry extension
 
@@ -360,5 +389,5 @@ Which should compile to the following `contract_code`:
 
 [source]
 ----
-6100dc61000f6000396100dc6000f336156051576020361415605c57602060006000376020602160206000600060026048f17fac5a18da6431ed256965b873ef49dc15a70a0a66e2d28d0c226b5db040123727602151141660625760006000f35b42635c85a78010609f575b60006000f35b7fb8cac300e37f03ad332e581dea21b2f0b84eaaadc184a295fef71e81f44a741360206000a17353fd2cac865d3aa1ad6fbdebaa00802c94239fbaff5b7f5d26862916391bf49478b2f5103b0720a842b45ef145a268f2cd1fb2aed5517860006000a1730f59e9e105be01d5e2206792a267406f255c5ea5ff
+61012861000f6000396101286000f3361561007957602036141561004f57602060006000376020602160206000600060026048f17fac5a18da6431ed256965b873ef49dc15a70a0a66e2d28d0c226b5db04012372760215114166100ae575b7f696e76616c69645365637265740000000000000000000000000000000000000060005260206000fd5b42635c85a780106100eb577f746f6f4561726c7900000000000000000000000000000000000000000000000060005260206000fd5b7f72656465656d656400000000000000000000000000000000000000000000000060206000a17353fd2cac865d3aa1ad6fbdebaa00802c94239fbaff5b7f726566756e64656400000000000000000000000000000000000000000000000060006000a1730f59e9e105be01d5e2206792a267406f255c5ea5ff
 ----
