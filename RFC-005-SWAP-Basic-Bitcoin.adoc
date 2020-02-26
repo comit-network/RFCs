@@ -92,9 +92,9 @@ OP_CHECKSIG
 ```
 
 As required by link:./RFC-003-SWAP-Basic.md[RFC003], this HTLC uses absolute time locks to check whether `refund_timestamp` has been reached.
-Specifically, `OP_CHECKLOCKTIMEVERIFY` (see https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)[BIP65]) is used to compare the time in the block's header to the `refund_timestamp` in the contract.
+Specifically, `OP_CHECKLOCKTIMEVERIFY` (see https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki[BIP65]) is used to compare the time in the block's header to the `refund_timestamp` in the contract.
 
-Implementations MUST consider an `refund_timestamp` value below `500000000` for a Bitcoin HTLC to be invalid due to the https://en.bitcoin.it/wiki/Protocol_documentation#tx[`lock_time`] transaction field interpreting values below `500000000` as block heights.
+Implementations MUST NOT consider an `refund_timestamp` value below `500000000` for a Bitcoin HTLC to be valid due to the https://en.bitcoin.it/wiki/Protocol_documentation#tx[`lock_time`] transaction field interpreting values below `500000000` as block heights.
 
 The following code snippet contains the above script compiled into hex with the parameters filled with placeholders.
 
